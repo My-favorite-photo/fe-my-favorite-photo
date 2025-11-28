@@ -24,6 +24,10 @@
   --color-purple: #a77eff;
   --color-pink: #ff2a6a;
   --color-main: #efff04;
+
+  --breakpoint-sm: 375px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1920px;
 }
 
 body {
