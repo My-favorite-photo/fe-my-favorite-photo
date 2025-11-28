@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import LogoPng from '@/assets/images/logo.png'
+
 export default function Header() {
   return (
     <header className="flex w-full  justify-between items-center py-7 px-[220px]">
       <div>
         <Link href="/">
-          <Image src="/header-img/logo.png" alt="headerLogoImg" width={120} height={40} />
+          <Image src={LogoPng} alt="headerLogoImg" width={120} height={40} />
         </Link>
       </div>
 
