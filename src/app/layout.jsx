@@ -30,7 +30,7 @@ const baskinRobbins = LocalFont({
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      <body className={`${notoSansKr.variable} ${baskinRobbins.variable} antialiased`}>
+      <body className={`${notoSansKr.className} ${baskinRobbins.variable} antialiased`}>
         {children}
       </body>
     </html>
