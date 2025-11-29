@@ -136,7 +136,7 @@ export default function MobileFilter() {
             );
           })}
 
-          <div className="flex justify-between gap-2 mx-[15px]">
+          <div className="absolute bottom-[40px] left-0 w-full flex justify-between gap-2 px-[15px]">
             <button onClick={resetCategoryFilter} className="m-[15px] cursor-pointer">
               <Image src={ic_exchange} alt="새로고침" width={24} height={24} />
             </button>
