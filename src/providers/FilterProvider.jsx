@@ -7,30 +7,41 @@ const FilterContext = createContext();
 export function FilterProvider({ children }) {
   const [category, setCategory] = useState('grade');
 
-  const [selectedFilter, setSelectedFilter] = useState({
+  // default 단일 선택
+  const [desktopFilter, setDesktopFilter] = useState({
+    grade: '',
+    genre: '',
+    status: '',
+    price: '',
+  });
+
+  // Mobile 복수 선택
+  const [mobileFilter, setMobileFilter] = useState({
     grade: [],
     genre: [],
     status: [],
   });
 
-  const [filters] = useState({
+  // 필터 옵션
+  const filters = {
     grade: [
-      { label: 'COMMON', value: 'common', count: 52 },
-      { label: 'RARE', value: 'rare', count: 16 },
-      { label: 'SUPER RARE', value: 'super_rare', count: 5 },
-      { label: 'LEGENDARY', value: 'legendary', count: 5 },
+      { label: 'COMMON', value: 'COMMON' },
+      { label: 'RARE', value: 'RARE' },
+      { label: 'SUPER RARE', value: 'SUPER_RARE' },
+      { label: 'LEGENDARY', value: 'LEGENDARY' },
     ],
     genre: [
-      { label: '여행', value: '여행', count: 65 },
-      { label: '풍경', value: '풍경', count: 58 },
-      { label: '인물', value: '인물', count: 101 },
-      { label: '사물', value: '사물', count: 98 },
+      { label: '여행', value: '여행' },
+      { label: '풍경', value: '풍경' },
+      { label: '인물', value: '인물' },
+      { label: '사물', value: '사물' },
     ],
     status: [
-      { label: '판매 중', value: 'on_sale', count: 212 },
-      { label: '판매 완료', value: 'sold_out', count: 58 },
+      { label: '판매 중', value: '판매 중' },
+      { label: '판매 완료', value: '판매 완료' },
     ],
-  });
+    price: ['낮은 가격순', '높은 가격순', '최신순'],
+  };
 
   return (
     <FilterContext.Provider
@@ -38,8 +49,10 @@ export function FilterProvider({ children }) {
         category,
         setCategory,
         filters,
-        selectedFilter,
-        setSelectedFilter,
+        desktopFilter,
+        setDesktopFilter,
+        mobileFilter,
+        setMobileFilter,
       }}
     >
       {children}
