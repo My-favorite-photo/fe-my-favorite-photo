@@ -27,7 +27,7 @@ const cardTitleVariants = cva(
  * @param {'L' | 'M' | 'S' | 'XS'} buttonSize   버튼의 크기
  * @param {String | undefined} [buttonMessage] 버튼에 들어갈메시지 (값이 없다면 버튼이 없는것으로 간주)
  * @param {String} [className]  타이틀 글자에 줄 속성
- * @param {object} [...]        HTML div 태그가 받을수 있는 모든 표준속성 (선택) 
+ * @param {object} [...]        HTML button 태그가 받을수 있는 모든 표준속성 (선택) 
  */
 export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, buttonIntent, className, ...props }) {
   const classes = cardTitleVariants({ size })
@@ -38,11 +38,11 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
   )
 
   return (
-    <div className={classes}{...props}>
+    <div className={classes}>
       <p className={pTagClasses}>{titleMessage}</p>
       {buttonMessage && (
         <div className='mb-5.25'>
-          <Button size={buttonSize} thickness='thin' message={buttonMessage} intent={buttonIntent} />
+          <Button size={buttonSize} thickness='thin' message={buttonMessage} intent={buttonIntent} {...props} />
         </div>
       )}
     </div>
