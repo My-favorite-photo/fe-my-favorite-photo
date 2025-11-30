@@ -1,25 +1,13 @@
 'use client';
-
+import Image from 'next/image';
 import { useState } from 'react';
+import { useFilter } from '@/providers/FilterProvider';
+import ic_arrow from '@/assets/icons/ic_arrow.svg';
 
-function ArrowIcon({ isOpen }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      className={`${isOpen ? 'rotate-180' : ''}`}
-    >
-      <path d="M12.2 14.2L8 10H16.4L12.2 14.2Z" fill="white" />
-    </svg>
-  );
-}
+export default function BoxDropDown({ items, filterKey, size = 'lg' }) {
+  const [open, setOpen] = useState(false);
 
-export default function BoxDropDown({ items, size = 'lg' }) {
-  const [open, setOpen] = useState(false); // 드롭다운 옵션 모달
-  const [selected, setSelected] = useState(null); // 드롭다운 제목
+  const { desktopFilter, setDesktopFilter } = useFilter();
 
   const sizeStyle = {
     sm: { container: 'w-[130px] h-[35px] text-[12px]', btn: 'px-[15px] py-[10px]' },
@@ -30,9 +18,14 @@ export default function BoxDropDown({ items, size = 'lg' }) {
   const sizeClass = sizeStyle[size];
 
   const handleSelect = (item) => {
-    setSelected(item);
     setOpen(false);
+    setDesktopFilter((prev) => ({
+      ...prev,
+      [filterKey]: item,
+    }));
   };
+
+  const selected = desktopFilter[filterKey] || null;
 
   return (
     <div className={`inline-flex flex-col gap-[5px] text-white font-normal ${sizeClass.container}`}>
@@ -40,15 +33,21 @@ export default function BoxDropDown({ items, size = 'lg' }) {
         onClick={() => setOpen(!open)}
         className={`w-full flex justify-between items-center border-[1px] cursor-pointer ${sizeClass.btn}`}
       >
-        <span>{selected ? selected.label : '낮은 가격 순'}</span>
-        <ArrowIcon isOpen={open} />
+        <span>{selected || '낮은 가격 순'}</span>
+        <Image
+          src={ic_arrow}
+          alt="드롭다운"
+          width={24}
+          height={24}
+          className={`${open ? 'rotate-180' : ''}`}
+        />
       </button>
 
       {open && (
         <ul className="z-99 w-full flex flex-col justify-center items-start gap-[15px] px-[20px] py-[15px] border-[1px] border-gray-200 bg-black rounded-[2px] text-4 font-normal cursor-pointer">
           {items.map((item) => (
-            <li key={item.value} onClick={() => handleSelect(item)}>
-              {item.label}
+            <li key={item} onClick={() => handleSelect(item)}>
+              {item}
             </li>
           ))}
         </ul>

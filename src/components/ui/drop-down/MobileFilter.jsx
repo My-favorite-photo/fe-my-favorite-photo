@@ -1,17 +1,19 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
+import { usePhotoCards } from '@/providers/PhotoCardProvider';
+import GradeLabel from '../label/GradeLabel';
 import ic_filter from '@/assets/icons/ic_filter.svg';
 import ic_close from '@/assets/icons/ic_close.svg';
 import ic_exchange from '@/assets/icons/ic_exchange.svg';
-import GradeLabel from '../label/GradeLabel';
 
 export default function MobileFilter() {
   const [open, setOpen] = useState(false);
 
-  const { category, setCategory, filters, selectedFilter, setSelectedFilter } = useFilter();
+  const { cards } = usePhotoCards();
+  const { category, setCategory, filters, mobileFilter, setMobileFilter } = useFilter();
 
   const menus = [
     { key: 'grade', label: '등급' },
@@ -19,31 +21,59 @@ export default function MobileFilter() {
     { key: 'status', label: '매진 여부' },
   ];
 
-  const list = filters[category];
+  const formattedLabel = (label) => {
+    return category === 'grade' ? label.replace(' ', '_') : label;
+  };
+
+  const dynamicFilters = useMemo(() => {
+    const gradeCount = {};
+    const genreCount = {};
+    const statusCount = { '판매 중': 0, '판매 완료': 0 };
+
+    cards.forEach((card) => {
+      gradeCount[card.grade] = (gradeCount[card.grade] || 0) + 1;
+      genreCount[card.genre] = (genreCount[card.genre] || 0) + 1;
+
+      const st = card.remain > 0 ? '판매 중' : '판매 완료';
+      statusCount[st] = (statusCount[st] || 0) + 1;
+    });
+
+    return {
+      grade: filters.grade.map((f) => ({
+        label: f.label,
+        count: gradeCount[f.label.replace(' ', '_')] || 0,
+      })),
+      genre: filters.genre.map((f) => ({
+        label: f.label,
+        count: genreCount[f.label] || 0,
+      })),
+      status: filters.status.map((f) => ({
+        label: f.label,
+        count: statusCount[f.label] || 0,
+      })),
+    };
+  }, [cards, filters]);
+
+  const list = dynamicFilters[category];
 
   // 카테고리 선택(등급, 장르, 매진 여부)
   const handleSelect = (label) => {
-    setSelectedFilter((prev) => {
-      const current = prev[category];
+    const key = formattedLabel(label);
 
-      const isSelected = current.includes(label);
+    setMobileFilter((prev) => {
+      const current = prev[category];
+      const isSelected = current.includes(key);
 
       return {
         ...prev,
-        [category]: isSelected ? current.filter((item) => item !== label) : [...current, label],
+        [category]: isSelected ? current.filter((item) => item !== key) : [...current, key],
       };
     });
   };
 
-  // 필터 리스트 선택(COMMON, RARE, ...)
-  const handleApplyFilter = () => {
-    // 아직 검색 기능 없이 모달 닫기만 가능!!!
-    setOpen(false);
-  };
-
   // 새로고침 버튼
   const resetCategoryFilter = () => {
-    setSelectedFilter((prev) => ({
+    setMobileFilter((prev) => ({
       ...prev,
       [category]: [],
     }));
@@ -51,7 +81,7 @@ export default function MobileFilter() {
 
   // n개 포토보기 버튼
   const getPhotoCount = () => {
-    const selected = selectedFilter[category];
+    const selected = mobileFilter[category];
 
     // 검색 필터 선택 안 하면 전체 개수
     if (!selected || selected.length === 0) {
@@ -59,7 +89,7 @@ export default function MobileFilter() {
     }
 
     return list
-      .filter((item) => selected.includes(item.label))
+      .filter((item) => selected.includes(formattedLabel(item.label)))
       .reduce((acc, cur) => acc + cur.count, 0);
   };
 
@@ -115,7 +145,8 @@ export default function MobileFilter() {
         {/* 카테고리 리스트 */}
         <div className="flex flex-col mt-[19px]">
           {list.map((item) => {
-            const isSelected = selectedFilter[category].includes(item.label);
+            const formatted = formattedLabel(item.label);
+            const isSelected = mobileFilter[category].includes(formatted);
 
             return (
               <div
@@ -126,7 +157,7 @@ export default function MobileFilter() {
               >
                 <span>
                   {category === 'grade' ? (
-                    <GradeLabel grade={item.label.replace(' ', '_')} size="md" fontWeight="bold" />
+                    <GradeLabel grade={formatted} size="md" fontWeight="bold" />
                   ) : (
                     item.label
                   )}
@@ -141,7 +172,7 @@ export default function MobileFilter() {
               <Image src={ic_exchange} alt="새로고침" width={24} height={24} />
             </button>
             <button
-              onClick={handleApplyFilter}
+              onClick={() => setOpen(false)}
               className="w-full py-[17px] bg-main rounded-[20x] text-black text-center text-4 font-bold cursor-pointer"
             >
               {getPhotoCount()}개 포토보기
