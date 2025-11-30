@@ -1,4 +1,4 @@
-export default function GradeLabel({ grade, size = 'sm', fontWeight = '' }) {
+export default function GradeLabel({ grade, size = '', fontWeight = '' }) {
   const sizeStyle = size === 'sm' ? 'text-[10px]' : 'text-[16px]';
 
   const fontWeightStyle = fontWeight === 'bold' ? 'font-bold' : 'font-light';
@@ -16,6 +16,3 @@ export default function GradeLabel({ grade, size = 'sm', fontWeight = '' }) {
     </div>
   );
 }
-
-// 부모에서 item.grade 형태로 전달받기
-// DB에 저장된 대문자 그대로 렌더링
