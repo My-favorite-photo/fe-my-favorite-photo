@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
-import ic_arrow from '@/assets/icons/ic_arrow.svg';
+import ic_arrow from '@/assets/icons/Ic_arrow.svg';
 
 export default function DefaultDropDown({ items, placeholder, filterKey, size }) {
   const [open, setOpen] = useState(false);

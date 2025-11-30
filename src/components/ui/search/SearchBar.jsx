@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import ic_search from '@/assets/icons/ic_search.svg';
+import ic_search from '@/assets/icons/Ic_search.svg';
 
 export default function SearchBar({ onSearch, onReset }) {
   const [keyword, setKeyword] = useState('');

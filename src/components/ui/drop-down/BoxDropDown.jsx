@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
-import ic_arrow from '@/assets/icons/ic_arrow.svg';
+import ic_arrow from '@/assets/icons/Ic_arrow.svg';
 
 export default function BoxDropDown({ items, filterKey, size = 'lg' }) {
   const [open, setOpen] = useState(false);

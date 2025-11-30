@@ -5,9 +5,9 @@ import { useMemo, useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import GradeLabel from '../label/GradeLabel';
-import ic_filter from '@/assets/icons/ic_filter.svg';
-import ic_close from '@/assets/icons/ic_close.svg';
-import ic_exchange from '@/assets/icons/ic_exchange.svg';
+import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
+import ic_close from '@/assets/icons/Ic_close.svg';
+import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 
 export default function MobileFilter() {
   const [open, setOpen] = useState(false);
@@ -99,7 +99,7 @@ export default function MobileFilter() {
         onClick={() => setOpen(!open)}
         className="flex justify-center items-center gap-[10px] p-[7.5px] border border-gray-200 rounded-[2px] bg-black cursor-pointer "
       >
-        <Image src={ic_filter} alt="필터 아이콘" width={20} height={20} />
+        <Image src={ic_mobileFilter} alt="필터 아이콘" width={20} height={20} />
       </button>
 
       {open && <div onClick={() => setOpen(false)} className="fixed inset-0 bg-black/60 z-40" />}
