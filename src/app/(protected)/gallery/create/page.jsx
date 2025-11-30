@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
+import { CardTitle } from "@/components/common/card-title/CardTitle"
+import Header from "@/components/common/header/Header"
 import { Button } from "@/components/ui/button/Button"
 import { cn } from "@/libs/utils/cn"
 
@@ -70,9 +72,14 @@ export default function PhotoCardCreation() {
   }
 
   return (
-    <main className="container min-h-screen text-white">
-      <div className="mx-auto max-w-md">
-        <header className="relative flex items-center justify-center gap-4 px-3.75 py-5">
+    <main className="min-h-screen text-white">
+      <div className="mx-auto max-w-480 sm:mx-0 sm:flex sm:flex-col">
+        <div className="hidden sm:block sm:mb-20 sm:mx-5 md:mx-55">
+          <Header />
+          <CardTitle size="L" titleMessage="포토카드 생성" className="font-br text-5xl tracking-[-1.44px] sm:mb-5 sm:mt-10 md:text-[3.875rem] md:tracking-[-1.86px]" />
+        </div>
+        {/* 모바일 전용헤더 */}
+        <header className="relative flex items-center justify-center gap-4 px-3.75 py-5 sm:hidden">
           <button
             className="absolute left-4 text-white text-2xl"
             onClick={() => router.back()}
@@ -82,14 +89,14 @@ export default function PhotoCardCreation() {
           <h1 className="text-xl font-br font-medium text-center">포토카드 생성</h1>
         </header>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="px-3.75 pb-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="px-3.75 pb-6 sm:flex sm:flex-col sm:mx-auto">
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">포토카드 이름</label>
             <input
               type="text"
               placeholder="포토카드 이름을 입력해 주세요"
               {...register("name")}
-              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none"
+              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
           </section>
           <section className="mb-7">
@@ -97,7 +104,7 @@ export default function PhotoCardCreation() {
             <div className="relative">
               <div
                 // Genre 테이블에 false 면 placeholder 글자가나오게
-                className={cn(`h-13.75 w-full rounded-[2px] border border-gray-200 bg-transparent px-5 py-4.5 text-sm cursor-pointer flex items-center`,
+                className={cn(`h-13.75 w-full rounded-[2px] border border-gray-200 bg-transparent px-5 py-4.5 text-sm cursor-pointer flex items-center sm:max-w-130`,
                   currentGradeObj ? currentGradeObj.color : "text-gray-200"
                 )}
                 onClick={() => toggleDropdown('grade')}
@@ -132,7 +139,7 @@ export default function PhotoCardCreation() {
               <div
                 onClick={() => toggleDropdown('genre')}
                 className={cn(
-                  "h-13.75 w-full rounded-[2px] border border-gray-200 bg-transparent px-5 py-4.5 text-sm  cursor-pointer flex items-center",
+                  "h-13.75 w-full rounded-[2px] border border-gray-200 bg-transparent px-5 py-4.5 text-sm  cursor-pointer flex items-center sm:max-w-130",
                   currentGenreObj ? 'text-white' : 'text-gray-200'
                 )}
               >
@@ -165,7 +172,7 @@ export default function PhotoCardCreation() {
               type="text"
               placeholder="가격을 입력해 주세요"
               {...register("price")}
-              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none"
+              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
           </section>
           <section className="mb-7">
@@ -174,7 +181,7 @@ export default function PhotoCardCreation() {
               type="text"
               placeholder="총 발행량을 입력해 주세요"
               {...register("totalAmount")}
-              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none"
+              className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
           </section>
           <section className="mb-7">
@@ -184,14 +191,14 @@ export default function PhotoCardCreation() {
                 type="text"
                 placeholder="사진 업로드"
                 {...register("photoUrl")}
-                className="w-full h-13.75 flex-3 text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none"
+                className="w-full h-13.75 flex-3 text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-97.5"
                 onFocus={(e) => e.target.blur()}
                 readOnly
               />
               <button
                 type="file"
                 onClick={handleFileSelect}
-                className="flex items-center w-full h-13.75 flex-1 text-nowrap rounded-[2px] bg-black py-4.5 px-7 border border-main font-medium text-black hover:bg-main/90"
+                className="flex items-center w-full h-13.75 flex-1 text-nowrap rounded-[2px] bg-black py-4.5 px-7 border border-main font-medium text-black hover:bg-main/90 sm:max-w-30"
               >
                 <p className="text-main text-sm">파일 선택</p>
               </button>
@@ -202,14 +209,14 @@ export default function PhotoCardCreation() {
             <textarea
               placeholder="포토카드 설명을 적어주세요"
               {...register("description")}
-              className="bg-gray-500 min-h-[140px] text-sm w-full rounded-[2px] border border-gray-200 px-5 py-3 text-white placeholder:text-gray-200 resize-none focus:outline-none"
+              className="bg-gray-500 min-h-[140px] text-sm w-full rounded-[2px] border border-gray-200 px-5 py-3 text-white placeholder:text-gray-200 resize-none focus:outline-none sm:max-w-130"
             />
           </section>
           <Button
             thickness='thin'
             message="생성하기"
             inValid={isValid}
-            className="w-full"
+            className="w-full max-w-130"
           />
         </form>
       </div>
