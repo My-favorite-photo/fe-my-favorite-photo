@@ -34,7 +34,9 @@ export default function MobileFilter() {
       gradeCount[card.grade] = (gradeCount[card.grade] || 0) + 1;
       genreCount[card.genre] = (genreCount[card.genre] || 0) + 1;
 
-      const st = card.remain > 0 ? '판매 중' : '판매 완료';
+      // 판매 여부
+      const st =
+        card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
       statusCount[st] = (statusCount[st] || 0) + 1;
     });
 
