@@ -37,9 +37,14 @@ export default function PhotoCardList() {
   return (
     <div className="flex justify-center">
       <div className="grid sm:grid-cols-2 sm:gap-[5px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-20">
-        {displayCards.map((card) => (
-          <PhotoCard key={card.id} card={card} type="remain" />
-        ))}
+        {displayCards.map((card) => {
+          let imageSize;
+          if (windowWidth < 768) imageSize = { width: 150, height: 112 };
+          else if (windowWidth < 1920) imageSize = { width: 302, height: 227 };
+          else imageSize = { width: 360, height: 270 };
+
+          return <PhotoCard key={card.id} card={card} type="remain" imageSize={imageSize} />;
+        })}
       </div>
     </div>
   );

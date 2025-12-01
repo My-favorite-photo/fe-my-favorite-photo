@@ -4,7 +4,7 @@ import img_logo from '@/assets/images/logo.png';
 import GradeLabel from '../label/GradeLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 
-export default function PhotoCard({ card, type = 'remain' }) {
+export default function PhotoCard({ card, type = 'remain', imageSize }) {
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
@@ -16,7 +16,8 @@ export default function PhotoCard({ card, type = 'remain' }) {
       <Image
         src={img_card}
         alt="카드 이미지"
-        priority
+        width={imageSize.width}
+        height={imageSize.height}
         className="sm:mb-[10px] md:mb-[25px] lg:md:mb-[25px]"
       />
 
