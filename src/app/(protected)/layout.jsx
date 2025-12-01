@@ -1,8 +1,8 @@
 import Header from '@/components/common/header/Header';
 
-export default function MarketPlaceLayout({ children }) {
+export default function layout({ children }) {
   return (
-    <div className="flex flex-col">
+    <div>
       <Header />
       {children}
     </div>

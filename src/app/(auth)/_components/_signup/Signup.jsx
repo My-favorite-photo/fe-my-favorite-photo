@@ -1,37 +1,59 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
+import { authSchema } from '@/libs/schemas/authSchema';
+
+import FormError from '../../../../libs/utils/_error/FromError.jsx';
 
 export default function Signup() {
   const [showEye, setShowEye] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(authSchema.signup),
+    mode: 'onChange',
+  });
+
+  const onSubmit = (data) => {
+    console.log('회원가입 데이터 :', data);
+  };
 
   return (
     <section className="flex flex-col justify-center items-center">
       <div className=" mb-20">
         <Image src={logoImg} alt="signupImg" width={330} height={60} />
       </div>
-      <div>
-        <form className="flex flex-col gap-[34px]">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-[34px]">
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">이메일</p>
             <input
-              type="email"
+              type="text"
+              {...register('email')}
               className="flex  py-[18px] px-5  text-white border border-white"
               placeholder="이메일을 입력해주세요"
             />
+            <FormError error={errors.email} />
           </div>
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">닉네임</p>
             <input
               type="text"
+              {...register('nickname')}
               className="flex  py-[18px] px-5  text-white border border-white"
               placeholder="닉네임을 입력해주세요"
             />
+            <FormError error={errors.nickname} />
           </div>
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">
@@ -40,6 +62,7 @@ export default function Signup() {
             <div className="relative">
               <input
                 type={showEye ? 'text' : 'password'}
+                {...register('password')}
                 className="flex w-full max-w-[600px]  py-[18px] px-5  text-white border border-white"
                 placeholder="8자 이상 입력해 주세요"
               />
@@ -55,6 +78,7 @@ export default function Signup() {
                 )}
               </button>
             </div>
+            <FormError error={errors.password} />
           </div>
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">
@@ -63,6 +87,7 @@ export default function Signup() {
             <div className="relative">
               <input
                 type={showEye ? 'text' : 'password'}
+                {...register('passwordConfirm')}
                 className="flex w-full max-w-[600px] py-[18px] px-5  text-white border border-white"
                 placeholder="비밀번호를 한번 더 입력해 주세요"
               />
@@ -78,8 +103,9 @@ export default function Signup() {
                 )}
               </button>
             </div>
+            <FormError error={errors.passwordConfirm} />
           </div>
-        </form>
+        </div>
         <div className="flex flex-col gap-4">
           <button
             type="submit"
@@ -88,7 +114,7 @@ export default function Signup() {
             가입하기
           </button>
           <button
-            type="submit"
+            type="button"
             className="flex h-[60px] justify-center items-center gap-3 self-stretch rounded-xs border border-gray-300 bg-white text-black font-noto text-[18px] font-normal leading-normal "
           >
             <Image src={GoogleIcon} alt="googleImg" />
@@ -106,7 +132,7 @@ export default function Signup() {
             로그인하기
           </Link>
         </div>
-      </div>
+      </form>
     </section>
   );
 }

@@ -1,29 +1,49 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
+import { authSchema } from '@/libs/schemas/authSchema';
+
+import FormError from '../../../../libs/utils/_error/FromError';
 
 export default function Login() {
   const [showEye, setShowEye] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(authSchema.login),
+    mode: 'onChange',
+  });
+
+  const onSubmit = (data) => {
+    console.log('로그인 :', data);
+  };
 
   return (
     <section className="flex flex-col justify-center items-center">
       <div className=" mb-20">
         <Image src={logoImg} alt="signupImg" width={330} height={60} />
       </div>
-      <div>
-        <form className="flex flex-col gap-8">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">이메일</p>
             <input
-              type="email"
+              type="text"
+              {...register('email')}
               className="flex  py-[18px] px-5  text-white border border-white"
               placeholder="이메일을 입력해주세요"
             />
+            <FormError error={errors.email} />
           </div>
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">
@@ -32,13 +52,14 @@ export default function Login() {
             <div className="relative">
               <input
                 type={showEye ? 'text' : 'password'}
-                className="flex w-[600px]  py-[18px] px-5  text-white border border-white"
+                {...register('password')}
+                className="flex w-[600px] py-[18px] px-5   text-white border border-white"
                 placeholder="8자 이상 입력해 주세요"
               />
               <button
                 type="button"
                 onClick={() => setShowEye((prev) => !prev)}
-                className="absolute right-4 top-1/2 -translate-y-1/2"
+                className=" absolute right-4 top-1/2 -translate-y-1/2"
               >
                 {showEye ? (
                   <Image alt="visibleImg" src={VisibleIcon} className="w-6 h-6" />
@@ -47,8 +68,9 @@ export default function Login() {
                 )}
               </button>
             </div>
+            <FormError error={errors.password} />
           </div>
-        </form>
+        </div>
         <div className="flex flex-col gap-4">
           <button
             type="submit"
@@ -57,7 +79,7 @@ export default function Login() {
             로그인
           </button>
           <button
-            type="submit"
+            type="button"
             className="flex h-[60px] justify-center items-center gap-3 self-stretch rounded-xs border border-gray-300 bg-white text-black font-noto text-[18px] font-normal leading-normal "
           >
             <Image src={GoogleIcon} alt="googleImg" />
@@ -75,7 +97,7 @@ export default function Login() {
             회원가입하기
           </Link>
         </div>
-      </div>
+      </form>
     </section>
   );
 }
