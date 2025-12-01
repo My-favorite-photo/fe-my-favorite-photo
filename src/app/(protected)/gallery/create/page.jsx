@@ -72,12 +72,11 @@ export default function PhotoCardCreation() {
   }
 
   return (
-    <main className="min-h-screen text-white">
-      <div className="mx-auto max-w-480 sm:mx-0 sm:flex sm:flex-col">
-        <div className="hidden sm:block sm:mb-20 sm:mx-5 md:mx-55">
-          <Header />
-          <CardTitle size="L" titleMessage="포토카드 생성" className="font-br text-5xl tracking-[-1.44px] sm:mb-5 sm:mt-10 md:text-[3.875rem] md:tracking-[-1.86px]" />
-        </div>
+    <main className="min-h-screen md:container mx-auto text-white">
+      <div className="hidden sm:block sm:mb-20">
+        <CardTitle size="L" titleMessage="포토카드 생성" className="font-br text-5xl tracking-[-1.44px] sm:mb-5 sm:mt-10 md:text-[3.875rem] md:tracking-[-1.86px]" />
+      </div>
+      <div className="max-w-480 sm:mx-0 sm:flex sm:flex-col">
         {/* 모바일 전용헤더 */}
         <header className="relative flex items-center justify-center gap-4 px-3.75 py-5 sm:hidden">
           <button
@@ -88,7 +87,6 @@ export default function PhotoCardCreation() {
           </button>
           <h1 className="text-xl font-br font-medium text-center">포토카드 생성</h1>
         </header>
-
         <form onSubmit={handleSubmit(onSubmit)} className="px-3.75 pb-6 sm:flex sm:flex-col sm:mx-auto">
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">포토카드 이름</label>
