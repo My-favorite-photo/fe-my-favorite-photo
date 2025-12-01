@@ -2,49 +2,49 @@
 
 import { useEffect, useState } from 'react';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
+import { useFilter } from '@/providers/FilterProvider';
 import PhotoCard from './PhotoCard';
 
 export default function PhotoCardList() {
-  const { desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
+  const { cards, desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
+  const { mobileFilter } = useFilter();
 
-  const [windowWidth, setWindowWidth] = useState();
+  const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
-    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  let cardSize = 'sm';
-  let gridCols = 2;
+  const isMobile = windowWidth < 768;
+  const hasMobileFilter = Object.values(mobileFilter).some((arr) => arr.length > 0);
 
-  if (windowWidth >= 1920) {
-    cardSize = 'lg';
-    gridCols = 3;
-  } else if (windowWidth >= 768) {
-    cardSize = 'md';
-    gridCols = 2;
-  }
+  const displayCards = isMobile
+    ? hasMobileFilter
+      ? mobileFilteredCards
+      : cards
+    : desktopFilteredCards;
 
   if (loading)
     return (
-      <p className="flex justify-center items-center h-[80vh] text-white text-3xl font-bold">
+      <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         로딩 중...
       </p>
     );
 
-  const displayCards = windowWidth < 768 ? mobileFilteredCards : desktopFilteredCards;
-
   return (
     <div className="flex justify-center">
-      <div
-        className={`grid
-    ${gridCols === 3 ? 'grid-cols-3 gap-20' : 'grid-cols-2 gap-10'}`}
-      >
-        {displayCards.map((card) => (
-          <PhotoCard key={card.id} card={card} type="remain" size={cardSize} />
-        ))}
+      <div className="grid sm:grid-cols-2 sm:gap-[5px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-20">
+        {displayCards.map((card) => {
+          let imageSize;
+          if (windowWidth < 768) imageSize = { width: 150, height: 112 };
+          else if (windowWidth < 1920) imageSize = { width: 302, height: 227 };
+          else imageSize = { width: 360, height: 270 };
+
+          return <PhotoCard key={card.id} card={card} type="remain" imageSize={imageSize} />;
+        })}
       </div>
     </div>
   );
