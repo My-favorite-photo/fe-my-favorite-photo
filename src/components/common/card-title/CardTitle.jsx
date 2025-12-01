@@ -42,7 +42,9 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
       <p className={pTagClasses}>{titleMessage}</p>
       {buttonMessage && (
         <div className='mb-5.25'>
-          <Button size={buttonSize} thickness='thin' message={buttonMessage} intent={buttonIntent} {...props} />
+          <Button size={buttonSize} thickness='thin' intent={buttonIntent} {...props} >
+            {buttonMessage}
+          </Button>
         </div>
       )}
     </div>

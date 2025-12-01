@@ -1,6 +1,6 @@
 import Header from "@/components/common/header/Header";
 
-export default function layout({ children }) {
+export default function Layout({ children }) {
   return (
     <>
       <Header />
