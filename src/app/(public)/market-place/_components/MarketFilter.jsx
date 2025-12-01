@@ -17,9 +17,13 @@ export default function MarketFilter() {
         lg:max-w-[1480px]"
     >
       {/* 모바일 */}
-      <div className="flex justify-between mb-5 md:hidden">
-        <MobileFilter />
-        <BoxDropDown items={priceData} filterKey="price" isMobile={true} />
+      <div className="md:hidden">
+        <SearchBar />
+        <div className="w-full border border-b-gray-400 my-[15px]" />
+        <div className="flex justify-between mb-5">
+          <MobileFilter />
+          <BoxDropDown items={priceData} filterKey="price" isMobile={true} />
+        </div>
       </div>
 
       {/* 기본 */}

@@ -28,10 +28,10 @@ export default function BoxDropDown({ items, filterKey, isMobile }) {
   const selected = desktopFilter[filterKey] || null;
 
   return (
-    <div className="inline-flex flex-col gap-[5px] text-white font-normal sm:w-[130px] h-[35px] text-[12px] md:w-[140px] md:h-[45px] md:text-[14px] lg:w-[180px] lg:h-[50px] lg:text-[16px]">
+    <div className="inline-flex flex-col gap-[5px] text-white font-normal sm:w-[130px] sm:h-[35px] sm:text-[12px] md:w-[140px] md:h-[45px] md:text-[14px] lg:w-[180px] lg:h-[50px] lg:text-[16px]">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center border-[1px] cursor-pointer sm:px-[15px] py-[10px] md:px-[15px] md:py-[10px] lg:px-[20px] lg:py-[13px]"
+        className="w-full flex justify-between items-center border-[1px] cursor-pointer sm:px-[15px] sm:py-[5px] md:px-[15px] md:py-[10px] lg:px-[20px] lg:py-[13px]"
       >
         <span>{selected || '낮은 가격 순'}</span>
         <Image
