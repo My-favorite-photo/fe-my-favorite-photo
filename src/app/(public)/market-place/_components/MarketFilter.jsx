@@ -12,31 +12,31 @@ export default function MarketFilter() {
   return (
     <div
       className="w-full mx-auto
-        sm:max-w-[305px]
+        sm:max-w-[345px]
         md:max-w-[704px]
         lg:max-w-[1480px]"
     >
       {/* 모바일 */}
       <div className="flex justify-between mb-5 md:hidden">
         <MobileFilter />
-        <BoxDropDown items={priceData} filterKey="price" />
+        <BoxDropDown items={priceData} filterKey="price" isMobile={true} />
       </div>
 
       {/* 기본 */}
-      <div className="hidden md:flex justify-between mb-[60px]">
+      <div className="hidden md:flex md:justify-between md:mb-[40px] lg:flex lg:justify-between lg:mb-[60px]">
         <div className="flex items-center">
-          <div className="mr-[60px]">
+          <div className="md:mr-[30px] lg:mr-[60px]">
             <SearchBar />
           </div>
 
-          <div className="flex gap-[45px]">
+          <div className="flex md:gap-[25px] lg:gap-[45px]">
             <DefaultDropDown items={gradeData} placeholder="등급" filterKey="grade" />
             <DefaultDropDown items={genreData} placeholder="장르" filterKey="genre" />
             <DefaultDropDown items={saleData} placeholder="매진여부" filterKey="status" />
           </div>
         </div>
 
-        <BoxDropDown items={priceData} filterKey="price" />
+        <BoxDropDown items={priceData} filterKey="price" isMobile={false} />
       </div>
     </div>
   );

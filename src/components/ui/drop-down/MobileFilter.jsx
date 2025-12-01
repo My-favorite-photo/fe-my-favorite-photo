@@ -156,11 +156,7 @@ export default function MobileFilter() {
                   ${isSelected ? 'bg-gray-500' : ''}`}
               >
                 <span>
-                  {category === 'grade' ? (
-                    <GradeLabel grade={formatted} size="md" fontWeight="bold" />
-                  ) : (
-                    item.label
-                  )}
+                  {category === 'grade' ? <GradeLabel grade={formatted} size /> : item.label}
                 </span>
                 <span>{item.count}개</span>
               </div>

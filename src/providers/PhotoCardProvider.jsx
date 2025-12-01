@@ -108,7 +108,7 @@ export function PhotoCardProvider({ children }) {
 
   // Mobile
   const mobileFilteredCards = useMemo(() => {
-    return cards.filter((card) => {
+    let result = cards.filter((card) => {
       const matchGrade = mobileFilter.grade.length === 0 || mobileFilter.grade.includes(card.grade);
       const matchGenre = mobileFilter.genre.length === 0 || mobileFilter.genre.includes(card.genre);
       const matchStatus =
@@ -117,6 +117,14 @@ export function PhotoCardProvider({ children }) {
 
       return matchGrade && matchGenre && matchStatus;
     });
+
+    // 모바일에서도 가격 정렬 적용
+    if (mobileFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
+    else if (mobileFilter.price === '높은 가격순') result.sort((a, b) => b.price - a.price);
+    else if (mobileFilter.price === '최신순')
+      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    return result;
   }, [cards, mobileFilter]);
 
   return (

@@ -1,10 +1,31 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
+import { useFilter } from '@/providers/FilterProvider';
 import PhotoCard from './PhotoCard';
 
 export default function PhotoCardList() {
-  const { desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
+  const { cards, desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
+  const { mobileFilter } = useFilter();
+
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
+  const hasMobileFilter = Object.values(mobileFilter).some((arr) => arr.length > 0);
+
+  const displayCards = isMobile
+    ? hasMobileFilter
+      ? mobileFilteredCards
+      : cards
+    : desktopFilteredCards;
 
   if (loading)
     return (
@@ -12,8 +33,6 @@ export default function PhotoCardList() {
         로딩 중...
       </p>
     );
-
-  const displayCards = mobileFilteredCards.length ? mobileFilteredCards : desktopFilteredCards;
 
   return (
     <div className="flex justify-center">

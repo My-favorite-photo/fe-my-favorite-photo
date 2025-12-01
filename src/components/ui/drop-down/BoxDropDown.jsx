@@ -5,17 +5,24 @@ import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
 import ic_arrow from '@/assets/icons/Ic_arrow.svg';
 
-export default function BoxDropDown({ items, filterKey }) {
+export default function BoxDropDown({ items, filterKey, isMobile }) {
   const [open, setOpen] = useState(false);
 
-  const { desktopFilter, setDesktopFilter } = useFilter();
+  const { desktopFilter, setDesktopFilter, mobileFilter, setMobileFilter } = useFilter();
 
   const handleSelect = (item) => {
     setOpen(false);
-    setDesktopFilter((prev) => ({
-      ...prev,
-      [filterKey]: item,
-    }));
+    if (isMobile) {
+      setMobileFilter((prev) => ({
+        ...prev,
+        [filterKey]: item,
+      }));
+    } else {
+      setDesktopFilter((prev) => ({
+        ...prev,
+        [filterKey]: item,
+      }));
+    }
   };
 
   const selected = desktopFilter[filterKey] || null;

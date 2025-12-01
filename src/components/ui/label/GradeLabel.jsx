@@ -1,4 +1,4 @@
-export default function GradeLabel({ grade }) {
+export default function GradeLabel({ grade, size }) {
   const gradeStyle = {
     COMMON: 'text-main',
     RARE: 'text-blue',
@@ -6,8 +6,12 @@ export default function GradeLabel({ grade }) {
     LEGENDARY: 'text-pink',
   };
 
+  const textClass = size
+    ? 'text-[16px] font-bold'
+    : 'sm:text-[10px] sm:font-light md:text-[16px] lg:text-[16px]';
+
   return (
-    <div className="sm:text-[10px] font-light md:text-[16px] font-bold lg:text-[16px] font-bold">
+    <div className={textClass}>
       <span className={gradeStyle[grade]}>{grade.replace('_', ' ')}</span>
     </div>
   );
