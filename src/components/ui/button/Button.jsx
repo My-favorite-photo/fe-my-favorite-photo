@@ -23,7 +23,7 @@ const buttonVariants = cva(
       },
       state: {
         valid: "",
-        inValid: "bg-gray-400 hover:bg-gray-400/70 active:bg-gray-400/60 cursor-not-allowed"
+        inValid: "bg-gray-400 text-gray-300 hover:bg-gray-400/70 active:bg-gray-400/60 cursor-not-allowed"
       }
     },
     compoundVariants: [
