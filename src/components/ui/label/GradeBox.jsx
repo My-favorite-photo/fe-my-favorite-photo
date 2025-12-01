@@ -1,10 +1,4 @@
-export default function GradeBox({ grade, count, size = 'sm' }) {
-  const sizeStyle = {
-    sm: 'h-[30px] px-[10px] py-[6px] text-[12px]',
-    md: 'h-[32px] px-[10px] py-[6px] text-[14px]',
-    lg: 'h-[40px] px-[20px] py-[8px] text-[16px]',
-  };
-
+export default function GradeBox({ grade, count }) {
   const gradeStyle = {
     COMMON: 'text-main border-main',
     RARE: 'text-blue border-blue',
@@ -14,7 +8,14 @@ export default function GradeBox({ grade, count, size = 'sm' }) {
 
   return (
     <div
-      className={`bg-black inline-flex items-center gap-[10px] border-[1px] font-light ${sizeStyle[size]} ${gradeStyle[grade]}`}
+      className={`
+        bg-black inline-flex items-center gap-[10px] border-[1px] font-light
+        w-max
+        sm:h-[30px] sm:px-[10px] sm:py-[6px] sm:text-[12px]
+        md:h-[32px] md:px-[10px] md:py-[6px] md:text-[14px]
+        lg:h-[40px] lg:px-[20px] lg:py-[8px] lg:text-[16px]
+        ${gradeStyle[grade]}
+      `}
     >
       <span>{grade.replace('_', ' ')}</span>
       <span>{count}장</span>

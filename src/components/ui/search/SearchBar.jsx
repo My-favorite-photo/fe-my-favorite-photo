@@ -25,7 +25,7 @@ export default function SearchBar({ onSearch, onReset }) {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="검색"
-        className="w-[320px] h-[50px] px-[13px] py-[20px] border border-gray-200 rounded-[2px] text-gray-200 text-4 font-light"
+        className="lg:w-[320px] md:w-[160px] sm:w-[305px] h-[50px] px-[13px] py-[20px] border border-gray-200 rounded-[2px] text-gray-200 text-4 font-light"
       />
       <Image
         src={ic_search}
