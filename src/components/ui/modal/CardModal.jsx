@@ -48,7 +48,7 @@ SelectField.displayName = 'SelectField';
  * @param {String} type sell이면 나의 포토카드 판매하기 아니면 수정하기용 모달
  * @returns 
  */
-export function CardModal({ type }) {
+export function CardModal({ type, onClose }) {
   const [grade, setGrade] = useState("");
   const [genre, setGenre] = useState("");
   const [isOpen, setIsOpen] = useState(true); // 모달 표시 상태 (테스트용)
@@ -60,7 +60,7 @@ export function CardModal({ type }) {
   // 내용물 클릭시 모달이 꺼지지않도록 버블링을 방지
   const stopContentBubbling = (e) => {
     if (e.target === e.currentTarget) {
-      setIsOpen(!isOpen)
+      onClose()
     }
   }
 
@@ -91,7 +91,7 @@ export function CardModal({ type }) {
               <div className='flex items-center sm:hidden'>
                 <button
                   className='relative w-[10.15px] h-[17.699px] text-white text-xl pr-4'
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => onClose()}
                 >
                   <Image
                     src={BackArrowIcon}
@@ -109,7 +109,7 @@ export function CardModal({ type }) {
               </h1>
               <button
                 className="hidden md:block text-gray-400 hover:text-white text-3xl transition"
-                onClick={() => setIsOpen(false)}
+                onClick={() => onClose()}
               >
                 <Image
                   src={X}
@@ -192,7 +192,7 @@ export function CardModal({ type }) {
               </section>
               <div className='border-t border-gray-400 mb-7.5 sm:hidden md:block'></div>
               <footer className="flex gap-3.75">
-                <Button intent="secondary" thickness='thin' size='L' onClick={() => setIsOpen(false)} >취소하기</Button>
+                <Button intent="secondary" thickness='thin' size='L' onClick={() => onClose()} >취소하기</Button>
                 <Button thickness='thin' size='L' onClick={() => alert('교환희망 판매하기 버튼을 클릭하였습니다.')} >판매하기</Button>
               </footer>
             </section>

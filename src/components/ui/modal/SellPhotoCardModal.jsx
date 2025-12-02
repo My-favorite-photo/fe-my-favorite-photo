@@ -12,8 +12,7 @@ import PhotoCardList from '../card/PhotoCardList';
 import DefaultDropDown from '../drop-down/DefaultDropDown';
 
 
-export function SellPhotoCardModal() {
-  const [isOpen, setIsOpen] = useState(true);
+export function SellPhotoCardModal({ onClose }) {
   const { searchKeyword, setSearchKeyword } = usePhotoCards();
   const [keyword, setKeyword] = useState('');
 
@@ -29,15 +28,12 @@ export function SellPhotoCardModal() {
     }
   };
 
-  if (!isOpen) return null;
 
   const stopContentBubbling = (e) => {
     if (e.target === e.currentTarget) {
-      setIsOpen(!isOpen);
+      onClose()
     }
   }
-
-  const modalAnimationClass = isOpen ? "transform translate-y-0 opacity-100" : "transform translate-y-full opacity-0"
 
   return (
     <section
@@ -49,7 +45,6 @@ export function SellPhotoCardModal() {
         className={cn(
           "flex flex-col w-full bg-gray-500 overflow-hidden overflow-y-scroll rounded-[2px]",
           "h-[90%] transition-all duration-300 ease-in-out px-3.75",
-          modalAnimationClass,                // mobile (375px 이상) , 애니메이션 적용
           "sm:max-w-screen-md sm:h-[90%] sm:min-h-0 sm:px-5 sm:transform-none sm:opacity-100", // tablet (md: 768px 이상) 애니메이션 적용
           "md:max-w-290 md:py-15 md:px-30" // pc(1280px 이상)
 
@@ -65,7 +60,7 @@ export function SellPhotoCardModal() {
             <h1 className="text-gray-300 font-br tracking-[-0.72px] text-sm sm:text-base md:text-2xl">마이갤러리</h1>
             <button
               className="hidden md:block text-gray-400 hover:text-white text-3xl transition"
-              onClick={() => setIsOpen(false)}
+              onClick={() => onClose()}
             >
               <Image
                 src={X}
