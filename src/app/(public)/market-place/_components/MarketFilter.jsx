@@ -22,7 +22,7 @@ export default function MarketFilter() {
         <div className="w-full border border-b-gray-400 my-[15px]" />
         <div className="flex justify-between items-center mb-5">
           <MobileFilter />
-          <BoxDropDown items={priceData} filterKey="price" isMobile={true} />
+          <BoxDropDown items={priceLabel} filterKey="price" isMobile={true} />
         </div>
       </div>
 
