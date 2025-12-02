@@ -5,8 +5,8 @@ import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import PhotoCard from './PhotoCard';
 import { Pagination } from '../pagination/Pagination';
 
-export default function PhotoCardList() {
-  const { cards, desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
+export default function PhotoCardList({ type, showSaleLabel }) {
+  const { desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -68,9 +68,10 @@ export default function PhotoCardList() {
               <PhotoCard
                 key={card.id}
                 card={card}
-                type="remain"
+                type={type}
                 cardImage={cardImage}
                 soldoutIcon={soldoutIcon}
+                showSaleLabel={showSaleLabel}
               />
             );
           })}
