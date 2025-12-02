@@ -9,8 +9,7 @@ import { useForm } from 'react-hook-form';
 import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
 import { authSchema } from '@/libs/schemas/authSchema';
-
-import FormError from '../../../../libs/utils/FormError.jsx';
+import FormError from '@/libs/utils/FormError';
 
 export default function Signup() {
   const [showEye, setShowEye] = useState(false);
