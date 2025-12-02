@@ -159,7 +159,7 @@ export function CardModal({ type }) {
                       value=""
                       disabled
                     >
-                      교환 상품 종류
+                      교환 등급 선택
                     </option>
                     <option value="legend">LEGENDARY</option>
                   </SelectField>
@@ -174,7 +174,7 @@ export function CardModal({ type }) {
                       value=""
                       disabled
                     >
-                      교환 등급 선택
+                      교환 장르 선택
                     </option>
                     <option value="genre">풍경</option>
                   </SelectField>
