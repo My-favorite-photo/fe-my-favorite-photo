@@ -2,13 +2,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
-import { useFilter } from '@/providers/FilterProvider';
 import PhotoCard from './PhotoCard';
 import { Pagination } from '../pagination/Pagination';
 
 export default function PhotoCardList() {
   const { cards, desktopFilteredCards, mobileFilteredCards, loading } = usePhotoCards();
-  const { mobileFilter } = useFilter();
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -21,18 +19,14 @@ export default function PhotoCardList() {
   }, []);
 
   const isMobile = windowWidth < 768;
-  const hasMobileFilter = Object.values(mobileFilter).some((arr) => arr.length > 0);
 
-  const displayCards = isMobile
-    ? hasMobileFilter
-      ? mobileFilteredCards
-      : cards
-    : desktopFilteredCards;
+  // 모바일에선 mobileFilteredCards, 데스크탑에선 desktopFilteredCards
+  const displayCards = isMobile ? mobileFilteredCards : desktopFilteredCards;
 
-  // 화면 크기에 따른 한 페이지당 아이템 개수(sm,md=16/lg=15)
+  // 화면 크기에 따른 한 페이지당 아이템 개수
   const itemsPerPage = useMemo(() => {
-    if (windowWidth >= 1920) return 15; // lg 이상
-    return 16; // sm, md
+    if (windowWidth >= 1920) return 15;
+    return 16;
   }, [windowWidth]);
 
   // 총 페이지 수
@@ -43,7 +37,7 @@ export default function PhotoCardList() {
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     return displayCards.slice(start, end);
-  }, [displayCards, currentPage]);
+  }, [displayCards, currentPage, itemsPerPage]);
 
   if (loading)
     return (
