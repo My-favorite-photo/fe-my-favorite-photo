@@ -5,7 +5,7 @@ import MobileFilter from '@/components/ui/drop-down/MobileFilter';
 import SearchBar from '@/components/ui/search/SearchBar';
 import { useFilter } from '@/providers/FilterProvider';
 
-export default function GalleryFilter() {
+export default function SellingFilter() {
   const { filterLabels } = useFilter();
 
   return (
@@ -28,6 +28,12 @@ export default function GalleryFilter() {
           <div className="flex md:gap-[25px] lg:gap-[45px]">
             <DefaultDropDown items={filterLabels.grade} placeholder="등급" filterKey="grade" />
             <DefaultDropDown items={filterLabels.genre} placeholder="장르" filterKey="genre" />
+            <DefaultDropDown items={filterLabels.sale} placeholder="판매방법" filterKey="sale" />
+            <DefaultDropDown
+              items={filterLabels.status}
+              placeholder="매진여부"
+              filterKey="status"
+            />
           </div>
         </div>
       </div>
