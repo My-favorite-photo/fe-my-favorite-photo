@@ -1,17 +1,15 @@
-/** 프로바이더 모음집 예시 */ 
-// import AuthProvider from "@/providers/auth-provider";
-// import DialogProvider from "@/providers/modal-context";
-// import QueryProvider from "@/providers/query-provider";
-// import RouteGuard from "@/providers/route-guard";
+import { FilterProvider } from "@/providers/FilterProvider";
+import { ModalProvider } from "@/providers/ModalProvider";
+import { PhotoCardProvider } from "@/providers/PhotoCardProvider";
 
-// export function Providers({ children }) {
-//   return (
-//     <AuthProvider>
-//         <RouteGuard >
-//           <DialogProvider>
-//             {children}
-//           </DialogProvider>
-//         </RouteGuard>
-//     </AuthProvider>
-//   )
-// }
+export function Providers({ children }) {
+  return (
+    <ModalProvider>
+      <FilterProvider >
+        <PhotoCardProvider>
+          {children}
+        </PhotoCardProvider>
+      </FilterProvider>
+    </ModalProvider>
+  )
+}
