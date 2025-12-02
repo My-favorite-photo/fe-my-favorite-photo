@@ -13,6 +13,7 @@ export function FilterProvider({ children }) {
     genre: '',
     status: '',
     price: '',
+    sale: '',
   });
 
   // Mobile 복수 선택
@@ -41,6 +42,15 @@ export function FilterProvider({ children }) {
       { label: '판매 완료', value: '판매 완료' },
     ],
     price: ['낮은 가격순', '높은 가격순', '최신순'],
+    sale: ['판매', '교환 제시'],
+  };
+
+  const filterLabels = {
+    grade: filters.grade.map((f) => f.label),
+    genre: filters.genre.map((f) => f.label),
+    status: filters.status.map((f) => f.label),
+    price: filters.price,
+    sale: filters.sale,
   };
 
   return (
@@ -49,6 +59,7 @@ export function FilterProvider({ children }) {
         category,
         setCategory,
         filters,
+        filterLabels,
         desktopFilter,
         setDesktopFilter,
         mobileFilter,

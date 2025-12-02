@@ -20,6 +20,13 @@ export function PhotoCardProvider({ children }) {
     }, 500);
   }, []);
 
+  // 판매방법
+  const getSaleLabel = (status) => {
+    if (status === 'AVAILABLE') return '판매';
+    if (status === 'EXCHANGE_OFFER') return '교환 제시';
+    return null; // SOLD_OUT 제외
+  };
+
   // Desktop
   const desktopFilteredCards = useMemo(() => {
     let result = [...cards];
@@ -41,6 +48,12 @@ export function PhotoCardProvider({ children }) {
           c.status === 'AVAILABLE' || c.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
         return desktopFilter.status === statusLabel;
       });
+    if (desktopFilter.sale)
+      result = result.filter((c) => {
+        const saleLabel =
+          c.status === 'AVAILABLE' ? '판매' : c.status === 'EXCHANGE_OFFER' ? '교환 제시' : null; // SOLD_OUT 제외
+        return desktopFilter.sale === saleLabel;
+      });
 
     // BoxDropDown
     if (desktopFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
@@ -57,7 +70,7 @@ export function PhotoCardProvider({ children }) {
       const matchGrade = mobileFilter.grade.length === 0 || mobileFilter.grade.includes(card.grade);
       const matchGenre = mobileFilter.genre.length === 0 || mobileFilter.genre.includes(card.genre);
 
-      // 판매 여부
+      // 판매 여부 status
       const statusLabel =
         card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
       const matchStatus =
