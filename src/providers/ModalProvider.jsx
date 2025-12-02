@@ -46,7 +46,7 @@ export function ModalProvider({ children }) {
 }
 export const useModal = () => {
   const context = useContext(ModalContext)
-  if (context === null) {
+  if (!context) {
     throw new Error("useModal은 반드시 프로바이더 안에서 사용해야합니다.")
   }
   return context
