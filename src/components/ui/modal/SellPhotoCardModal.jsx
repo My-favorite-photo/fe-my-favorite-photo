@@ -100,8 +100,16 @@ export function SellPhotoCardModal() {
               />
             </div>
             <div className='hidden sm:flex items-center'>
-              <p className='text-gray-200 text-sm font-bold md:text-base'>등급</p><DefaultDropDown />
-              <p className='text-gray-200 text-sm font-bold md:text-base'>장르</p><DefaultDropDown />
+              <p className='text-gray-200 text-sm font-bold md:text-base'>등급</p>
+              <DefaultDropDown
+                items={["COMMON", "RARE", "SUPER_RARE", "LEGENDARY"]}
+                filterKey="grade"
+              />
+              <p className='text-gray-200 text-sm font-bold md:text-base'>장르</p>
+              <DefaultDropDown
+                items={["풍경", "인물", "동물"]}
+                filterKey="genre"
+              />
             </div>
           </div>
           <PhotoCardList />
