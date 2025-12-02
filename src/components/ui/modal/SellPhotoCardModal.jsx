@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import SearchIcon from '@/assets/icons/Ic_search.svg'
-import X from "@/assets/icons/Ic_x.svg"
+import X_Icon from "@/assets/icons/Ic_x.svg"
 import { CardTitle } from "@/components/common/card-title/CardTitle";
 import { cn } from '@/libs/utils/cn';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
@@ -63,7 +63,7 @@ export function SellPhotoCardModal({ onClose }) {
               onClick={() => onClose()}
             >
               <Image
-                src={X}
+                src={X_Icon}
                 alt="닫기 버튼"
               />
             </button>

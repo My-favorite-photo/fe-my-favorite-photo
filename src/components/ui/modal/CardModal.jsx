@@ -5,7 +5,7 @@ import React from 'react';
 import { forwardRef, useState } from 'react';
 
 import BackArrowIcon from '@/assets/icons/Ic_back.svg'
-import X from '@/assets/icons/Ic_x.svg'
+import X_Icon from '@/assets/icons/Ic_x.svg'
 import ExchangeImg from '@/assets/images/Img_exchange.png'
 import { CardTitle } from "@/components/common/card-title/CardTitle";
 import { cn } from '@/libs/utils/cn';
@@ -51,9 +51,6 @@ SelectField.displayName = 'SelectField';
 export function CardModal({ type, onClose }) {
   const [grade, setGrade] = useState("");
   const [genre, setGenre] = useState("");
-  const [isOpen, setIsOpen] = useState(true); // 모달 표시 상태 (테스트용)
-
-  if (!isOpen) return null;
 
   const subject = type === "sell" ? "나의 포토카드 판매하기" : "수정하기"
 
@@ -112,7 +109,7 @@ export function CardModal({ type, onClose }) {
                 onClick={() => onClose()}
               >
                 <Image
-                  src={X}
+                  src={X_Icon}
                   alt='닫기 버튼'
                 />
               </button>
