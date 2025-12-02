@@ -10,7 +10,7 @@ export default function PhotoCardInfo({ card, type }) {
       left: card.remain,
       right: '',
     },
-    hideRemain: {
+    hideTotal: {
       label: '잔여',
       left: '',
       right: `${card.total}`,
