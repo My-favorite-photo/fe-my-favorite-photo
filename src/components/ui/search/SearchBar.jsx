@@ -22,20 +22,20 @@ export default function SearchBar() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <input
         value={keyword}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="검색"
-        className="lg:w-[320px] lg:h-[24px] md:w-[160px] md:h-[23px] sm:w-[345px] sm:h-[23px] px-[13px] py-[20px] border border-gray-200 rounded-[2px] text-gray-200 text-4 font-light"
+        className="lg:w-[320px] lg:h-[24px] md:w-[180px] md:h-[23px] sm:w-full sm:h-[23px] px-[15px] py-[22px] border border-gray-200 rounded-[2px] text-gray-200 text-4 font-light"
       />
       <Image
         src={ic_search}
         alt="검색"
         width={24}
         height={24}
-        className="absolute top-[8px] right-[20px]"
+        className="absolute top-[11px] right-[20px]"
       />
     </div>
   );
