@@ -33,13 +33,13 @@ export function ModalProvider({ children }) {
     setModalProps({})
   }, [])
 
-  const CurrenModal = modalType ? MODAL_COMPONENTS[modalType] : null;
+  const CurrentModal = modalType ? MODAL_COMPONENTS[modalType] : null;
 
   return (
     <ModalContext.Provider value={{ openModal, closeModal, MODAL_TYPES }}>
       {children}
-      {CurrenModal && (
-        <CurrenModal onClose={closeModal} isOpen={!!modalType} {...modalProps} />
+      {CurrentModal && (
+        <CurrentModal onClose={closeModal} isOpen={!!modalType} {...modalProps} />
       )}
     </ModalContext.Provider>
   )
