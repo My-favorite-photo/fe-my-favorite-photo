@@ -9,7 +9,7 @@ import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 
-export default function MobileFilter() {
+export default function MobileFilter({ size = 35 }) {
   const [open, setOpen] = useState(false);
 
   const { cards } = usePhotoCards();
@@ -99,7 +99,9 @@ export default function MobileFilter() {
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex justify-center items-center gap-[10px] p-[7.5px] border border-gray-200 rounded-[2px] bg-black cursor-pointer "
+        className={`flex justify-center items-center ${Number(size) === 45 ? 'p-[15px]' : 'p-[10px]'} 
+          w-[${size}px] h-[${size}px] border border-gray-200 
+          rounded-[2px] bg-black cursor-pointer`}
       >
         <Image src={ic_mobileFilter} alt="필터 아이콘" width={20} height={20} />
       </button>

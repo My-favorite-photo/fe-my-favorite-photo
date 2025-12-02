@@ -17,8 +17,8 @@ export default function GradeBox({ grade, count }) {
         ${gradeStyle[grade]}
       `}
     >
-      <span>{grade.replace('_', ' ')}</span>
-      <span>{count}장</span>
+      <span className="whitespace-nowrap">{grade.replace('_', ' ')}</span>
+      <span className="whitespace-nowrap">{count}장</span>
     </div>
   );
 }
