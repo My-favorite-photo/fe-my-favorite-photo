@@ -1,9 +1,11 @@
 import './globals.css';
+
 import { Noto_Sans_KR } from 'next/font/google';
 import LocalFont from 'next/font/local';
-import { rootMetadata } from '#/config/metadata';
+
 import { FilterProvider } from '@/providers/FilterProvider';
 import { PhotoCardProvider } from '@/providers/PhotoCardProvider';
+import { rootMetadata } from '#/config/metadata';
 
 const notoSansKr = Noto_Sans_KR({
   variable: '--font-noto-sans-kr',
