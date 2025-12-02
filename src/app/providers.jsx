@@ -4,12 +4,12 @@ import { PhotoCardProvider } from "@/providers/PhotoCardProvider";
 
 export function Providers({ children }) {
   return (
-    <ModalProvider>
-      <FilterProvider >
-        <PhotoCardProvider>
+    <FilterProvider >
+      <PhotoCardProvider>
+        <ModalProvider>
           {children}
-        </PhotoCardProvider>
-      </FilterProvider>
-    </ModalProvider>
+        </ModalProvider>
+      </PhotoCardProvider>
+    </FilterProvider>
   )
 }
