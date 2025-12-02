@@ -9,7 +9,7 @@ import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 
-export default function MobileFilter({ size = 35 }) {
+export default function MobileFilter({ size }) {
   const [open, setOpen] = useState(false);
 
   const { cards } = usePhotoCards();
@@ -96,10 +96,10 @@ export default function MobileFilter({ size = 35 }) {
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <button
         onClick={() => setOpen(!open)}
-        className={`flex justify-center items-center ${Number(size) === 45 ? 'p-[15px]' : 'p-[10px]'} 
+        className={`flex justify-center items-center ${Number(size) === 45 ? 'p-[15px]' : 'p-[7px]'} 
           w-[${size}px] h-[${size}px] border border-gray-200 
           rounded-[2px] bg-black cursor-pointer`}
       >

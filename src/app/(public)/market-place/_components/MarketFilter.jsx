@@ -40,7 +40,7 @@ export default function MarketFilter() {
           </div>
         </div>
 
-        <BoxDropDown items={priceLabel} filterKey="price" isMobile={false} />
+        <BoxDropDown items={priceLabel} filterKey="price" isMobile={false} size="35" />
       </div>
     </div>
   );
