@@ -19,6 +19,7 @@ const SelectField = forwardRef(({ children, className = '', value, onChange, ...
   const handleChange = (e) => {
     const newValue = e.target.value
     setCurrentValue(newValue)
+    onChange?.(e)
   }
 
   const placeholderClass = currentValue === "" ? 'text-gray-200' : "text-white"
@@ -74,7 +75,7 @@ export function CardModal({ type }) {
           "w-full bg-black border flex flex-col overflow-hidden overflow-y-scroll",
           "min-h-screen h-full py-0 px-0 rounded-none",           // 모바일 우선 사이즈 (전체 화면 모달)
           "sm:min-h-0 sm:max-h-[90vh] sm:bg-gray-500 py-3.75 sm:px-2.5", // 태블릿 (768px - bottomSheet디자인)
-          "sm:rounded-t-[2px] sm:rounded-b-none sm:border-b-0 sm:overflow-",
+          "sm:rounded-t-[2px] sm:rounded-b-none sm:border-b-0",
           "md:max-w-290 md:max-h-250 md:py-15 md:px-30",                // 데스크톱 (1280px 이상 - 모달 스타일)
           "md:h-auto md:rounded-[2px] md:mt-0"
         )}
@@ -191,8 +192,8 @@ export function CardModal({ type }) {
               </section>
               <div className='border-t border-gray-400 mb-7.5 sm:hidden md:block'></div>
               <footer className="flex gap-3.75">
-                <Button intent="secondary" thickness='thin' size='L' message="취소하기" onClick={() => setIsOpen(false)} />
-                <Button thickness='thin' size='L' message="판매하기" onClick={() => alert('교환희망 판매하기 버튼을 클릭하였습니다.')} />
+                <Button intent="secondary" thickness='thin' size='L' onClick={() => setIsOpen(false)} >취소하기</Button>
+                <Button thickness='thin' size='L' onClick={() => alert('교환희망 판매하기 버튼을 클릭하였습니다.')} >판매하기</Button>
               </footer>
             </section>
           </div>
