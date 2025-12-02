@@ -9,22 +9,28 @@ import Plus from "@/assets/icons/Ic_plus.svg"
 import GradeLabel from "../label/GradeLabel";
 
 export function CardCounterInput() {
+  const [price, setPrice] = useState('')
   const [quantity, setQuantity] = useState(2)
   const maxQuantity = 3
+
+  const handlePriceChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, '')
+    if (value.length <= 10) {
+      setPrice(value)
+    }
+  }
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) {
       const newQuantity = quantity + 1
       setQuantity(newQuantity)
-      // setValue("quantity", newQuantity)
     }
   }
 
   const decrementQuantity = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       const newQuantity = quantity - 1
       setQuantity(newQuantity)
-      // setValue("quantity", newQuantity)
     }
   }
 
@@ -85,10 +91,13 @@ export function CardCounterInput() {
               <div className="relative w-64">
                 <input
                   type="text"
-                  className="w-full rounded-[2px] border border-gray-200 bg-transparent text-lg text-white focus:outline-none placeholder:text-sm placeholder:font-light px-5 py-2.25 sm:placeholder:text-base"
+                  name="price"
+                  value={price}
+                  onChange={handlePriceChange}
+                  className="w-full rounded-[2px] border border-gray-200 bg-transparent text-lg text-white focus:outline-none placeholder:text-sm placeholder:font-light px-5 py-2.25 sm-pr-6 sm:placeholder:text-base"
                   placeholder="숫자만 입력"
                 />
-                <span className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 text-lg font-bold text-white sm:text-[1.25rem]">
+                <span className="pointer-events-none absolute right-[8%] top-1/2 -translate-y-1/2 text-lg font-bold text-white sm:text-[1.25rem]">
                   P
                 </span>
               </div>
