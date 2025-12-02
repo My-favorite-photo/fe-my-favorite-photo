@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
+import img_soldout from '@/assets/icons/Ic_soldout.svg';
 import GradeLabel from '../label/GradeLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 
-export default function PhotoCard({ card, type = 'remain', imageSize }) {
+export default function PhotoCard({ card, type = 'remain', cardImage, soldoutIcon }) {
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
@@ -13,15 +14,25 @@ export default function PhotoCard({ card, type = 'remain', imageSize }) {
         lg:w-[440px] lg:h-[600px] lg:p-[40px]
         "
     >
-      <Image
-        src={img_card}
-        alt="카드 이미지"
-        width={imageSize.width}
-        height={imageSize.height}
-        className="sm:mb-[10px] md:mb-[25px] lg:md:mb-[25px]"
-      />
+      <div className="relative">
+        <Image src={img_card} alt="카드 이미지" width={cardImage.width} height={cardImage.height} />
 
-      <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px]">
+        {card.status === 'SOLD_OUT' && (
+          <>
+            <div className="absolute inset-0 bg-gray-500/70 rounded-[2px]" />
+
+            <Image
+              src={img_soldout}
+              alt="SOLD OUT 아이콘"
+              width={soldoutIcon.width}
+              height={soldoutIcon.height}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            />
+          </>
+        )}
+      </div>
+
+      <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
         <p className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-[14px] md:text-[22px] lg:text-[22px]">
           {card.title}
         </p>
