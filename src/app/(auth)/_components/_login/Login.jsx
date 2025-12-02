@@ -10,7 +10,7 @@ import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
 import { authSchema } from '@/libs/schemas/authSchema';
 
-import FormError from '../../../../libs/utils/_error/FromError';
+import FormError from '../../../../libs/utils/FormError';
 
 export default function Login() {
   const [showEye, setShowEye] = useState(false);
@@ -38,7 +38,7 @@ export default function Login() {
           <div className="flex flex-col gap-2.5">
             <p className="  text-white font-noto text-[18px] font-normal leading-normal ">이메일</p>
             <input
-              type="text"
+              type="email"
               {...register('email')}
               className="flex  py-[18px] px-5  text-white border border-white"
               placeholder="이메일을 입력해주세요"
