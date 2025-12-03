@@ -14,7 +14,9 @@ export default function CardGradeStatus() {
   };
 
   cards.forEach((card) => {
-    gradeCount[card.grade] += card.remain;
+    // 카드별 saleOptions의 remain 합계
+    const totalRemain = card.saleOptions.reduce((sum, option) => sum + option.remain, 0);
+    gradeCount[card.grade] += totalRemain;
   });
 
   const totalRemain = Object.values(gradeCount).reduce((a, b) => a + b, 0);

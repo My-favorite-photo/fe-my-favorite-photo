@@ -7,7 +7,7 @@ export default function MySelling() {
     <div className="sm:mb-[80px] md:mb-[110px] lg:mb-[140px]">
       <CardGradeStatus />
       <SellingFilter />
-      <PhotoCardList type="hideTotal" showSaleLabel={true} />
+      <PhotoCardList type="hideTotal" showSaleLabel={true} isSellingPage={true} />
     </div>
   );
 }
