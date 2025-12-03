@@ -131,7 +131,7 @@ export default function Home() {
 
           <div
             className="absolute 
-                right-[23%] sm:right-[25%] md:right-[27%] lg:right-[29%]
+                right-[23%] sm:right-[25%] md:right-[26%] lg:right-[29%]
                 top-[30%] sm:top-[32%] md:top-[35%]
                 w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[260px] md:h-[260px] 
                 lg:w-[300px] lg:h-[300px] 
