@@ -9,7 +9,7 @@ import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 
-export default function MobileFilter() {
+export default function MobileFilter({ size = 35 }) {
   const [open, setOpen] = useState(false);
 
   const { cards } = usePhotoCards();
@@ -34,7 +34,9 @@ export default function MobileFilter() {
       gradeCount[card.grade] = (gradeCount[card.grade] || 0) + 1;
       genreCount[card.genre] = (genreCount[card.genre] || 0) + 1;
 
-      const st = card.remain > 0 ? '판매 중' : '판매 완료';
+      // 판매 여부
+      const st =
+        card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
       statusCount[st] = (statusCount[st] || 0) + 1;
     });
 
@@ -97,7 +99,9 @@ export default function MobileFilter() {
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex justify-center items-center gap-[10px] p-[7.5px] border border-gray-200 rounded-[2px] bg-black cursor-pointer "
+        className={`flex justify-center items-center ${Number(size) === 45 ? 'p-[15px]' : 'p-[10px]'} 
+          w-[${size}px] h-[${size}px] border border-gray-200 
+          rounded-[2px] bg-black cursor-pointer`}
       >
         <Image src={ic_mobileFilter} alt="필터 아이콘" width={20} height={20} />
       </button>
@@ -156,11 +160,7 @@ export default function MobileFilter() {
                   ${isSelected ? 'bg-gray-500' : ''}`}
               >
                 <span>
-                  {category === 'grade' ? (
-                    <GradeLabel grade={formatted} size="md" fontWeight="bold" />
-                  ) : (
-                    item.label
-                  )}
+                  {category === 'grade' ? <GradeLabel grade={formatted} size /> : item.label}
                 </span>
                 <span>{item.count}개</span>
               </div>
