@@ -45,21 +45,12 @@ export function FilterProvider({ children }) {
     sale: ['판매', '교환 제시'],
   };
 
-  const filterLabels = {
-    grade: filters.grade.map((f) => f.label),
-    genre: filters.genre.map((f) => f.label),
-    status: filters.status.map((f) => f.label),
-    price: filters.price,
-    sale: filters.sale,
-  };
-
   return (
     <FilterContext.Provider
       value={{
         category,
         setCategory,
         filters,
-        filterLabels,
         desktopFilter,
         setDesktopFilter,
         mobileFilter,

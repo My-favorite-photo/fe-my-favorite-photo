@@ -1,12 +1,10 @@
-'use client';
-
 import DefaultDropDown from '@/components/ui/drop-down/DefaultDropDown';
 import MobileFilter from '@/components/ui/drop-down/MobileFilter';
 import SearchBar from '@/components/ui/search/SearchBar';
-import { useFilter } from '@/providers/FilterProvider';
 
 export default function GalleryFilter() {
-  const { filterLabels } = useFilter();
+  const gradeLabel = ['COMMON', 'RARE', 'SUPER RARE', 'LEGENDARY'];
+  const genreLabel = ['여행', '풍경', '인물', '사물'];
 
   return (
     <div className="w-full mx-auto sm:max-w-[345px] md:max-w-[704px] lg:max-w-[1480px]">
@@ -26,8 +24,8 @@ export default function GalleryFilter() {
           </div>
 
           <div className="flex md:gap-[25px] lg:gap-[45px]">
-            <DefaultDropDown items={filterLabels.grade} placeholder="등급" filterKey="grade" />
-            <DefaultDropDown items={filterLabels.genre} placeholder="장르" filterKey="genre" />
+            <DefaultDropDown items={gradeLabel} placeholder="등급" filterKey="grade" />
+            <DefaultDropDown items={genreLabel} placeholder="장르" filterKey="genre" />
           </div>
         </div>
       </div>
