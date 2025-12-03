@@ -39,7 +39,7 @@ export function ModalProvider({ children }) {
     <ModalContext.Provider value={{ openModal, closeModal, MODAL_TYPES }}>
       {children}
       {CurrentModal && (
-        <CurrentModal onClose={closeModal} isOpen={!!modalType} {...modalProps} />
+        <CurrentModal {...modalProps} onClose={closeModal} isOpen={!!modalType} />
       )}
     </ModalContext.Provider>
   )
