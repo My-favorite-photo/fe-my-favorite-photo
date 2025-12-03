@@ -30,7 +30,7 @@ const cardTitleVariants = cva(
  * @param {object} [...]        HTML button 태그가 받을수 있는 모든 표준속성 (선택) 
  */
 export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, buttonIntent, className, ...props }) {
-  const classes = cardTitleVariants({ size })
+  const classes = cn(cardTitleVariants({ size }), className)
 
   const pTagClasses = cn(
     'text-white leading-[-0.86px]',
@@ -42,7 +42,9 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
       <p className={pTagClasses}>{titleMessage}</p>
       {buttonMessage && (
         <div className='mb-5.25'>
-          <Button size={buttonSize} thickness='thin' message={buttonMessage} intent={buttonIntent} {...props} />
+          <Button size={buttonSize} thickness='thin' intent={buttonIntent} {...props} >
+            {buttonMessage}
+          </Button>
         </div>
       )}
     </div>

@@ -2,76 +2,14 @@
 
 import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useFilter } from './FilterProvider';
-import img_card from '@/assets/images/img_card.svg';
-
-const mockCards = [
-  {
-    id: 1,
-    title: '우리집 앞마당 우리집 앞마당 우리집 앞마당 우리집 앞마당',
-    genre: '풍경',
-    grade: 'COMMON',
-    author: '미쓰손',
-    price: 4,
-    remain: 2,
-    total: 5,
-    image: img_card,
-    created_at: '2025-11-28T10:00:00',
-  },
-  {
-    id: 2,
-    title: '아름다운 풍경',
-    genre: '여행',
-    grade: 'RARE',
-    author: '여행자',
-    price: 10,
-    remain: 1,
-    total: 3,
-    image: img_card,
-    created_at: '2025-11-29T11:00:00',
-  },
-  {
-    id: 3,
-    title: '우리집 앞마당 우리집 앞마당 우리집 앞마당 우리집 앞마당',
-    genre: '인물',
-    grade: 'SUPER_RARE',
-    author: '미쓰손',
-    price: 8,
-    remain: 2,
-    total: 5,
-    image: img_card,
-    created_at: '2025-11-29T10:00:00',
-  },
-  {
-    id: 4,
-    title: '아름다운 풍경',
-    genre: '여행',
-    grade: 'LEGENDARY',
-    author: '여행자',
-    price: 12,
-    remain: 1,
-    total: 3,
-    image: img_card,
-    created_at: '2025-11-28T09:00:00',
-  },
-  {
-    id: 5,
-    title: '우리집 앞마당 우리집 앞마당 우리집 앞마당 우리집 앞마당',
-    genre: '풍경',
-    grade: 'COMMON',
-    author: '미쓰손',
-    price: 2,
-    remain: 2,
-    total: 5,
-    image: img_card,
-    created_at: '2025-11-27T10:00:00',
-  },
-];
+import { mockCards } from '@/data/mockCards';
 
 const PhotoCardContext = createContext();
 
 export function PhotoCardProvider({ children }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   const { desktopFilter, mobileFilter } = useFilter();
 
@@ -88,14 +26,21 @@ export function PhotoCardProvider({ children }) {
 
     const whiteSpace = (str) => str.replace(' ', '_');
 
+    // 검색 키워드 필터
+    if (searchKeyword) {
+      result = result.filter((c) => c.title.toLowerCase().includes(searchKeyword.toLowerCase()));
+    }
+
     // DefaultDropDown
     if (desktopFilter.grade)
       result = result.filter((c) => c.grade === whiteSpace(desktopFilter.grade));
     if (desktopFilter.genre) result = result.filter((c) => c.genre === desktopFilter.genre);
     if (desktopFilter.status)
-      result = result.filter((c) =>
-        desktopFilter.status === '판매 중' ? c.remain > 0 : c.remain === 0,
-      );
+      result = result.filter((c) => {
+        const statusLabel =
+          c.status === 'AVAILABLE' || c.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
+        return desktopFilter.status === statusLabel;
+      });
 
     // BoxDropDown
     if (desktopFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
@@ -104,20 +49,36 @@ export function PhotoCardProvider({ children }) {
       result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     return result;
-  }, [cards, desktopFilter]);
+  }, [cards, desktopFilter, searchKeyword]);
 
   // Mobile
   const mobileFilteredCards = useMemo(() => {
-    return cards.filter((card) => {
+    let result = cards.filter((card) => {
       const matchGrade = mobileFilter.grade.length === 0 || mobileFilter.grade.includes(card.grade);
       const matchGenre = mobileFilter.genre.length === 0 || mobileFilter.genre.includes(card.genre);
+
+      // 판매 여부
+      const statusLabel =
+        card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
       const matchStatus =
-        mobileFilter.status.length === 0 ||
-        mobileFilter.status.includes(card.remain > 0 ? '판매 중' : '판매 완료');
+        mobileFilter.status.length === 0 || mobileFilter.status.includes(statusLabel);
 
       return matchGrade && matchGenre && matchStatus;
     });
-  }, [cards, mobileFilter]);
+
+    // 검색 키워드 필터
+    if (searchKeyword) {
+      result = result.filter((c) => c.title.toLowerCase().includes(searchKeyword.toLowerCase()));
+    }
+
+    // 모바일에서도 가격 정렬 적용
+    if (mobileFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
+    else if (mobileFilter.price === '높은 가격순') result.sort((a, b) => b.price - a.price);
+    else if (mobileFilter.price === '최신순')
+      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    return result;
+  }, [cards, mobileFilter, searchKeyword]);
 
   return (
     <PhotoCardContext.Provider
@@ -126,6 +87,8 @@ export function PhotoCardProvider({ children }) {
         desktopFilteredCards,
         mobileFilteredCards,
         loading,
+        searchKeyword,
+        setSearchKeyword,
       }}
     >
       {children}

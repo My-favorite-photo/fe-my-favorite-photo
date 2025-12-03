@@ -1,7 +1,4 @@
-export default function PhotoCardInfo({ card, size, type }) {
-  const textSize = size === 'sm' ? 'text-[10px]' : 'text-[16px]';
-  const gap = size === 'sm' ? 'gap-[5px]' : 'gap-[10px]';
-
+export default function PhotoCardInfo({ card, type }) {
   const typeMap = {
     remain: {
       label: '잔여',
@@ -23,7 +20,7 @@ export default function PhotoCardInfo({ card, size, type }) {
   const info = typeMap[type];
 
   return (
-    <div className={`w-full flex flex-col ${gap} ${textSize}`}>
+    <div className="w-full flex flex-col sm:gap-[5px] sm:text-[10px] md:gap-[10px] md:text-[16px] lg:gap-[10px] lg:text-[16px]">
       <div className="w-full flex justify-between items-center">
         <span className="text-gray-300 font-light">가격</span>
         <span className="text-white font-normal">{card.price} P</span>

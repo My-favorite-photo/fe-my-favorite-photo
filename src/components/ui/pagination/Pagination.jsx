@@ -1,26 +1,26 @@
-"use client"
-import { cn } from "@/libs/utils/cn";
+'use client';
+
+import { cn } from '@/libs/utils/cn';
 
 const MAX_VISIBLE = 10;
-export function Pagination() {
 
-  const currentPage = 1
-  const totalPages = 5
+export function Pagination({ currentPage, totalPages, onPageChange }) {
   const half = Math.floor(MAX_VISIBLE / 2);
 
-  let startPage = Math.max(1, currentPage - half)
-  let endPage = Math.min(totalPages, startPage + MAX_VISIBLE - 1)
+  let startPage = Math.max(1, currentPage - half);
+  let endPage = Math.min(totalPages, startPage + MAX_VISIBLE - 1);
 
   if (endPage > totalPages) {
     endPage = totalPages;
     startPage = Math.max(1, endPage - MAX_VISIBLE + 1);
   }
 
-  const pages = Array.from({ length: endPage - startPage }, (_, i) => startPage + i);
+  const pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
-  }
+    onPageChange(page);
+  };
 
   return (
     <div className="flex justify-center items-center mt-11 mb-32.5 gap-1">
@@ -39,15 +39,16 @@ export function Pagination() {
           key={page}
           onClick={() => handlePageChange(page)}
           className={cn(
-            'flex items-center justify-center w-10 h-10 border border-gray-200 text-white font-noto font-bold cursor-pointer rounded-[2px] hover:bg-gray-500/80 active:bg-gray-500/30 ',
-            page === currentPage && 'bg-black text-white')}
+            'flex items-center justify-center w-10 h-10 border text-white font-bold cursor-pointer rounded-[2px] hover:bg-gray-500/80 active:bg-gray-500/30 ',
+            page === currentPage ? 'bg-black text-white border border-gray-200' : 'border-none',
+          )}
         >
           {page}
         </button>
       ))}
 
       <button
-        className="flex items-center justify-center w-10 h-10"
+        className="flex items-center justify-center w-10 h-10 cursor-pointer"
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
@@ -56,5 +57,5 @@ export function Pagination() {
         </svg>
       </button>
     </div>
-  )
+  );
 }

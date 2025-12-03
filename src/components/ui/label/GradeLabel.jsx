@@ -1,8 +1,4 @@
-export default function GradeLabel({ grade, size = '', fontWeight = '' }) {
-  const sizeStyle = size === 'sm' ? 'text-[10px]' : 'text-[16px]';
-
-  const fontWeightStyle = fontWeight === 'bold' ? 'font-bold' : 'font-light';
-
+export default function GradeLabel({ grade, size }) {
   const gradeStyle = {
     COMMON: 'text-main',
     RARE: 'text-blue',
@@ -10,9 +6,13 @@ export default function GradeLabel({ grade, size = '', fontWeight = '' }) {
     LEGENDARY: 'text-pink',
   };
 
+  const textClass = size
+    ? 'text-[16px] font-bold'
+    : 'sm:text-[10px] sm:font-light md:text-[16px] lg:text-[16px]';
+
   return (
-    <div className={`${sizeStyle} ${fontWeightStyle}`}>
-      <span className={`${gradeStyle[grade]}`}>{grade.replace('_', ' ')}</span>
+    <div className={textClass}>
+      <span className={gradeStyle[grade]}>{grade.replace('_', ' ')}</span>
     </div>
   );
 }
