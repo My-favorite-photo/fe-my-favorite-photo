@@ -122,7 +122,7 @@ export default function Home() {
           </div>
 
           <div
-            className="absolute left-[25%] sm:left-[23%] md:left-[21%] lg:left-[20%] bottom-0 translate-y-[60%] 
+            className="absolute left-[30%] sm:left-[28%] md:left-[26%] lg:left-[25%] bottom-0 translate-y-[60%] 
                   w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] md:w-[500px] md:h-[500px] 
                   lg:w-[600px] lg:h-[600px] opacity-80 pointer-events-none -rotate-[25deg] z-10"
           >
@@ -131,11 +131,11 @@ export default function Home() {
 
           <div
             className="absolute 
-                right-[34%] sm:right-[36%] md:right-[38%] lg:right-[39%]
-                top-[40%]
-                w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] 
-                lg:w-[230px] lg:h-[230px] 
-                opacity-80 pointer-events-none rotate-[20deg] z-10"
+                right-[23%] sm:right-[25%] md:right-[27%] lg:right-[29%]
+                top-[30%] sm:top-[32%] md:top-[35%]
+                w-[180px] h-[180px] sm:w-[220px] sm:h-[220px] md:w-[260px] md:h-[260px] 
+                lg:w-[300px] lg:h-[300px] 
+                opacity-90 pointer-events-none rotate-[15deg] z-10"
           >
             <Image src={RedBox} alt="red-box" fill className="object-contain" />
           </div>
@@ -151,7 +151,7 @@ export default function Home() {
               포인트를 획득하세요
             </p>
 
-            <div className="relative w-full max-w-[1200px] h-[200px] sm:h-[240px] md:h-[320px] lg:h-[400px]">
+            <div className="relative w-full max-w-[1200px] h-[200px] sm:h-[240px] md:h-[320px] lg:h-[400px] mx-auto">
               <Image src={Section3} alt="Random Box" fill className="object-contain" />
             </div>
           </div>
