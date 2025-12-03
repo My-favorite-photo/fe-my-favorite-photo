@@ -10,8 +10,7 @@ export function PhotoCardProvider({ children }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchKeyword, setSearchKeyword] = useState('');
-
-  const { desktopFilter, mobileFilter } = useFilter();
+  const { filter } = useFilter();
 
   useEffect(() => {
     setTimeout(() => {
@@ -20,88 +19,88 @@ export function PhotoCardProvider({ children }) {
     }, 500);
   }, []);
 
-  // 판매방법
-  const getSaleLabel = (status) => {
-    if (status === 'AVAILABLE') return '판매';
-    if (status === 'EXCHANGE_OFFER') return '교환 제시';
-    return null; // SOLD_OUT 제외
+  // SOLD OUT 계산
+  // remain(잔여)이 0일 때 SOLD OUT
+  const isCardSoldOut = (card) => {
+    const saleRemain = card.saleOptions.find((o) => o.type === 'SALE').remain ?? 0;
+    const exchangeRemain = card.saleOptions.find((o) => o.type === 'EXCHANGE').remain ?? 0;
+    return saleRemain === 0 || exchangeRemain === 0;
   };
 
-  // Desktop
-  const desktopFilteredCards = useMemo(() => {
-    let result = [...cards];
+  // 필터 로직
+  const filteredCards = useMemo(() => {
+    return cards
+      .filter((card) => {
+        // 매진여부(status) 계산
+        // AVAILABLE, EXCHANGE_OFFER = 판매 중 SOLD_OUT = 판매 완료
+        const statusLabel = card.saleOptions.every((o) => o.status === 'SOLD_OUT')
+          ? '판매 완료'
+          : '판매 중';
 
-    const whiteSpace = (str) => str.replace(' ', '_');
+        // 판매방법(sale) 계산
+        const saleLabels = card.saleOptions
+          .map((o) => (o.type === 'SALE' ? '판매' : o.type === 'EXCHANGE' ? '교환 제시' : null))
+          .filter(Boolean);
 
-    // 검색 키워드 필터
-    if (searchKeyword) {
-      result = result.filter((c) => c.title.toLowerCase().includes(searchKeyword.toLowerCase()));
-    }
+        const matchGrade = filter.grade.length === 0 || filter.grade.includes(card.grade);
+        const matchGenre = filter.genre.length === 0 || filter.genre.includes(card.genre);
+        const matchStatus = filter.status.length === 0 || filter.status.includes(statusLabel);
+        const matchSale =
+          filter.sale.length === 0 || saleLabels.some((label) => filter.sale.includes(label));
 
-    // DefaultDropDown
-    if (desktopFilter.grade)
-      result = result.filter((c) => c.grade === whiteSpace(desktopFilter.grade));
-    if (desktopFilter.genre) result = result.filter((c) => c.genre === desktopFilter.genre);
-    if (desktopFilter.status)
-      result = result.filter((c) => {
-        const statusLabel =
-          c.status === 'AVAILABLE' || c.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
-        return desktopFilter.status === statusLabel;
+        // 검색 필터
+        const matchSearch =
+          !searchKeyword || card.title.toLowerCase().includes(searchKeyword.toLowerCase());
+
+        return matchGrade && matchGenre && matchStatus && matchSale && matchSearch;
+      })
+      .sort((a, b) => {
+        if (!filter.price || filter.price === '낮은 가격순') return a.price - b.price;
+        if (filter.price === '높은 가격순') return b.price - a.price;
+        if (filter.price === '최신순') return new Date(b.created_at) - new Date(a.created_at);
+        return 0;
       });
-    if (desktopFilter.sale)
-      result = result.filter((c) => {
-        const saleLabel =
-          c.status === 'AVAILABLE' ? '판매' : c.status === 'EXCHANGE_OFFER' ? '교환 제시' : null; // SOLD_OUT 제외
-        return desktopFilter.sale === saleLabel;
+  }, [cards, filter, searchKeyword]);
+
+  // Selling Page: 한 카드에 두 타입 렌더링
+  const sellingCards = useMemo(() => {
+    return cards.flatMap((card) => {
+      const filteredOptions = card.saleOptions.filter((opt) => {
+        const statusLabel = opt.status === 'SOLD_OUT' ? '판매 완료' : '판매 중';
+        const saleLabel = opt.type === 'SALE' ? '판매' : '교환 제시';
+
+        const matchStatus = filter.status.length === 0 || filter.status.includes(statusLabel);
+        const matchSale = filter.sale.length === 0 || filter.sale.includes(saleLabel);
+
+        const matchGrade = filter.grade.length === 0 || filter.grade.includes(card.grade);
+        const matchGenre = filter.genre.length === 0 || filter.genre.includes(card.genre);
+
+        // 검색 필터
+        const matchSearch =
+          !searchKeyword || card.title.toLowerCase().includes(searchKeyword.toLowerCase());
+
+        return matchStatus && matchSale && matchGrade && matchGenre && matchSearch;
       });
 
-    // BoxDropDown
-    if (desktopFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
-    else if (desktopFilter.price === '높은 가격순') result.sort((a, b) => b.price - a.price);
-    else if (desktopFilter.price === '최신순')
-      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-    return result;
-  }, [cards, desktopFilter, searchKeyword]);
-
-  // Mobile
-  const mobileFilteredCards = useMemo(() => {
-    let result = cards.filter((card) => {
-      const matchGrade = mobileFilter.grade.length === 0 || mobileFilter.grade.includes(card.grade);
-      const matchGenre = mobileFilter.genre.length === 0 || mobileFilter.genre.includes(card.genre);
-
-      // 판매 여부 status
-      const statusLabel =
-        card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER' ? '판매 중' : '판매 완료';
-      const matchStatus =
-        mobileFilter.status.length === 0 || mobileFilter.status.includes(statusLabel);
-
-      return matchGrade && matchGenre && matchStatus;
+      return filteredOptions.map((opt) => ({
+        ...card,
+        saleType: opt.type,
+        remain: opt.remain,
+        status: opt.status,
+      }));
     });
-
-    // 검색 키워드 필터
-    if (searchKeyword) {
-      result = result.filter((c) => c.title.toLowerCase().includes(searchKeyword.toLowerCase()));
-    }
-
-    // 모바일에서도 가격 정렬 적용
-    if (mobileFilter.price === '낮은 가격순') result.sort((a, b) => a.price - b.price);
-    else if (mobileFilter.price === '높은 가격순') result.sort((a, b) => b.price - a.price);
-    else if (mobileFilter.price === '최신순')
-      result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-    return result;
-  }, [cards, mobileFilter, searchKeyword]);
+  }, [cards, filter, searchKeyword]);
 
   return (
     <PhotoCardContext.Provider
       value={{
         cards,
-        desktopFilteredCards,
-        mobileFilteredCards,
+        filteredCards,
         loading,
         searchKeyword,
         setSearchKeyword,
+        isCardSoldOut,
+        sellingCards,
       }}
     >
       {children}
