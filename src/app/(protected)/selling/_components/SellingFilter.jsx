@@ -1,19 +1,25 @@
-import DefaultDropDown from '@/components/ui/drop-down/DefaultDropDown';
-import MobileFilter from '@/components/ui/drop-down/MobileFilter';
+import DefaultDropDown from '@/components/ui/filter/DefaultDropDown';
+import MobileFilter from '@/components/ui/filter/MobileFilter';
 import SearchBar from '@/components/ui/search/SearchBar';
 
 export default function SellingFilter() {
-  const gradeLabel = ['COMMON', 'RARE', 'SUPER RARE', 'LEGENDARY'];
-  const genreLabel = ['여행', '풍경', '인물', '사물'];
-  const statusLabel = ['판매 중', '판매 완료'];
-  const saleLabel = ['판매', '교환 제시'];
+  const gradeLabels = ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'];
+  const genreLabels = ['여행', '풍경', '인물', '사물'];
+  const statusLabels = ['판매 중', '판매 완료'];
+  const saleLabels = ['판매', '교환 제시'];
+  const mobileLabels = {
+    grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
+    genre: ['여행', '풍경', '인물', '사물'],
+    status: ['판매 중', '판매 완료'],
+    sale: ['판매', '교환 제시'],
+  };
 
   return (
     <div className="w-full mx-auto sm:max-w-[345px] md:max-w-[704px] lg:max-w-[1480px]">
       {/* 모바일 */}
       <div className="md:hidden">
         <div className="flex gap-[10px] mb-5">
-          <MobileFilter size="45" />
+          <MobileFilter items={mobileLabels} size="45" isSellingPage={true} />
           <SearchBar />
         </div>
       </div>
@@ -26,10 +32,10 @@ export default function SellingFilter() {
           </div>
 
           <div className="flex md:gap-[25px] lg:gap-[45px]">
-            <DefaultDropDown items={gradeLabel} placeholder="등급" filterKey="grade" />
-            <DefaultDropDown items={genreLabel} placeholder="장르" filterKey="genre" />
-            <DefaultDropDown items={saleLabel} placeholder="판매방법" filterKey="sale" />
-            <DefaultDropDown items={statusLabel} placeholder="매진여부" filterKey="status" />
+            <DefaultDropDown items={gradeLabels} placeholder="등급" filterKey="grade" />
+            <DefaultDropDown items={genreLabels} placeholder="장르" filterKey="genre" />
+            <DefaultDropDown items={saleLabels} placeholder="판매방법" filterKey="sale" />
+            <DefaultDropDown items={statusLabels} placeholder="매진여부" filterKey="status" />
           </div>
         </div>
       </div>
