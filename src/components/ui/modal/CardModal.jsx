@@ -54,8 +54,7 @@ export function CardModal({ type, onClose }) {
 
   const subject = type === "sell" ? "나의 포토카드 판매하기" : "수정하기"
 
-  // 내용물 클릭시 모달이 꺼지지않도록 버블링을 방지
-  const stopContentBubbling = (e) => {
+  const onCloseBackdrop = (e) => {
     if (e.target === e.currentTarget) {
       onClose()
     }
@@ -64,7 +63,7 @@ export function CardModal({ type, onClose }) {
   return (
     <section
       className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 sm:items-end md:items-center"
-      onClick={stopContentBubbling}
+      onClick={onCloseBackdrop}
     >
 
       <div
