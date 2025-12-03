@@ -3,9 +3,9 @@ import './globals.css';
 import { Noto_Sans_KR } from 'next/font/google';
 import LocalFont from 'next/font/local';
 
-import { FilterProvider } from '@/providers/FilterProvider';
-import { PhotoCardProvider } from '@/providers/PhotoCardProvider';
 import { rootMetadata } from '#/config/metadata';
+
+import { Providers } from './providers';
 
 const notoSansKr = Noto_Sans_KR({
   variable: '--font-noto-sans-kr',
@@ -33,9 +33,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body className={`${notoSansKr.className} ${baskinRobbins.variable} antialiased`}>
-        <FilterProvider>
-          <PhotoCardProvider>{children}</PhotoCardProvider>
-        </FilterProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

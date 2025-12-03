@@ -217,7 +217,7 @@ export default function PhotoCardCreation() {
           <Button
             thickness="thin"
             message="생성하기"
-            inValid={isValid}
+            inValid={!isValid}
             className="w-full max-w-130"
           />
         </form>
