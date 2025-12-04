@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import ExchangeImg from '@/assets/images/Img_exchange.png';
+import BeachImg from '@/assets/images/svg/img_beach.png';
 import { Button } from '../button/Button';
 import GradeLabel from '../label/GradeLabel';
 
@@ -20,23 +21,27 @@ export function CardExchange({
   price = 4,
   nickname = '프로여행러',
   title = '스페인 여행',
-  description = '스페인 여행 사진도 좋은데 우리집 텍스트 넘치면 여기서 eclipse 처리...',
+  description = '스페인 여행 사진도 좋은데 우리집 앞마당 포토카드와 교환하고 싶습니다!',
   onApprove = () => {},
   onReject = () => {},
 }) {
+  const cardImage = grade === 'SUPER_RARE' ? BeachImg : ExchangeImg;
+  const displayDescription =
+    grade === 'SUPER_RARE' ? '여름 바다 풍경 사진과 교환하실래요?' : description;
+
   return (
     <div
       className="flex flex-col max-w-42.5 max-h-77 p-2.5
-                    border border-[rgba(255,255,255,0.10)] rounded-[2px]
-                    sm:max-w-85.5 sm:max-h-140.25 sm:p-5
-                    md:max-w-110 md:max-h-156.5 md:p-10"
+                 border border-[rgba(255,255,255,0.10)] rounded-[2px]
+                 sm:max-w-85.5 sm:max-h-140.25 sm:p-5
+                 md:max-w-110 md:max-h-156.5 md:p-10"
     >
       <div
         className="relative max-w-37.5 max-h-28 aspect-video
-                      sm:max-w-75.5 sm:max-h-[14.1563rem]
-                      md:max-w-90 md:max-h-67.5"
+                   sm:max-w-75.5 sm:max-h-[14.1563rem]
+                   md:max-w-90 md:max-h-67.5"
       >
-        <Image src={ExchangeImg} alt="교환될 사진" fill />
+        <Image src={cardImage} alt="교환될 사진" fill />
       </div>
 
       <div className="border-b border-gray-600 mt-2.5 sm:mt-4 pb-1">
@@ -64,8 +69,12 @@ export function CardExchange({
       </div>
 
       <div className="mt-3 mb-5 sm:mt-5 sm:mb-6 md:mb-10">
-        <p className="text-white text-[0.55rem] tracking-tight line-clamp-2 sm:text-[0.9rem]">
-          {description}
+        <p
+          className="text-white text-[0.55rem] tracking-tight sm:text-[0.9rem]
+                     line-clamp-2"
+          style={{ minHeight: '43px' }}
+        >
+          {displayDescription}
         </p>
       </div>
 
