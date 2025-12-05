@@ -1,24 +1,21 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
+import Image from 'next/image';
 import ic_arrow from '@/assets/icons/Ic_arrow.svg';
 
 export default function DefaultDropDown({ items, placeholder, filterKey }) {
   const [open, setOpen] = useState(false);
-
-  const { desktopFilter, setDesktopFilter } = useFilter();
+  const { filter, setFilter } = useFilter();
 
   const handleSelect = (item) => {
     setOpen(false);
-    setDesktopFilter((prev) => ({
-      ...prev,
-      [filterKey]: item,
-    }));
+    setFilter((prev) => ({ ...prev, [filterKey]: [item] }));
   };
 
-  const selected = desktopFilter[filterKey] || null;
+  const selected = filter[filterKey]?.[0] || null;
+  const displaySelected = selected ? selected.replace(/_/g, ' ') : placeholder;
 
   return (
     <div className="relative inline-flex flex-col items-start gap-[18px] text-white">
@@ -26,7 +23,7 @@ export default function DefaultDropDown({ items, placeholder, filterKey }) {
         onClick={() => setOpen(!open)}
         className="flex items-start gap-[10px] text-gray-200 cursor-pointer md:text-[14px] lg:text-[16px]"
       >
-        <span>{selected || placeholder}</span>
+        <span>{displaySelected}</span>
         <Image
           src={ic_arrow}
           alt="드롭다운"
@@ -37,13 +34,10 @@ export default function DefaultDropDown({ items, placeholder, filterKey }) {
       </button>
 
       {open && (
-        <ul
-          className="absolute top-full mt-[18px] left-0 z-99 flex flex-col items-start gap-[15px] px-[20px] py-[15px] border-[1px]
-            border-gray-200 bg-black rounded-[2px] font-normal cursor-pointer whitespace-nowrap md:text-[14px] lg:text-[16px]"
-        >
+        <ul className="absolute top-full mt-[18px] left-0 z-99 flex flex-col items-start gap-[15px] px-[20px] py-[15px] border-[1px] border-gray-200 bg-black rounded-[2px] font-normal cursor-pointer whitespace-nowrap md:text-[14px] lg:text-[16px]">
           {items.map((item) => (
             <li key={item} onClick={() => handleSelect(item)}>
-              {item}
+              {item.replace(/_/g, ' ')}
             </li>
           ))}
         </ul>

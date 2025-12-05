@@ -1,16 +1,18 @@
 export default function PhotoCardInfo({ card, type }) {
+  const totalRemain = card.saleOptions.reduce((sum, item) => sum + item.remain, 0);
+
   const typeMap = {
     remain: {
       label: '잔여',
-      left: card.remain,
+      left: totalRemain,
       right: ` / ${card.total}`,
     },
     count: {
       label: '수량',
-      left: card.remain,
+      left: totalRemain,
       right: '',
     },
-    hideRemain: {
+    hideTotal: {
       label: '잔여',
       left: '',
       right: `${card.total}`,
