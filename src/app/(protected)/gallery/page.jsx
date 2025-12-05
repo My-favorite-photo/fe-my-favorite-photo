@@ -7,7 +7,7 @@ export default function MyGalleryPage() {
     <div className="sm:mb-[80px] md:mb-[110px] lg:mb-[140px]">
       <CardGradeStatus />
       <GalleryFilter />
-      <PhotoCardList />
+      <PhotoCardList type="count" />
     </div>
   );
 }

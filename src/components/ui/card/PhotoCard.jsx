@@ -1,11 +1,18 @@
 import Image from 'next/image';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
-import img_soldout from '@/assets/icons/Ic_soldout.svg';
+import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import GradeLabel from '../label/GradeLabel';
 import PhotoCardInfo from './PhotoCardInfo';
+import SaleStatusLabel from '../label/SaleStatusLabel';
 
-export default function PhotoCard({ card, type = 'remain', cardImage, soldoutIcon }) {
+export default function PhotoCard({
+  card,
+  type = 'remain',
+  cardImage,
+  soldOutIcon,
+  showSaleLabel,
+}) {
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
@@ -17,18 +24,26 @@ export default function PhotoCard({ card, type = 'remain', cardImage, soldoutIco
       <div className="relative">
         <Image src={img_card} alt="카드 이미지" width={cardImage.width} height={cardImage.height} />
 
+        {/* SOLD_OUT 처리 */}
         {card.status === 'SOLD_OUT' && (
           <>
             <div className="absolute inset-0 bg-gray-500/70 rounded-[2px]" />
 
             <Image
-              src={img_soldout}
+              src={img_soldOut}
               alt="SOLD OUT 아이콘"
-              width={soldoutIcon.width}
-              height={soldoutIcon.height}
+              width={soldOutIcon.width}
+              height={soldOutIcon.height}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             />
           </>
+        )}
+
+        {/* 판매 OR 교환제시 라벨 */}
+        {showSaleLabel && (card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER') && (
+          <div className="absolute top-[10px] left-[10px]">
+            <SaleStatusLabel status={card.status} />
+          </div>
         )}
       </div>
 

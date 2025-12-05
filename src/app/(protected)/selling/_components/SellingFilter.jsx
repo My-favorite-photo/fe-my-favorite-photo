@@ -1,28 +1,26 @@
-import BoxDropDown from '@/components/ui/filter/BoxDropDown';
 import DefaultDropDown from '@/components/ui/filter/DefaultDropDown';
 import MobileFilter from '@/components/ui/filter/MobileFilter';
 import SearchBar from '@/components/ui/search/SearchBar';
 
-export default function MarketFilter() {
+export default function SellingFilter() {
   const gradeLabels = ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'];
   const genreLabels = ['여행', '풍경', '인물', '사물'];
   const statusLabels = ['판매 중', '판매 완료'];
-  const priceLabels = ['낮은 가격순', '높은 가격순', '최신순'];
+  const saleLabels = ['판매', '교환 제시'];
   const mobileLabels = {
     grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
     genre: ['여행', '풍경', '인물', '사물'],
     status: ['판매 중', '판매 완료'],
+    sale: ['판매', '교환 제시'],
   };
 
   return (
     <div className="w-full mx-auto sm:max-w-[345px] md:max-w-[704px] lg:max-w-[1480px]">
       {/* 모바일 */}
       <div className="md:hidden">
-        <SearchBar />
-        <div className="w-full border border-b-gray-400 my-[15px]" />
-        <div className="flex justify-between items-center mb-5">
-          <MobileFilter items={mobileLabels} />
-          <BoxDropDown items={priceLabels} filterKey="price" isMobile={true} />
+        <div className="flex gap-[10px] mb-5">
+          <MobileFilter items={mobileLabels} size="45" isSellingPage={true} />
+          <SearchBar />
         </div>
       </div>
 
@@ -36,11 +34,10 @@ export default function MarketFilter() {
           <div className="flex md:gap-[25px] lg:gap-[45px]">
             <DefaultDropDown items={gradeLabels} placeholder="등급" filterKey="grade" />
             <DefaultDropDown items={genreLabels} placeholder="장르" filterKey="genre" />
+            <DefaultDropDown items={saleLabels} placeholder="판매방법" filterKey="sale" />
             <DefaultDropDown items={statusLabels} placeholder="매진여부" filterKey="status" />
           </div>
         </div>
-
-        <BoxDropDown items={priceLabels} filterKey="price" isMobile={false} size="35" />
       </div>
     </div>
   );
