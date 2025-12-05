@@ -1,9 +1,11 @@
-import PhotoCardList from '@/components/ui/card/PhotoCardList';
-import GalleryFilter from './_components/GalleryFilter';
-import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
+import Link from 'next/link';
+
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
-import Link from 'next/link';
+import PhotoCardList from '@/components/ui/card/PhotoCardList';
+import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
+
+import GalleryFilter from './_components/GalleryFilter';
 
 export default function MyGalleryPage() {
   return (
@@ -33,7 +35,11 @@ export default function MyGalleryPage() {
       </div>
       <CardGradeStatus />
       <GalleryFilter />
-      <PhotoCardList type="count" isGalleryPage={true} />
+      <Link
+        href='gallery/123'
+      >
+        <PhotoCardList type="count" isGalleryPage={true} />
+      </Link>
       <Link
         href="/gallery/create"
         className="flex justify-center fixed bottom-[15px] left-0 w-full"
