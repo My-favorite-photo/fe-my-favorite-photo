@@ -25,12 +25,11 @@ export default function Login() {
     resolver: zodResolver(authSchema.login),
     mode: 'onChange',
   });
-  console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+  
   const onSubmit = async (data) => {
-    console.log('폼 전송됨', data);
+    
     try {
       await login(data.email, data.password);
-      console.log('login 실행됨');
       console.log('로그인성공');
     } catch (error) {
       console.error('로그인 실패 : ', error);
