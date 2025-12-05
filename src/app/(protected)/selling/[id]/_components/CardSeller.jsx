@@ -1,5 +1,8 @@
 'use client';
 
+import Image from 'next/image';
+import HopeChangeImg from '@/assets/images/svg/hopeChange.png';
+
 const GRADE_CONFIG = {
   COMMON: {
     label: 'COMMON',
@@ -39,8 +42,8 @@ export default function CardSeller({
   const wishGradeConfig = GRADE_CONFIG[wishGrade] ?? GRADE_CONFIG.RARE;
 
   return (
-    <div className="w-full text-white flex flex-col bg-black">
-      <div className="flex-1 px-4 pt-6 pb-5">
+    <div className="w-full text-white flex flex-col bg-[#0a0a0a]">
+      <div className="flex-1 px-4 pt-6 pb-8">
         <header className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
             <span className={`text-[22px] font-extrabold leading-none ${myGrade.colorClass}`}>
@@ -58,7 +61,11 @@ export default function CardSeller({
           </button>
         </header>
 
-        <section className="mt-6 text-[13px] leading-relaxed text-[#e5e7eb]">{description}</section>
+        <div className="h-[1px] bg-[#2a2a2a] mt-4" />
+
+        <section className="mt-4 text-[11px] leading-relaxed text-[#e5e7eb]">{description}</section>
+
+        <div className="h-[1px] bg-[#2a2a2a] mt-4" />
 
         <section className="mt-10 space-y-3 text-[13px]">
           <div className="flex items-center justify-between">
@@ -76,13 +83,10 @@ export default function CardSeller({
           </div>
         </section>
 
-        <div className="mt-8 border-t border-[#3f3f3f]" />
+        <div className="mt-8" />
 
-        <section className="mt-4 flex items-center gap-2 text-[14px] font-bold">
-          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[#e5e7eb] text-[11px]">
-            ↻
-          </span>
-          <span>교환 희망 정보</span>
+        <section className="mt-4">
+          <Image src={HopeChangeImg} alt="교환 희망 정보" className="h-[30px] w-auto" />
         </section>
 
         <section className="mt-6">
@@ -96,11 +100,13 @@ export default function CardSeller({
             <span className="text-[14px] font-semibold text-[#d1d5db]">{wishCategory}</span>
           </div>
 
-          <p className="mt-4 text-[13px] leading-relaxed text-[#e5e7eb]">{wishDescription}</p>
+          <div className="h-[1px] bg-[#2a2a2a] mt-3" />
+
+          <p className="mt-3 text-[11px] leading-relaxed text-[#e5e7eb]">{wishDescription}</p>
         </section>
       </div>
 
-      <div className="w-full">
+      <div className="w-full flex flex-col gap-3">
         <button
           type="button"
           onClick={onEdit}
@@ -111,7 +117,7 @@ export default function CardSeller({
         <button
           type="button"
           onClick={onUnlist}
-          className="w-full py-[18px] text-[14px] font-bold bg-black text-white"
+          className="w-full py-[18px] text-[14px] font-bold bg-[#0a0a0a] text-white border border-white"
         >
           판매 내리기
         </button>

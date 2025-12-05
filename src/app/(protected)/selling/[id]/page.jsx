@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import CardSeller from './_components/CardSeller';
 import CardImg from '@/assets/images/img_card.svg';
+import MarketplaceLogo from '@/assets/images/svg/marketplacelogo.png';
 import { CardExchange } from '@/components/ui/card/PhotoCardExchange';
 
 const cardData = {
@@ -29,6 +31,8 @@ const exchangeOffer = {
   grade: 'COMMON',
   title: '스페인 여행',
 };
+
+const pageTitle = '우리집 앞마당';
 
 export default function MarketDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,8 +104,16 @@ export default function MarketDetailPage() {
       <div className="w-full min-h-screen bg-[#0a0a0a] text-white">
         <main className="max-w-[1080px] mx-auto px-6 py-8">
           <div className="mb-10">
-            <div className="text-xs text-gray-500 mb-4">마켓플레이스</div>
-            <h1 className="text-3xl font-bold mb-6">{cardData.title}</h1>
+            <div className="mb-6">
+              <Image
+                src={MarketplaceLogo}
+                alt="마켓플레이스"
+                width={120}
+                height={25}
+                className="object-contain"
+              />
+            </div>
+            <h1 className="text-3xl font-bold mb-6">{pageTitle}</h1>
             <div className="h-[1px] bg-[#2a2a2a]" />
           </div>
 
@@ -117,7 +129,7 @@ export default function MarketDetailPage() {
             </div>
 
             <div>
-              <div className="bg-[#161616] border border-[#3d3d3d] rounded-md h-fit mb-6">
+              <div className="bg-[#161616] rounded-md h-fit mb-6">
                 <CardSeller
                   grade={cardData.grade}
                   category={cardData.category}
