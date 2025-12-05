@@ -17,7 +17,6 @@ import { getServerSideToken } from '../actions/auth';
 
 export const defaultFetch = async (url, options = {}) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  console.log('🔥 FULL URL:', `${baseURL}${url}`);
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
