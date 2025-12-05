@@ -15,14 +15,14 @@ export default function MarketFilter() {
   };
 
   return (
-    <div className="w-full mx-auto sm:max-w-[345px] md:max-w-[704px] lg:max-w-[1480px]">
+    <div className="w-full mx-auto sm:max-w-[345px] md:max-w-[704px] lg:max-w-[1480px] mt-[20px]">
       {/* 모바일 */}
       <div className="md:hidden">
         <SearchBar />
         <div className="w-full border border-b-gray-400 my-[15px]" />
         <div className="flex justify-between items-center mb-5">
-          <MobileFilter items={mobileLabels} />
-          <BoxDropDown items={priceLabels} filterKey="price" isMobile={true} />
+          <MobileFilter items={mobileLabels} size="35" />
+          <BoxDropDown items={priceLabels} filterKey="price" />
         </div>
       </div>
 
@@ -40,7 +40,7 @@ export default function MarketFilter() {
           </div>
         </div>
 
-        <BoxDropDown items={priceLabels} filterKey="price" isMobile={false} size="35" />
+        <BoxDropDown items={priceLabels} filterKey="price" />
       </div>
     </div>
   );
