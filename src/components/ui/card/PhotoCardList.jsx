@@ -4,8 +4,14 @@ import { useState, useEffect, useMemo } from 'react';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import PhotoCard from './PhotoCard';
 import { Pagination } from '../pagination/Pagination';
+import Link from 'next/link';
 
-export default function PhotoCardList({ type, showSaleLabel, isSellingPage = false }) {
+export default function PhotoCardList({
+  type,
+  showSaleLabel,
+  isSellingPage = false,
+  isGalleryPage = false,
+}) {
   const { filteredCards, sellingCards, loading } = usePhotoCards();
 
   // isSellingPage가 true일 때만 sellingCards를 렌더링(한 카드에 두 종류)
@@ -60,15 +66,27 @@ export default function PhotoCardList({ type, showSaleLabel, isSellingPage = fal
               ((cardImage = { width: 360, height: 270 }),
                 (soldOutIcon = { width: 230, height: 230 }));
 
-            return (
+            const isLinkDisabled = isGalleryPage || isSellingPage;
+
+            const cardContent = (
               <PhotoCard
-                key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}
                 card={card}
                 type={type}
                 cardImage={cardImage}
                 soldOutIcon={soldOutIcon}
                 showSaleLabel={showSaleLabel}
               />
+            );
+
+            return isLinkDisabled ? (
+              <div key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}>{cardContent}</div>
+            ) : (
+              <Link
+                href={`/market-place/${card.id}`}
+                key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}
+              >
+                {cardContent}
+              </Link>
             );
           })}
         </div>

@@ -2,6 +2,7 @@ import { CardTitle } from '@/components/common/card-title/CardTitle';
 import MarketFilter from './_components/MarketFilter';
 import PhotoCardList from '@/components/ui/card/PhotoCardList';
 import { Button } from '@/components/ui/button/Button';
+import Link from 'next/link';
 
 export default function MarketPlacePage() {
   return (
@@ -31,11 +32,11 @@ export default function MarketPlacePage() {
       </div>
       <MarketFilter />
       <PhotoCardList />
-      <div className="flex justify-center fixed bottom-[15px] left-0 w-full">
+      <Link href="/gallery" className="flex justify-center fixed bottom-[15px] left-0 w-full">
         <Button size="S" className="w-[345px] h-[55px] md:hidden lg:hidden">
           나의 포토카드 판매하기
         </Button>
-      </div>
+      </Link>
     </div>
   );
 }

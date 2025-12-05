@@ -3,6 +3,7 @@ import GalleryFilter from './_components/GalleryFilter';
 import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
+import Link from 'next/link';
 
 export default function MyGalleryPage() {
   return (
@@ -32,12 +33,15 @@ export default function MyGalleryPage() {
       </div>
       <CardGradeStatus />
       <GalleryFilter />
-      <PhotoCardList type="count" />
-      <div className="flex justify-center fixed bottom-[15px] left-0 w-full">
+      <PhotoCardList type="count" isGalleryPage={true} />
+      <Link
+        href="/gallery/create"
+        className="flex justify-center fixed bottom-[15px] left-0 w-full"
+      >
         <Button size="S" className="w-[345px] h-[55px] md:hidden lg:hidden">
           포토카드 생성하기
         </Button>
-      </div>
+      </Link>
     </div>
   );
 }
