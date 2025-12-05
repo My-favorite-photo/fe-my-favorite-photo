@@ -66,7 +66,6 @@ export default function AuthProvider({ children }) {
   const login = async (email, password) => {
     // 로그인 성공 시 유저데이터를 API 에서 응답해주는 경우, 유저 상태 변경
     const { userData, success } = await loginAction(email, password);
-    console.log('로그인 후 userData:', userData);
     if (!success) {
       throw new Error('로그인 실패');
     }
