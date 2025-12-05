@@ -28,8 +28,7 @@ export function SellPhotoCardModal({ onClose }) {
     }
   };
 
-
-  const stopContentBubbling = (e) => {
+  const onCloseBackdrop = (e) => {
     if (e.target === e.currentTarget) {
       onClose()
     }
@@ -38,7 +37,7 @@ export function SellPhotoCardModal({ onClose }) {
   return (
     <section
       className="fixed inset-0 bg-black/70 flex items-end justify-center z-10 md:items-center"
-      onClick={stopContentBubbling}
+      onClick={onCloseBackdrop}
     >
 
       <div
