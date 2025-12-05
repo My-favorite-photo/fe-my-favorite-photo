@@ -1,7 +1,10 @@
+import Link from 'next/link'
+
+import { CardTitle } from '@/components/common/card-title/CardTitle';
 import PhotoCardList from '@/components/ui/card/PhotoCardList';
 import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
+
 import SellingFilter from './_components/SellingFilter';
-import { CardTitle } from '@/components/common/card-title/CardTitle';
 
 export default function MySelling() {
   return (
@@ -19,7 +22,11 @@ export default function MySelling() {
       </div>
       <CardGradeStatus />
       <SellingFilter />
-      <PhotoCardList type="hideTotal" showSaleLabel={true} isSellingPage={true} />
+      <Link
+        href="gallery/123"
+      >
+        <PhotoCardList type="hideTotal" showSaleLabel={true} isSellingPage={true} />
+      </Link>
     </div>
   );
 }

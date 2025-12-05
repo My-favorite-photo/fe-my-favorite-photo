@@ -1,4 +1,5 @@
 import { cva } from 'class-variance-authority'
+import Link from 'next/link';
 
 import { Button } from "@/components/ui/button/Button"
 import { cn } from '@/libs/utils/cn';
@@ -27,9 +28,10 @@ const cardTitleVariants = cva(
  * @param {'L' | 'M' | 'S' | 'XS'} buttonSize   버튼의 크기
  * @param {String | undefined} [buttonMessage] 버튼에 들어갈메시지 (값이 없다면 버튼이 없는것으로 간주)
  * @param {String} [className]  타이틀 글자에 줄 속성
+ * @param {String}  Link              링크
  * @param {object} [...]        HTML button 태그가 받을수 있는 모든 표준속성 (선택) 
  */
-export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, buttonIntent, className, ...props }) {
+export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, buttonIntent, LinkUrl, className, ...props }) {
   const classes = cn(cardTitleVariants({ size }), className)
 
   const pTagClasses = cn(
@@ -42,9 +44,15 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
       <p className={pTagClasses}>{titleMessage}</p>
       {buttonMessage && (
         <div className='mb-5.25'>
-          <Button size={buttonSize} thickness='thin' intent={buttonIntent} {...props} >
-            {buttonMessage}
-          </Button>
+          {LinkUrl && (
+            <Link
+              href={LinkUrl}
+            >
+              <Button size={buttonSize} thickness='thin' intent={buttonIntent} {...props} >
+                {buttonMessage}
+              </Button>
+            </Link>
+          )}
         </div>
       )}
     </div>

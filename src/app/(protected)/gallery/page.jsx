@@ -19,6 +19,7 @@ export default function MyGalleryPage() {
             buttonSize="L"
             buttonMessage="포토카드 생성하기"
             className="w-full mx-auto"
+            LinkUrl="/gallery/create"
           />
         </div>
 
@@ -30,6 +31,7 @@ export default function MyGalleryPage() {
             buttonSize="S"
             buttonMessage="포토카드 생성하기"
             className="w-full mx-auto"
+            LinkUrl="/gallery/create"
           />
         </div>
       </div>
