@@ -9,10 +9,12 @@ import { useForm } from 'react-hook-form';
 import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
 import { authSchema } from '@/libs/schemas/authSchema';
+import { useAuth } from '@/providers/AuthProvider';
 
 import FormError from '../../../../libs/utils/FormError';
 
 export default function Login() {
+  const { login } = useAuth();
   const [showEye, setShowEye] = useState(false);
 
   const {
@@ -23,9 +25,16 @@ export default function Login() {
     resolver: zodResolver(authSchema.login),
     mode: 'onChange',
   });
-
-  const onSubmit = (data) => {
-    console.log('로그인 :', data);
+  console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+  const onSubmit = async (data) => {
+    console.log('폼 전송됨', data);
+    try {
+      await login(data.email, data.password);
+      console.log('login 실행됨');
+      console.log('로그인성공');
+    } catch (error) {
+      console.error('로그인 실패 : ', error);
+    }
   };
 
   return (

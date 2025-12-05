@@ -1,15 +1,16 @@
-import { FilterProvider } from "@/providers/FilterProvider";
-import { ModalProvider } from "@/providers/ModalProvider";
-import { PhotoCardProvider } from "@/providers/PhotoCardProvider";
+import AuthProvider from '@/providers/AuthProvider';
+import { FilterProvider } from '@/providers/FilterProvider';
+import { ModalProvider } from '@/providers/ModalProvider';
+import { PhotoCardProvider } from '@/providers/PhotoCardProvider';
 
 export function Providers({ children }) {
   return (
-    <FilterProvider >
-      <PhotoCardProvider>
-        <ModalProvider>
-          {children}
-        </ModalProvider>
-      </PhotoCardProvider>
-    </FilterProvider>
-  )
+    <AuthProvider>
+      <FilterProvider>
+        <PhotoCardProvider>
+          <ModalProvider>{children}</ModalProvider>
+        </PhotoCardProvider>
+      </FilterProvider>
+    </AuthProvider>
+  );
 }

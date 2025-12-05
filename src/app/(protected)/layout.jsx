@@ -1,16 +1,15 @@
-"use client"
-import { usePathname } from "next/navigation";
+import { redirect } from 'next/navigation';
 
-import Header from "@/components/common/header/Header";
+import { checkAndRefreshAuth } from '@/libs/actions/auth';
 
-export default function Layout({ children }) {
-  const pathname = usePathname();
-  const isCompletePage = pathname.endsWith('/complete')
+import ClientLayout from './clientLayout';
 
-  return (
-    <>
-      {!isCompletePage && <Header />}
-      {children}
-    </>
-  )
+export default async function Layout({ children }) {
+  const isAuthenticated = await checkAndRefreshAuth();
+
+  if (!isAuthenticated) {
+    redirect('/login');
+  }
+
+  return <ClientLayout>{children}</ClientLayout>;
 }

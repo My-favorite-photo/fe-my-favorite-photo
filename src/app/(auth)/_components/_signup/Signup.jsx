@@ -10,8 +10,10 @@ import logoImg from '@/assets/images/logo.png';
 import { GoogleIcon, InvisibleIcon, VisibleIcon } from '@/assets/images/svg/icon';
 import { authSchema } from '@/libs/schemas/authSchema';
 import FormError from '@/libs/utils/FormError';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function Signup() {
+  const { register: registerUser } = useAuth();
   const [showEye, setShowEye] = useState(false);
 
   const {
@@ -23,8 +25,13 @@ export default function Signup() {
     mode: 'onChange',
   });
 
-  const onSubmit = (data) => {
-    console.log('회원가입 데이터 :', data);
+  const onSubmit = async (data) => {
+    try {
+      await registerUser(data.nickname, data.email, data.password, data.passwordConfirm);
+      console.log('회원가입성공');
+    } catch (error) {
+      console.error('회원가입 실패 :', error);
+    }
   };
 
   return (

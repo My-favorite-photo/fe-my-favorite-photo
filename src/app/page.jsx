@@ -2,17 +2,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import BackgroundImg from '@/assets/landing/Img_3x_background.png';
+import BlueBox from '@/assets/landing/Img_3x_blueBox.png';
 import BlueEclipse from '@/assets/landing/Img_3x_blueEclipse.png';
 import BottomCard from '@/assets/landing/Img_3x_bottomCard.png';
 import Eclipse from '@/assets/landing/Img_3x_eclipse.png';
 import HeroImg from '@/assets/landing/Img_3x_hero.png';
 import LogoImg from '@/assets/landing/Img_3x_logo.png';
+import RedBox from '@/assets/landing/Img_3x_redBox.png';
 import Section1 from '@/assets/landing/Img_3x_section1.png';
 import Section2 from '@/assets/landing/Img_3x_section2.png';
 import Section3 from '@/assets/landing/Img_3x_section3.png';
 import SectionBackground from '@/assets/landing/Img_section3Background.png';
-import BlueBox from '@/assets/landing/Img_3x_blueBox.png';
-import RedBox from '@/assets/landing/Img_3x_redBox.png';
 import Header from '@/components/common/header/Header';
 
 export default function Home() {

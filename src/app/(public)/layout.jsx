@@ -1,4 +1,4 @@
-import Header from "@/components/common/header/Header";
+import Header from '@/components/common/header/Header';
 
 export default function Layout({ children }) {
   return (
@@ -6,5 +6,5 @@ export default function Layout({ children }) {
       <Header />
       {children}
     </>
-  )
+  );
 }
