@@ -2,7 +2,7 @@ import img_card from '@/assets/images/img_card.svg';
 
 export const mockCards = [
   {
-    id: 1,
+    id: 'user-1',
     title: '포토카드 1번',
     genre: '여행',
     grade: 'COMMON',
@@ -17,7 +17,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 2,
+    id: 'user-2',
     title: '포토카드 2번',
     genre: '풍경',
     grade: 'RARE',
@@ -32,7 +32,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 3,
+    id: 'user-3',
     title: '포토카드 3번',
     genre: '인물',
     grade: 'SUPER_RARE',
@@ -47,7 +47,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 4,
+    id: 'user-4',
     title: '포토카드 4번',
     genre: '사물',
     grade: 'LEGENDARY',
@@ -62,7 +62,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 5,
+    id: 'user-5',
     title: '포토카드 5번',
     genre: '여행',
     grade: 'COMMON',
@@ -77,7 +77,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 6,
+    id: 'user-6',
     title: '포토카드 6번',
     genre: '풍경',
     grade: 'RARE',
@@ -92,7 +92,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 7,
+    id: 'user-7',
     title: '포토카드 7번',
     genre: '인물',
     grade: 'COMMON',
@@ -107,7 +107,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 8,
+    id: 'user-8',
     title: '포토카드 8번',
     genre: '사물',
     grade: 'SUPER_RARE',
@@ -122,7 +122,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 9,
+    id: 'user-9',
     title: '포토카드 9번',
     genre: '여행',
     grade: 'COMMON',
@@ -137,7 +137,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 10,
+    id: 'user-10',
     title: '포토카드 10번',
     genre: '풍경',
     grade: 'RARE',
@@ -152,7 +152,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 11,
+    id: 'user-11',
     title: '포토카드 11번',
     genre: '인물',
     grade: 'COMMON',
@@ -167,7 +167,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 12,
+    id: 'user-12',
     title: '포토카드 12번',
     genre: '사물',
     grade: 'LEGENDARY',
@@ -182,7 +182,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 13,
+    id: 'user-13',
     title: '포토카드 13번',
     genre: '여행',
     grade: 'SUPER_RARE',
@@ -197,7 +197,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 14,
+    id: 'user-14',
     title: '포토카드 14번',
     genre: '풍경',
     grade: 'COMMON',
@@ -212,7 +212,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 15,
+    id: 'user-15',
     title: '포토카드 15번',
     genre: '인물',
     grade: 'RARE',
@@ -227,7 +227,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 16,
+    id: 'user-16',
     title: '포토카드 16번',
     genre: '사물',
     grade: 'LEGENDARY',
@@ -242,7 +242,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 17,
+    id: 'user-17',
     title: '포토카드 17번',
     genre: '여행',
     grade: 'COMMON',
@@ -257,7 +257,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 18,
+    id: 'user-18',
     title: '포토카드 18번',
     genre: '풍경',
     grade: 'SUPER_RARE',
@@ -272,7 +272,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 19,
+    id: 'user-19',
     title: '포토카드 19번',
     genre: '인물',
     grade: 'COMMON',
@@ -287,7 +287,7 @@ export const mockCards = [
     ],
   },
   {
-    id: 20,
+    id: 'user-20',
     title: '포토카드 20번',
     genre: '사물',
     grade: 'RARE',
