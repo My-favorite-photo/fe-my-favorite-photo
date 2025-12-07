@@ -46,7 +46,7 @@ export default function Home() {
                 </h1>
 
                 <Link
-                  href="/login"
+                  href="/market-place"
                   className="w-[180px] h-[48px] sm:w-[200px] sm:h-[52px] md:w-[220px] md:h-[56px] bg-[#EFFF04] text-black font-bold text-base sm:text-lg flex items-center justify-center hover:bg-[#dfff04] transition-colors"
                 >
                   최애 찾으러 가기
@@ -168,7 +168,7 @@ export default function Home() {
             </h2>
 
             <Link
-              href="/login"
+              href="/market-place"
               className="w-full max-w-[200px] sm:max-w-[226px] h-[44px] sm:h-[48px] md:h-[55px] bg-[#EFFF04] text-black font-semibold text-sm sm:text-base md:text-lg flex items-center justify-center hover:bg-[#dfff04] transition-colors"
             >
               최애 찾으러 가기
