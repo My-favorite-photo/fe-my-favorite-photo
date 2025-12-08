@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
+import { cardService } from '@/libs/services/cardService';
 import { cn } from '@/libs/utils/cn';
 
 import { ArrowIcon, BackIcon } from './_components/Icons';
@@ -25,20 +26,24 @@ const GENRES = [
 
 export default function PhotoCardCreation() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);  // 로딩 상태 추가
+  const [file, setFile] = useState(null);   // 파일 객체 저장 상태 추가
 
   const {
     register,
     handleSubmit,
     setValue,
+    setError,
     watch,
     formState: { errors, isValid },
   } = useForm({
+    type: 'onChange',
     defaultValues: {
       name: '',
       grade: '',
       genre: '',
       price: '',
-      totalAmount: '',
+      totalQuantity: '',
       photoUrl: '',
       description: '',
     },
@@ -52,12 +57,55 @@ export default function PhotoCardCreation() {
   const currentGradeObj = GRADES.find((g) => g.value === selectedGrade);
   const currentGenreObj = GENRES.find((g) => g.value === selectedGenre);
 
-  const onSubmit = (data) => {
-    console.log('Form submitted:', data);
+  const onSubmit = async (data) => {
+    if (isLoading) return;
+    if (!file) {
+      setError('photoUrl', { type: 'manual', message: '사진 파일을 선택해야 합니다.' });
+      return;
+    }
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('grade', data.grade);
+    formData.append('genre', data.genre);
+    formData.append('totalQuantity', data.totalQuantity);
+    formData.append('description', data.description);
+
+    formData.append('uploads', file);
+    console.log('--- FormData Contents ---');
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    console.log('-------------------------');
+
+    try {
+      const response = await cardService.createCard(formData);
+
+      const result = await response.json();
+      console.log('카드 생성 성공:', result)
+      alert('포토카드가 발행되고 갤러리에 추가되었습니다.');
+      router.replace('/my-gallery')
+    } catch (error) {
+      console.error('API Error:', error)
+      alert('카드  생성 중 오류 발생:', error.message)
+    } finally {
+      setIsLoading(false)
+    }
   };
 
-  const handleFileSelect = () => {
-    console.log('File selection triggered');
+  const handleFileSelect = (e) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setValue('photoUrl', selectedFile.name);
+      setError('photoUrl', null);
+    } else {
+      setFile(null);
+      setValue('photoUrl', '')
+    }
   };
 
   const toggleDropdown = (dropdown) => {
@@ -91,6 +139,7 @@ export default function PhotoCardCreation() {
               {...register('name')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
+            {errors.name && <p className='text-red text-xs mt-1'>{errors.name}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">등급</label>
@@ -130,6 +179,7 @@ export default function PhotoCardCreation() {
                 </ul>
               )}
             </div>
+            {errors.grade && <p className='text-red text-xs mt-1'>{errors.grade}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">장르</label>
@@ -167,11 +217,12 @@ export default function PhotoCardCreation() {
                 </ul>
               )}
             </div>
+            {errors.genre && <p className='text-red text-xs mt-1'>{errors.genre}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">가격</label>
             <input
-              type="text"
+              type="number"
               placeholder="가격을 입력해 주세요"
               {...register('price')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
@@ -182,29 +233,38 @@ export default function PhotoCardCreation() {
             <input
               type="text"
               placeholder="총 발행량을 입력해 주세요"
-              {...register('totalAmount')}
+              {...register('totalQuantity')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
+            {errors.totalQuantity && <p className='text-red text-xs mt-1'>{errors.totalQuantity.message}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">사진 업로드</label>
             <div className="flex gap-2.5">
               <input
                 type="text"
-                placeholder="사진 업로드"
+                placeholder={file ? file.name : "사진 업로드"}
                 {...register('photoUrl')}
                 className="w-full h-13.75 flex-3 text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-97.5"
                 onFocus={(e) => e.target.blur()}
                 readOnly
               />
-              <button
-                type="file"
-                onClick={handleFileSelect}
+              {/* hidden input */}
+              <input
+                type='file'
+                id='file-upload'
+                className='hidden'
+                accept='image/*'
+                onChange={handleFileSelect}
+              />
+              <label
+                htmlFor="file-upload"
                 className="flex items-center w-full h-13.75 flex-1 text-nowrap rounded-[2px] bg-black py-4.5 px-7 border border-main font-medium text-black hover:bg-main/90 sm:max-w-30"
               >
                 <p className="text-main text-sm">파일 선택</p>
-              </button>
+              </label>
             </div>
+            {errors.photoUrl && <p className='text-red text-xs mt-1'>{errors.photoUrl.message}</p>}
           </section>
           <section className="mb-8">
             <label className="mb-3 block text-sm font-medium">포토카드 설명</label>
@@ -216,8 +276,8 @@ export default function PhotoCardCreation() {
           </section>
           <Button
             thickness="thin"
-            message="생성하기"
-            inValid={!isValid}
+            message={isLoading ? "생성 중..." : "생성하기"}
+            inValid={!isValid || isLoading}
             className="w-full max-w-130"
           >
             생성하기
