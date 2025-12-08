@@ -219,7 +219,9 @@ export default function PhotoCardCreation() {
             message="생성하기"
             inValid={!isValid}
             className="w-full max-w-130"
-          />
+          >
+            생성하기
+          </Button>
         </form>
       </div>
     </main>

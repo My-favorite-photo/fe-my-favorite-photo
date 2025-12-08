@@ -30,11 +30,15 @@ export default function page() {
 
       <div className="mt-55 mb-55 flex flex-col items-center">
         <div className="relative hidden sm:block w-[19.961px] h-[19.961px] ml-[500px] md:ml-[720px]">
-          <Image
-            src={X}
-            alt="뒤로가기 버튼"
-            fill
-          />
+          <Link
+            href="/gallery"
+          >
+            <Image
+              src={X}
+              alt="뒤로가기 버튼"
+              fill
+            />
+          </Link>
         </div>
         <section className="relative flex flex-col mx-auto items-center p-19.5 sm:px-0">
           <h1 className="text-3xl text-nowrap shrink font-br tracking-[-0.9px] sm:text-4xl md:text-[46px]">프토카드 생성
@@ -44,13 +48,17 @@ export default function page() {
             [RARE | 우리집 앞마당] <br className="sm:hidden" />
             포토카드 생성에 성공했습니다!
           </p>
-          <Button
-            intent="secondary"
-            thickness='thin'
-            className="py-4.25 px-7.5 h-[55px] w-full text-nowrap text-base font-bold sm:max-w-56.5 md:text-lg md:max-w-100"
+          <Link
+            href="/gallery"
           >
-            마이갤러리에서 확인하기
-          </Button>
+            <Button
+              intent="secondary"
+              thickness='thin'
+              className="py-4.25 px-7.5 h-[55px] w-full text-nowrap text-base font-bold sm:max-w-56.5 md:text-lg md:max-w-100"
+            >
+              마이갤러리에서 확인하기
+            </Button>
+          </Link>
         </section>
       </div>
 
