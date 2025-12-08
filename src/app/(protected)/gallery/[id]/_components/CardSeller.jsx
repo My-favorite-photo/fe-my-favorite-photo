@@ -1,26 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-
 import HopeChangeImg from '@/assets/images/svg/hopeChange.png';
 
 const GRADE_CONFIG = {
-  COMMON: {
-    label: 'COMMON',
-    colorClass: 'text-[#faff00]',
-  },
-  RARE: {
-    label: 'RARE',
-    colorClass: 'text-[#46c6ff]',
-  },
-  SUPER_RARE: {
-    label: 'SUPER RARE',
-    colorClass: 'text-[#c88bff]',
-  },
-  LEGENDARY: {
-    label: 'LEGENDARY',
-    colorClass: 'text-[#ff4c7d]',
-  },
+  COMMON: { label: 'COMMON', colorClass: 'text-[#faff00]' },
+  RARE: { label: 'RARE', colorClass: 'text-[#46c6ff]' },
+  SUPER_RARE: { label: 'SUPER RARE', colorClass: 'text-[#c88bff]' },
+  LEGENDARY: { label: 'LEGENDARY', colorClass: 'text-[#ff4c7d]' },
 };
 
 export default function CardSeller({
@@ -31,16 +18,30 @@ export default function CardSeller({
   price = 4,
   remaining = 2,
   total = 5,
-
   wishGrade = 'RARE',
   wishCategory = '풍경',
   wishDescription = '푸릇푸릇한 여름 풍경, 눈 많이 내린 겨울 풍경 사진에 관심이 많습니다.',
-
   onEdit,
   onUnlist,
 }) {
   const myGrade = GRADE_CONFIG[grade] ?? GRADE_CONFIG.COMMON;
   const wishGradeConfig = GRADE_CONFIG[wishGrade] ?? GRADE_CONFIG.RARE;
+
+  const cardData = {
+    grade,
+    category,
+    title,
+    description,
+    price,
+    remaining,
+    total,
+    wishGrade,
+    wishCategory,
+    wishDescription,
+  };
+
+  const handleEdit = () => onEdit?.(cardData);
+  const handleUnlist = () => onUnlist?.(cardData);
 
   return (
     <div className="w-full text-white flex flex-col bg-[#0a0a0a]">
@@ -56,6 +57,7 @@ export default function CardSeller({
 
           <button
             type="button"
+            onClick={handleEdit}
             className="text-[18px] font-extrabold underline underline-offset-[6px] whitespace-nowrap"
           >
             {title}
@@ -110,14 +112,14 @@ export default function CardSeller({
       <div className="w-full flex flex-col gap-3">
         <button
           type="button"
-          onClick={onEdit}
+          onClick={handleEdit}
           className="w-full py-[18px] text-[15px] font-bold bg-[#faff00] text-black"
         >
           수정하기
         </button>
         <button
           type="button"
-          onClick={onUnlist}
+          onClick={handleUnlist}
           className="w-full py-[18px] text-[14px] font-bold bg-[#0a0a0a] text-white border border-white"
         >
           판매 내리기
@@ -126,4 +128,3 @@ export default function CardSeller({
     </div>
   );
 }
-
