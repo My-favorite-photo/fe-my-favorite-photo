@@ -106,3 +106,42 @@ export const tokenFetch = async (url, options = {}) => {
   // 본문이 없거나 JSON이 아닌 경우 응답 객체 자체 반환
   return { status: response.status, ok: response.ok };
 };
+
+export const formDataFetch = async (url, options = {}) => {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const token = await getServerSideToken('accessToken');
+
+  // const defaultHeaders = {
+  //   'Content-Type': 'application/json',
+  //   Authorization: `Bearer ${token}`,
+  // };
+
+  // if (options.body instanceof FormData) {
+  //   delete defaultHeaders['Content-Type'];
+  // }
+
+  const defaultOptions = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store',
+  };
+
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers,
+    },
+  };
+
+  const response = await fetch(`${baseURL}${url}`, mergedOptions);
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message);
+  }
+
+  return response.json();
+};
