@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
-import PhotoCard from './PhotoCard';
-import { Pagination } from '../pagination/Pagination';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
 import { useFetchCards } from '@/libs/hooks/useFetchCards';
 import { useFilter } from '@/providers/FilterProvider';
+import { usePhotoCards } from '@/providers/PhotoCardProvider';
+
+import { Pagination } from '../pagination/Pagination';
 
 export default function PhotoCardList({
   type,
