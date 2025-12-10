@@ -26,8 +26,8 @@ const GENRES = [
 
 export default function PhotoCardCreation() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);  // 로딩 상태 추가
-  const [file, setFile] = useState(null);   // 파일 객체 저장 상태 추가
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [file, setFile] = useState(null); // 파일 객체 저장 상태 추가
 
   const {
     register,
@@ -85,15 +85,15 @@ export default function PhotoCardCreation() {
     try {
       const response = await cardService.createCard(formData);
 
-      const result = await response.json();
-      console.log('카드 생성 성공:', result)
+      const result = response;
+      console.log('카드 생성 성공:', result);
       alert('포토카드가 발행되고 갤러리에 추가되었습니다.');
-      router.replace('/my-gallery')
+      router.replace('/my-gallery');
     } catch (error) {
-      console.error('API Error:', error)
-      alert('카드  생성 중 오류 발생:', error.message)
+      console.error('API Error:', error);
+      alert('카드  생성 중 오류 발생:', error.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -105,7 +105,7 @@ export default function PhotoCardCreation() {
       setError('photoUrl', null);
     } else {
       setFile(null);
-      setValue('photoUrl', '')
+      setValue('photoUrl', '');
     }
   };
 
@@ -121,7 +121,11 @@ export default function PhotoCardCreation() {
   return (
     <main className="min-h-screen md:container mx-auto text-white">
       <div className="hidden sm:block sm:mb-20">
-        <CardTitle size="L" titleMessage="포토카드 생성" className="font-br text-5xl tracking-[-1.44px] sm:mb-5 sm:mt-10 md:text-[3.875rem] md:tracking-[-1.86px]" />
+        <CardTitle
+          size="L"
+          titleMessage="포토카드 생성"
+          className="font-br text-5xl tracking-[-1.44px] sm:mb-5 sm:mt-10 md:text-[3.875rem] md:tracking-[-1.86px]"
+        />
       </div>
       <div className="max-w-480 sm:mx-0 sm:flex sm:flex-col">
         {/* 모바일 전용헤더 */}
@@ -131,7 +135,10 @@ export default function PhotoCardCreation() {
           </button>
           <h1 className="text-xl font-br font-medium text-center">포토카드 생성</h1>
         </header>
-        <form onSubmit={handleSubmit(onSubmit)} className="px-3.75 pb-6 sm:flex sm:flex-col sm:mx-auto">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="px-3.75 pb-6 sm:flex sm:flex-col sm:mx-auto"
+        >
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">포토카드 이름</label>
             <input
@@ -140,7 +147,7 @@ export default function PhotoCardCreation() {
               {...register('name')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
-            {errors.name && <p className='text-red text-xs mt-1'>{errors.name}</p>}
+            {errors.name && <p className="text-red text-xs mt-1">{errors.name}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">등급</label>
@@ -180,7 +187,7 @@ export default function PhotoCardCreation() {
                 </ul>
               )}
             </div>
-            {errors.grade && <p className='text-red text-xs mt-1'>{errors.grade}</p>}
+            {errors.grade && <p className="text-red text-xs mt-1">{errors.grade}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">장르</label>
@@ -218,7 +225,7 @@ export default function PhotoCardCreation() {
                 </ul>
               )}
             </div>
-            {errors.genre && <p className='text-red text-xs mt-1'>{errors.genre}</p>}
+            {errors.genre && <p className="text-red text-xs mt-1">{errors.genre}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">가격</label>
@@ -238,14 +245,16 @@ export default function PhotoCardCreation() {
               {...register('totalQuantity')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
-            {errors.totalQuantity && <p className='text-red text-xs mt-1'>{errors.totalQuantity.message}</p>}
+            {errors.totalQuantity && (
+              <p className="text-red text-xs mt-1">{errors.totalQuantity.message}</p>
+            )}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">사진 업로드</label>
             <div className="flex gap-2.5">
               <input
                 type="text"
-                placeholder={file ? file.name : "사진 업로드"}
+                placeholder={file ? file.name : '사진 업로드'}
                 {...register('photoUrl')}
                 className="w-full h-13.75 flex-3 text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-97.5"
                 onFocus={(e) => e.target.blur()}
@@ -253,10 +262,10 @@ export default function PhotoCardCreation() {
               />
               {/* hidden input */}
               <input
-                type='file'
-                id='file-upload'
-                className='hidden'
-                accept='image/*'
+                type="file"
+                id="file-upload"
+                className="hidden"
+                accept="image/*"
                 onChange={handleFileSelect}
               />
               <label
@@ -266,7 +275,7 @@ export default function PhotoCardCreation() {
                 <p className="text-main text-sm">파일 선택</p>
               </label>
             </div>
-            {errors.photoUrl && <p className='text-red text-xs mt-1'>{errors.photoUrl.message}</p>}
+            {errors.photoUrl && <p className="text-red text-xs mt-1">{errors.photoUrl.message}</p>}
           </section>
           <section className="mb-8">
             <label className="mb-3 block text-sm font-medium">포토카드 설명</label>
@@ -278,7 +287,7 @@ export default function PhotoCardCreation() {
           </section>
           <Button
             thickness="thin"
-            message={isLoading ? "생성 중..." : "생성하기"}
+            message={isLoading ? '생성 중...' : '생성하기'}
             inValid={!isValid || isLoading}
             className="w-full max-w-130"
           >

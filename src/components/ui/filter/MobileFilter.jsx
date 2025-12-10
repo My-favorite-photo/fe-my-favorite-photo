@@ -8,13 +8,15 @@ import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
-
+import { useFetchCards } from '@/libs/hooks/useFetchCards';
 import GradeLabel from '../label/GradeLabel';
 
 export default function MobileFilter({ items, size, isSellingPage = false }) {
-  const [open, setOpen] = useState(false);
+  const { searchKeyword } = usePhotoCards();
   const { filter, setFilter } = useFilter();
-  const { cards = [], isCardSoldOut, sellingCards = [] } = usePhotoCards();
+  const { cards, isCardSoldOut, sellingCards } = useFetchCards({ searchKeyword, filter });
+
+  const [open, setOpen] = useState(false);
   const [category, setCategory] = useState('grade');
 
   const cardsRenderingType = isSellingPage ? sellingCards : cards;
@@ -58,12 +60,23 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
     return counts;
   }, [items, cardsRenderingType, isCardSoldOut]);
 
+  // const handleSelect = (label) => {
+  //   const current = filter[category];
+  //   const isSelected = current.includes(label);
+  //   setFilter((prev) => ({
+  //     ...prev,
+  //     [category]: isSelected ? current.filter((v) => v !== label) : [...current, label],
+  //   }));
+  // };
   const handleSelect = (label) => {
     const current = filter[category];
-    const isSelected = current.includes(label);
+    const isSelected = current.some((f) => f.label === label);
+    const valueObj = items[category].find((f) => f.label === label || f.value === label) || {
+      label,
+    };
     setFilter((prev) => ({
       ...prev,
-      [category]: isSelected ? current.filter((v) => v !== label) : [...current, label],
+      [category]: isSelected ? current.filter((f) => f.label !== label) : [...current, valueObj],
     }));
   };
 
@@ -122,8 +135,9 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
               <div
                 key={item.label}
                 onClick={() => handleSelect(item.label)}
-                className={`flex justify-between px-8 py-4 cursor-pointer ${isSelected ? 'bg-gray-500' : ''
-                  }`}
+                className={`flex justify-between px-8 py-4 cursor-pointer ${
+                  isSelected ? 'bg-gray-500' : ''
+                }`}
               >
                 <span>
                   {category === 'grade' ? <GradeLabel grade={rawLabel} size /> : displayLabel}

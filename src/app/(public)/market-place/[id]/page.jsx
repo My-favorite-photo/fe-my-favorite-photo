@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import img_card from '@/assets/images/img_card.svg';
 import BackArrowIcon from '@/assets/icons/Ic_back.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import Header from '@/components/common/header/Header';
@@ -12,10 +13,30 @@ import GradeLabel from '@/components/ui/label/GradeLabel';
 import CardBuyer from './_components/CardBuyer';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { cardService } from '@/libs/services/cardService';
 
 export default function SellDetailPage() {
   const { id } = useParams();
-  const { cards, loading } = usePhotoCards();
+  const [card, setCard] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCard() {
+      setLoading(true);
+      try {
+        const res = await cardService.getCardDetail(id);
+        console.log('상세 조회 응답:', res);
+        setCard(res.cardDetail);
+      } catch (err) {
+        console.error('카드 상세 조회 실패:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCard();
+  }, [id]);
 
   if (loading)
     return (
@@ -24,14 +45,19 @@ export default function SellDetailPage() {
       </p>
     );
 
-  const card = cards.find((item) => String(item.id) === String(id));
-
   if (!card)
     return (
       <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         해당 카드를 찾을 수 없습니다.
       </p>
     );
+
+  const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
+  const fullImageUrl = card?.imageUrl
+    ? card.imageUrl.startsWith('http')
+      ? card.imageUrl
+      : `${baseHost}/${card.imageUrl}`
+    : img_card; // 기본 이미지는 폴백
 
   return (
     <main className=" text-white px-[.9375rem] sm:px-5 md:container md:mx-auto">
@@ -44,7 +70,7 @@ export default function SellDetailPage() {
       />
       <section className="mt-6.5 sm:flex sm:gap-5 sm:mt-12 md:gap-20">
         <div className="relative max-w-[960px] mb-[1.2656rem] sm:flex-1">
-          <Image src={card.image} alt="포토카드 이미지" width={960} height={720} />
+          <Image src={fullImageUrl} alt="포토카드 이미지" width={960} height={720} />
         </div>
         <div className="sm:flex-1">
           <CardBuyer card={card} />
