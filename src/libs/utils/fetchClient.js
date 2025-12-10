@@ -139,7 +139,7 @@ export const formDataFetch = async (url, options = {}) => {
   const result = await fetch(`${baseURL}${url}`, mergedOptions);
 
   if (!result.ok) {
-    const errorData = await response.json();
+    const errorData = await result.json();
     throw new Error(errorData.message);
   }
 
