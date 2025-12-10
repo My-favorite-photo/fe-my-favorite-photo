@@ -7,6 +7,9 @@ export default function SaleStatusLabel({ status }) {
   };
 
   const cardStatus = saleStatus[status];
+  if (!cardStatus) {
+    return null;
+  }
 
   return (
     <div
