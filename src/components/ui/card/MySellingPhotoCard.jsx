@@ -15,8 +15,14 @@ export default function MySellingPhotoCard({ userCard }) {
   const cardDetails = userCard.photoCard;
 
   const isSoldOut = userCard.totalQuantity === 0 || userCard.status === 'SOLD_OUT';
-  const displayStatus = isSoldOut ? 'SOLD_OUT' : 'ON_SALE';
-
+  const displayStatus = userCard.status;
+  {
+    !isSoldOut && displayStatus && (
+      <div className="absolute top-[10px] left-[10px]">
+        <SaleStatusLabel status={displayStatus} />
+      </div>
+    )
+  }
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const fullImageUrl = cardDetails?.imageUrl
     ? cardDetails.imageUrl.startsWith('http')
