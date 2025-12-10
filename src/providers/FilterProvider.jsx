@@ -14,8 +14,18 @@ export function FilterProvider({ children }) {
   });
 
   const filters = {
-    grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
-    genre: ['여행', '풍경', '인물', '사물'],
+    grade: [
+      { label: 'COMMON', value: 'COMMON' },
+      { label: 'RARE', value: 'RARE' },
+      { label: 'SUPER_RARE', value: 'SUPER_RARE' },
+      { label: 'LEGENDARY', value: 'LEGENDARY' },
+    ],
+    genre: [
+      { label: '여행', value: 'TRAVEL' },
+      { label: '풍경', value: 'LANDSCAPE' },
+      { label: '인물', value: 'PORTRAIT' },
+      { label: '사물', value: 'OBJECT' },
+    ],
     status: ['판매 중', '판매 완료'],
     price: ['낮은 가격순', '높은 가격순', '최신순'],
     sale: ['판매', '교환 제시'],
