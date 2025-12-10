@@ -8,7 +8,7 @@ export default async function Layout({ children }) {
 
   // 이미 인증된 사용자 리다이렉트
   if (isAuthenticated) {
-    redirect('/', RedirectType.replace);
+    redirect('/market-place', RedirectType.replace);
   }
 
   return (

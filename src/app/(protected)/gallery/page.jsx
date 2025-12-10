@@ -37,11 +37,7 @@ export default function MyGalleryPage() {
       </div>
       <CardGradeStatus />
       <GalleryFilter />
-      <Link
-        href='gallery/123'
-      >
-        <PhotoCardList type="count" isGalleryPage={true} />
-      </Link>
+      <PhotoCardList type="count" isGalleryPage={true} />
       <Link
         href="/gallery/create"
         className="flex justify-center fixed bottom-[15px] left-0 w-full"

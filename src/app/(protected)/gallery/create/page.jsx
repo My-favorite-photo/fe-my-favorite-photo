@@ -52,8 +52,42 @@ export default function PhotoCardCreation() {
   const currentGradeObj = GRADES.find((g) => g.value === selectedGrade);
   const currentGenreObj = GENRES.find((g) => g.value === selectedGenre);
 
-  const onSubmit = (data) => {
-    console.log('Form submitted:', data);
+  const onSubmit = async (data) => {
+    if (isLoading) return;
+    if (!file) {
+      setError('photoUrl', { type: 'manual', message: '사진 파일을 선택해야 합니다.' });
+      return;
+    }
+
+    setIsLoading(true);
+
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+    formData.append('grade', data.grade);
+    formData.append('genre', data.genre);
+    formData.append('price', data.price);
+    formData.append('totalQuantity', data.totalQuantity);
+    formData.append('description', data.description);
+
+    formData.append('uploads', file);
+    console.log('--- FormData Contents ---');
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+    console.log('-------------------------');
+
+    try {
+      const response = await cardService.createCard(formData);
+      console.log('카드 생성 성공:', response)
+      alert('포토카드가 발행되고 갤러리에 추가되었습니다.');
+      router.replace('/gallery')
+    } catch (error) {
+      console.error('API Error:', error)
+      alert('카드  생성 중 오류 발생:', error.message)
+    } finally {
+      setIsLoading(false)
+    }
   };
 
   const handleFileSelect = () => {
@@ -176,6 +210,7 @@ export default function PhotoCardCreation() {
               {...register('price')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
+            {errors.price && <p className='text-red text-xs mt-1'>{errors.price.message}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">총 발행량</label>

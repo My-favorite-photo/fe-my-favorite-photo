@@ -1,18 +1,20 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import Image from 'next/image';
+import { useMemo, useState } from 'react';
+
+import ic_close from '@/assets/icons/Ic_close.svg';
+import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
+import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
-import Image from 'next/image';
+
 import GradeLabel from '../label/GradeLabel';
-import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
-import ic_close from '@/assets/icons/Ic_close.svg';
-import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 
 export default function MobileFilter({ items, size, isSellingPage = false }) {
   const [open, setOpen] = useState(false);
   const { filter, setFilter } = useFilter();
-  const { cards, isCardSoldOut, sellingCards } = usePhotoCards();
+  const { cards = [], isCardSoldOut, sellingCards = [] } = usePhotoCards();
   const [category, setCategory] = useState('grade');
 
   const cardsRenderingType = isSellingPage ? sellingCards : cards;
@@ -120,9 +122,8 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
               <div
                 key={item.label}
                 onClick={() => handleSelect(item.label)}
-                className={`flex justify-between px-8 py-4 cursor-pointer ${
-                  isSelected ? 'bg-gray-500' : ''
-                }`}
+                className={`flex justify-between px-8 py-4 cursor-pointer ${isSelected ? 'bg-gray-500' : ''
+                  }`}
               >
                 <span>
                   {category === 'grade' ? <GradeLabel grade={rawLabel} size /> : displayLabel}
