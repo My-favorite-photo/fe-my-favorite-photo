@@ -71,6 +71,7 @@ export default function PhotoCardCreation() {
     formData.append('name', data.name);
     formData.append('grade', data.grade);
     formData.append('genre', data.genre);
+    formData.append('price', data.price);
     formData.append('totalQuantity', data.totalQuantity);
     formData.append('description', data.description);
 
@@ -227,6 +228,7 @@ export default function PhotoCardCreation() {
               {...register('price')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
+            {errors.price && <p className='text-red text-xs mt-1'>{errors.price.message}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">총 발행량</label>

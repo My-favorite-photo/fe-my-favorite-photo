@@ -1,5 +1,7 @@
 export default function PhotoCardInfo({ card, type }) {
-  const totalRemain = card.saleOptions.reduce((sum, item) => sum + item.remain, 0);
+  const totalRemain = card.saleOptions
+    ? card.saleOptions.reduce((sum, item) => sum + item.remain, 0)
+    : 0;
 
   const typeMap = {
     remain: {

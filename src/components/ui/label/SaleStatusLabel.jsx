@@ -1,11 +1,15 @@
 export default function SaleStatusLabel({ status }) {
   const saleStatus = {
-    AVAILABLE: { text: '판매 중', color: 'text-white' },
-    EXCHANGE_OFFER: { text: '교환 제시 대기 중', color: 'text-main' },
+    // AVAILABLE: { text: '판매 중', color: 'text-white' },
+    TRADING: { text: '교환 제시 대기 중', color: 'text-main' },
     //SOLD_OUT : sold out 아이콘 처리
+    ON_SALE: { text: '판매 중', color: 'text-white' }
   };
 
   const cardStatus = saleStatus[status];
+  if (!cardStatus) {
+    return null;
+  }
 
   return (
     <div
