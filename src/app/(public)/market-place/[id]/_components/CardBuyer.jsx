@@ -11,7 +11,7 @@ export default function CardBuyer({ card }) {
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
 
-  const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
+  // const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) {
@@ -57,8 +57,8 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
-            {totalRemain}
-            <span className="text-gray-300"> / {card.total}</span>
+            잔여카드?
+            <span className="text-gray-300"> / {card.totalQuantity}</span>
           </p>
         </div>
       </section>

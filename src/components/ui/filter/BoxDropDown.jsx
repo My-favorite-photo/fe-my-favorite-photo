@@ -19,7 +19,7 @@ export default function BoxDropDown({ items, filterKey }) {
   };
 
   // 현재 선택된 값
-  const selected = filter[filterKey];
+  const selected = filter[filterKey] || '낮은 가격순';
 
   return (
     <div className="relative inline-flex flex-col gap-[5px] text-white font-normal sm:w-[130px] sm:text-[12px] md:w-[140px] md:text-[14px] lg:w-[180px] lg:text-[16px]">
@@ -27,7 +27,7 @@ export default function BoxDropDown({ items, filterKey }) {
         onClick={() => setOpen(!open)}
         className="w-full flex justify-between items-center border-[1px] cursor-pointer sm:h-[35px] sm:px-[15px] sm:py-[5px] md:h-[45px] md:px-[15px] md:py-[10px] lg:h-[50px] lg:px-[20px] lg:py-[13px]"
       >
-        <span>{selected || '낮은 가격순'}</span>
+        <span>{selected}</span>
         <Image
           src={ic_arrow}
           alt="드롭다운"

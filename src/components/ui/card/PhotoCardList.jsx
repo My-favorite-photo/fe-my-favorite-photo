@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import PhotoCard from './PhotoCard';
 import { Pagination } from '../pagination/Pagination';
 import Link from 'next/link';
+import { useFetchCards } from '@/libs/hooks/useFetchCards';
+import { useFilter } from '@/providers/FilterProvider';
 
 export default function PhotoCardList({
   type,
@@ -12,10 +14,12 @@ export default function PhotoCardList({
   isSellingPage = false,
   isGalleryPage = false,
 }) {
-  const { filteredCards, sellingCards, loading } = usePhotoCards();
+  const { searchKeyword } = usePhotoCards();
+  const { filter } = useFilter();
+  const { cards, sellingCards, loading } = useFetchCards({ searchKeyword, filter });
 
   // isSellingPage가 true일 때만 sellingCards를 렌더링(한 카드에 두 종류)
-  const cardsRenderingType = isSellingPage ? sellingCards : filteredCards;
+  const cardsRenderingType = isSellingPage ? sellingCards : cards;
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,18 +32,13 @@ export default function PhotoCardList({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const itemsPerPage = useMemo(() => {
-    if (windowWidth >= 1920) return 15;
-    return 16;
-  }, [windowWidth]);
+  let itemsPerPage = 16;
+  if (windowWidth >= 1920) itemsPerPage = 15;
 
   // cardsRenderingType = filteredCards 또는 sellingCards
   const totalPages = Math.ceil(cardsRenderingType.length / itemsPerPage);
-
-  const pagedCards = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return cardsRenderingType.slice(start, start + itemsPerPage);
-  }, [cardsRenderingType, currentPage, itemsPerPage]);
+  const start = (currentPage - 1) * itemsPerPage;
+  const pagedCards = (cardsRenderingType || []).slice(start, start + itemsPerPage);
 
   if (loading)
     return (
@@ -53,18 +52,15 @@ export default function PhotoCardList({
       <div className="flex justify-center">
         <div className="grid sm:grid-cols-2 sm:gap-[5px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-20">
           {pagedCards.map((card) => {
-            let cardImage;
             let soldOutIcon;
 
-            if (windowWidth < 768)
-              ((cardImage = { width: 150, height: 112 }),
-                (soldOutIcon = { width: 112, height: 112 }));
-            else if (windowWidth < 1920)
-              ((cardImage = { width: 302, height: 227 }),
-                (soldOutIcon = { width: 200, height: 200 }));
-            else
-              ((cardImage = { width: 360, height: 270 }),
-                (soldOutIcon = { width: 230, height: 230 }));
+            if (windowWidth < 768) {
+              soldOutIcon = { width: 112, height: 112 };
+            } else if (windowWidth < 1920) {
+              soldOutIcon = { width: 200, height: 200 };
+            } else {
+              soldOutIcon = { width: 230, height: 230 };
+            }
 
             const isLinkDisabled = isGalleryPage || isSellingPage;
 
@@ -72,7 +68,6 @@ export default function PhotoCardList({
               <PhotoCard
                 card={card}
                 type={type}
-                cardImage={cardImage}
                 soldOutIcon={soldOutIcon}
                 showSaleLabel={showSaleLabel}
               />

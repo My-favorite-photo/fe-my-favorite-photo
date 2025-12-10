@@ -6,13 +6,21 @@ import GradeLabel from '../label/GradeLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 import SaleStatusLabel from '../label/SaleStatusLabel';
 
-export default function PhotoCard({
-  card,
-  type = 'remain',
-  cardImage,
-  soldOutIcon,
-  showSaleLabel,
-}) {
+const genreMap = {
+  TRAVEL: '여행',
+  LANDSCAPE: '풍경',
+  PORTRAIT: '인물',
+  OBJECT: '사물',
+};
+
+export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSaleLabel }) {
+  const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
+  const fullImageUrl = card?.imageUrl
+    ? card.imageUrl.startsWith('http')
+      ? card.imageUrl
+      : `${baseHost}/${card.imageUrl}`
+    : img_card; // 기본 이미지는 폴백
+
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
@@ -21,8 +29,8 @@ export default function PhotoCard({
         lg:w-[440px] lg:h-[600px] lg:p-[40px]
         "
     >
-      <div className="relative">
-        <Image src={img_card} alt="카드 이미지" width={cardImage.width} height={cardImage.height} />
+      <div className="relative w-full sm:h-[112px] md:h-[227px] lg:h-[270px]">
+        <Image src={fullImageUrl} alt="카드 이미지" fill style={{ objectFit: 'cover' }} />
 
         {/* SOLD_OUT 처리 */}
         {card.status === 'SOLD_OUT' && (
@@ -49,13 +57,13 @@ export default function PhotoCard({
 
       <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
         <p className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-[14px] md:text-[22px] lg:text-[22px]">
-          {card.title}
+          {card.name}
         </p>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-[10px] sm:text-[10px] md:text-[16px] lg:text-[16px]">
             <GradeLabel grade={card.grade} />
             <span className="border border-l-gray-400 text-4 font-normal sm:h-[14px] md:h-[23px] lg:h-[23px]" />
-            <span className="text-4 font-normal text-gray-300">{card.genre}</span>
+            <span className="text-4 font-normal text-gray-300">{genreMap[card.genre]}</span>
           </div>
           <span className="text-white text-4 font-normal text-right underline underline-offset-2 decoration-0 sm:text-[10px] md:text-[16px] lg:text-[16px]">
             {card.author}

@@ -7,15 +7,17 @@ import ic_arrow from '@/assets/icons/Ic_arrow.svg';
 
 export default function DefaultDropDown({ items, placeholder, filterKey }) {
   const [open, setOpen] = useState(false);
-  const { filter, setFilter } = useFilter();
+  const { filter, setFilter, filters } = useFilter();
 
   const handleSelect = (item) => {
     setOpen(false);
-    setFilter((prev) => ({ ...prev, [filterKey]: [item] }));
+    // items가 label이면 filters에서 value 찾기
+    const value = filters[filterKey]?.find((f) => f.label === item || f.value === item);
+    setFilter((prev) => ({ ...prev, [filterKey]: [value] }));
   };
 
   const selected = filter[filterKey]?.[0] || null;
-  const displaySelected = selected ? selected.replace(/_/g, ' ') : placeholder;
+  const displaySelected = selected ? selected.label.replace(/_/g, ' ') : placeholder;
 
   return (
     <div className="relative inline-flex flex-col items-start gap-[18px] text-white">
