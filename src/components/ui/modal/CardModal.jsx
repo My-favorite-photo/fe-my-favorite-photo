@@ -128,7 +128,7 @@ export function CardModal({ type, onClose, card }) {
           <div className="w-full overflow-y-auto px-6">
             <CardTitle
               size='L'
-              titleMessage={card.photoCard.name}
+              titleMessage={card.name}
               className="text-2xl sm:text-[2rem] md:text-[2.5rem] font-bold mb-5"
             />
 

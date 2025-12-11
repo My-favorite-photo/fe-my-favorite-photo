@@ -8,10 +8,10 @@ import Plus from "@/assets/icons/Ic_plus.svg"
 
 import GradeLabel from "../label/GradeLabel";
 
-export function CardCounterInput() {
+export function CardCounterInput({ card }) {
   const [price, setPrice] = useState('')
   const [quantity, setQuantity] = useState(2)
-  const maxQuantity = 3
+  const maxQuantity = card.totalQuantity
 
   const handlePriceChange = (e) => {
     const value = e.target.value.replace(/[^0-9]/g, '')
@@ -19,7 +19,6 @@ export function CardCounterInput() {
       setPrice(value)
     }
   }
-
   const incrementQuantity = () => {
     if (quantity < maxQuantity) {
       const newQuantity = quantity + 1
@@ -39,11 +38,11 @@ export function CardCounterInput() {
       <div className="max-w-85.5 max-h-49 lg:max-w-110 lg:max-h-23.75">
         <div className="border-b border-gray-400">
           <div className="flex items-center mb-7.5 px-0">
-            <GradeLabel grade="COMMON" size />
+            <GradeLabel grade={card.grade} size />
             <span className="mx-4 text-lg text-gray-400 font-bold sm:text-2xl">|</span>
-            <h2 className="text-lg font-bold text-gray-300 sm:text-2xl">풍경</h2>
+            <h2 className="text-lg font-bold text-gray-300 sm:text-2xl">{card.genre}</h2>
             <div className="ml-auto">
-              <h2 className="text-lg font-bold underline sm:text-2xl">유디</h2>
+              <h2 className="text-lg font-bold underline sm:text-2xl">{card.nickname}</h2>
             </div>
           </div>
         </div>
