@@ -1,33 +1,33 @@
 'use client'
 // 교환희망 정보 모달
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import BackArrowIcon from '@/assets/icons/Ic_back.svg'
 import X_Icon from '@/assets/icons/Ic_x.svg'
 import img_card from '@/assets/images/img_card.svg';
 import { CardTitle } from "@/components/common/card-title/CardTitle";
+import { saleService } from '@/libs/services/saleService';
 import { cn } from '@/libs/utils/cn';
 
 import { Button } from '../button/Button';
 import { CardCounterInput } from '../input/CardCounterInput';
 
 const SelectField = forwardRef(({ children, className = '', value, onChange, ...props }, ref) => {
-  const [currentValue, setCurrentValue] = useState(value)
 
   const handleChange = (e) => {
-    const newValue = e.target.value
-    setCurrentValue(newValue)
     onChange?.(e)
   }
 
-  const placeholderClass = currentValue === "" ? 'text-gray-200' : "text-white"
+  const placeholderClass = value === "" ? 'text-gray-200' : "text-white"
 
   return (
     <select
       ref={ref}
-      value={currentValue}
+      value={value}
       onChange={handleChange}
       className={
         cn(
@@ -49,15 +49,23 @@ SelectField.displayName = 'SelectField';
  * @returns 
  */
 export function CardModal({ type, onClose, card }) {
-  const [grade, setGrade] = useState("");
-  const [genre, setGenre] = useState("");
+  const router = useRouter()
+  const { control, handleSubmit, register, setValue, watch, getValues, formState: { errors } } = useForm({
+    defaultValues: {
+      quantity: 1,
+      price: 0,
+      grade: '',
+      genre: '',
+      description: card.description || '',
+    }
+  })
 
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const subject = type === "sell" ? "나의 포토카드 판매하기" : "수정하기"
-  const fullImageUrl = card?.photoCard?.imageUrl
-    ? card.photoCard.imageUrl.startsWith('http')
-      ? card.photoCard.imageUrl
-      : `${baseHost}/${card.photoCard.imageUrl}`
+  const fullImageUrl = card?.imageUrl
+    ? card.imageUrl.startsWith('http')
+      ? card.imageUrl
+      : `${baseHost}/${card.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
   const onCloseBackdrop = (e) => {
@@ -67,6 +75,27 @@ export function CardModal({ type, onClose, card }) {
   }
 
   console.log(card)
+
+  const onSubmit = async (data) => {
+    try {
+      const saleData = {
+        userCardId: card.id,
+        quantity: Number(data.quantity),
+        price: Number(data.price),
+        description: data.description,
+        grade: data.grade,
+        genre: data.genre
+      }
+
+      console.log('전송 데이터', saleData)
+
+      await saleService.crateSale(saleData)
+      router.push('/gallery/complete')
+      onClose();
+    } catch (error) {
+      console.error('판매 등록 실패:', error)
+    }
+  }
   return (
     <section
       className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 sm:items-end md:items-center"
@@ -132,73 +161,92 @@ export function CardModal({ type, onClose, card }) {
               className="text-2xl sm:text-[2rem] md:text-[2.5rem] font-bold mb-5"
             />
 
-            <section className='flex justify-between'>
-              <div className="flex flex-col w-full gap-4 mt-4 sm:flex-row sm:gap-5 md:gap-10">
-                <div className="relative aspect-video bg-gray-900 rounded-lg object-cover sm:min-w-20 sm:max-w-85.5 sm:max-h-[16.0313rem] md:max-w-110 md:max-h-82.5 sm:flex-1" >
-                  <Image
-                    src={fullImageUrl}
-                    alt='기본 이미지'
-                    fill
-                  />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <section className='flex justify-between'>
+                <div className="flex flex-col w-full gap-4 mt-4 sm:flex-row sm:gap-5 md:gap-10">
+                  <div className="relative aspect-video bg-gray-900 rounded-lg object-cover sm:min-w-20 sm:max-w-85.5 sm:max-h-[16.0313rem] md:max-w-110 md:max-h-82.5 sm:flex-1" >
+                    <Image
+                      src={fullImageUrl}
+                      alt='기본 이미지'
+                      fill
+                    />
+                  </div>
+                  <div className='sm:flex-1 sm:w-full'>
+                    <CardCounterInput
+                      card={card}
+                      register={register}
+                      errors={errors}
+                      setValue={setValue}
+                      getValues={getValues}
+                      watch={watch}
+                    />
+                  </div>
                 </div>
-
-                <div className='sm:flex-1 sm:w-full'>
-                  <CardCounterInput card={card} />
-                </div>
-              </div>
-            </section>
-
-            {/*교환 희망 정보 섹션*/}
-            <section className="pt-6">
-              <CardTitle size='L' titleMessage="교환 희망 정보" className="text-[1.375rem] font-bold mb-2.5 mt-0" />
-              <div className="flex flex-col sm:flex-row gap-4 sm:mb-8.5">
-                <div className='w-full'>
-                  <p className='text-white font-bold mb-2.5 mt-11.5'>등급</p>
-                  <SelectField
-                    value={grade}
-                    onChange={(e) => setGrade(e.target.value)}
-                  >
-                    <option
-                      value=""
-                      disabled
-                    >
-                      교환 등급 선택
-                    </option>
-                    <option value="legend">LEGENDARY</option>
-                  </SelectField>
-                </div>
-                <div className='w-full mb-8.5 sm:mb-0'>
-                  <p className='text-white font-bold mb-2.5 sm:mt-11.5'>장르</p>
-                  <SelectField
-                    value={genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                  >
-                    <option
-                      value=""
-                      disabled
-                    >
-                      교환 장르 선택
-                    </option>
-                    <option value="genre">풍경</option>
-                  </SelectField>
-                </div>
-              </div>
-
-              {/* 교환 희망 관련 상세 내용 입력 (시안의 textarea) */}
-              <section className='mb-15'>
-                <p className='text-white text-base font-bold mb-2.5'>교환 희망 설명</p>
-                <textarea
-                  className="w-full bg-gray-500 text-white py-3 px-5 border border-gray-200 rounded-[2px] resize-none placeholder-gray-200 placeholder:text-sm placeholder:font-light"
-                  placeholder="설명을 입력해 주세요"
-                  rows={3}
-                />
               </section>
-              <div className='border-t border-gray-400 mb-7.5 sm:hidden md:block'></div>
-              <footer className="flex gap-3.75">
-                <Button intent="secondary" thickness='thin' size='L' onClick={() => onClose()} >취소하기</Button>
-                <Button thickness='thin' size='L' onClick={() => alert('교환희망 판매하기 버튼을 클릭하였습니다.')} >판매하기</Button>
-              </footer>
-            </section>
+
+              {/*교환 희망 정보 섹션*/}
+              <section className="pt-6">
+                <CardTitle size='L' titleMessage="교환 희망 정보" className="text-[1.375rem] font-bold mb-2.5 mt-0" />
+                <div className="flex flex-col sm:flex-row gap-4 sm:mb-8.5">
+                  <div className='w-full'>
+                    <p className='text-white font-bold mb-2.5 mt-11.5'>등급</p>
+                    <Controller
+                      name="grade"
+                      control={control}
+                      rules={{ required: "등급을 선택해주세요" }}
+                      render={({ field }) => (
+                        <SelectField
+                          {...field}
+                          value={field.value || ""}
+                        >
+                          <option value="" disabled>교환 등급 선택</option>
+                          <option value="COMMON">COMMON</option>
+                          <option value="RARE">RARE</option>
+                          <option value="SUPER_RARE">SUPER RARE</option>
+                          <option value="LEGENDARY">LEGENDARY</option>
+                        </SelectField>
+                      )}
+                    />
+                  </div>
+                  <div className='w-full mb-8.5 sm:mb-0'>
+                    <p className='text-white font-bold mb-2.5 sm:mt-11.5'>장르</p>
+                    <Controller
+                      name="genre"
+                      control={control}
+                      rules={{ required: "장르를 선택해주세요" }}
+                      render={({ field }) => (
+                        <SelectField
+                          {...field}
+                          value={field.value || ""}
+                        >
+                          <option value="" disabled>교환 장르 선택</option>
+                          <option value="TRAVEL">여행</option>
+                          <option value="LANDSCAPE">풍경</option>
+                          <option value="PORTRAIT">인물</option>
+                          <option value="OBJECT">사물</option>
+                        </SelectField>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* 교환 희망 관련 상세 내용 입력 (시안의 textarea) */}
+                <section className='mb-15'>
+                  <p className='text-white text-base font-bold mb-2.5'>교환 희망 설명</p>
+                  <textarea
+                    className="w-full bg-gray-500 text-white py-3 px-5 border border-gray-200 rounded-[2px] resize-none placeholder-gray-200 placeholder:text-sm placeholder:font-light"
+                    placeholder="설명을 입력해 주세요"
+                    rows={3}
+                    {...register('description')}
+                  />
+                </section>
+                <div className='border-t border-gray-400 mb-7.5 sm:hidden md:block'></div>
+                <footer className="flex gap-3.75">
+                  <Button intent="secondary" thickness='thin' size='L' onClick={() => onClose()} >취소하기</Button>
+                  <Button thickness='thin' size='L' type='submit' >판매하기</Button>
+                </footer>
+              </section>
+            </form>
           </div>
         </div >
       </div>
