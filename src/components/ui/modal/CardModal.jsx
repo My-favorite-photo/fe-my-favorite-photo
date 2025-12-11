@@ -207,6 +207,9 @@ export function CardModal({ type, onClose, card }) {
                         </SelectField>
                       )}
                     />
+                    {errors.grade && (
+                      <span className='text-red text-xs mt-1'>{errors.grade.message}</span>
+                    )}
                   </div>
                   <div className='w-full mb-8.5 sm:mb-0'>
                     <p className='text-white font-bold mb-2.5 sm:mt-11.5'>장르</p>
@@ -227,6 +230,9 @@ export function CardModal({ type, onClose, card }) {
                         </SelectField>
                       )}
                     />
+                    {errors.genre && (
+                      <span className='text-red text-xs mt-1'>{errors.genre.message}</span>
+                    )}
                   </div>
                 </div>
 
