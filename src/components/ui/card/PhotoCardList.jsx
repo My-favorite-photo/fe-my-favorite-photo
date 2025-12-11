@@ -1,18 +1,26 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import PhotoCard from './PhotoCard';
-import { Pagination } from '../pagination/Pagination';
 import Link from 'next/link';
-import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
-import { useFilter } from '@/providers/FilterProvider';
-import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
+import { useEffect, useState } from 'react';
 
+import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
+import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
+import { useFilter } from '@/providers/FilterProvider';
+
+import { Pagination } from '../pagination/Pagination';
+import PhotoCard from './PhotoCard';
+
+/**
+ * 
+ * @param {String} type  -- 포토카드의 수량 
+ * @return
+ */
 export default function PhotoCardList({
   type,
   showSaleLabel = false,
   isSellingPage = false,
   isGalleryPage = false,
+  modal = false,
 }) {
   const { filter, searchKeyword } = useFilter();
   const { cards, loading, sellingPhotoCards } = useFetchPhotoCards({ searchKeyword, filter });
@@ -72,6 +80,7 @@ export default function PhotoCardList({
 
             const isLinkDisabled = isGalleryPage || isSellingPage;
 
+
             const cardContent = (
               <PhotoCard
                 card={card}
@@ -80,6 +89,7 @@ export default function PhotoCardList({
                 showSaleLabel={showSaleLabel}
                 isSellingPage={isSellingPage}
                 isGalleryPage={isGalleryPage}
+                modal={modal}
               />
             );
 
