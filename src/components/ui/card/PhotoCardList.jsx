@@ -1,13 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import PhotoCard from './PhotoCard';
-import { Pagination } from '../pagination/Pagination';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
 import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
-import { useFilter } from '@/providers/FilterProvider';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { useAuth } from '@/providers/AuthProvider';
+import { useFilter } from '@/providers/FilterProvider';
+
+import Modal from '../modal/Modal';
+import { Pagination } from '../pagination/Pagination';
+import PhotoCard from './PhotoCard';
 
 export default function PhotoCardList({
   type,
@@ -15,6 +20,19 @@ export default function PhotoCardList({
   isSellingPage = false,
   isGalleryPage = false,
 }) {
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleCardClick = (cardId) => {
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
+    router.push(`/market-place/${cardId}`);
+  };
+  console.log('로그인 여부:', isLoggedIn);
   // 검색 필터 상태
   const { filter, searchKeyword } = useFilter();
 
@@ -125,14 +143,23 @@ export default function PhotoCardList({
             return isLinkDisabled ? (
               <div key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}>{cardContent}</div>
             ) : (
-              <Link
+              <div
                 href={`/market-place/${card.id}`}
                 key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}
+                onClick={() => handleCardClick(card.id)}
               >
                 {cardContent}
-              </Link>
+              </div>
             );
           })}
+          <Modal
+            isOpen={isLoginModalOpen}
+            onClose={() => setIsLoginModalOpen(false)}
+            title="로그인이 필요합니다."
+            description="로그인 하시겠습니까? 다양한 서비스를 편리하게 이용하실 수 있습니다."
+            confirmText="확인"
+            onConfirm={() => router.push('/login')}
+          />
         </div>
       </div>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
