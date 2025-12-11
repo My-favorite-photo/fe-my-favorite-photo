@@ -89,7 +89,7 @@ export function CardModal({ type, onClose, card }) {
 
       console.log('전송 데이터', saleData)
 
-      await saleService.crateSale(saleData)
+      await saleService.createSale(saleData)
       router.push('/gallery/complete')
       onClose();
     } catch (error) {

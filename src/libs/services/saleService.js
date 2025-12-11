@@ -1,7 +1,7 @@
 import { tokenFetch } from '../utils/fetchClient';
 
 export const saleService = {
-  crateSale: (saleData) => {
+  createSale: (saleData) => {
     tokenFetch('/sales', {
       method: 'POST',
       body: JSON.stringify(saleData),
