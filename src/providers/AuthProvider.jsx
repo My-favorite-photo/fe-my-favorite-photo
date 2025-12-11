@@ -27,6 +27,8 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const router = useRouter();
 
+  const isLoggedIn = !!user;
+
   const getUser = async () => {
     try {
       const res = await userService.getMe();
@@ -72,7 +74,7 @@ export default function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, getUser }}>
+    <AuthContext.Provider value={{ user, login, logout, register, getUser, isLoggedIn }}>
       {children}
     </AuthContext.Provider>
   );
