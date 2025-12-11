@@ -88,7 +88,7 @@ export default function PhotoCardCreation() {
       const result = response;
       console.log('카드 생성 성공:', result);
       alert('포토카드가 발행되고 갤러리에 추가되었습니다.');
-      router.replace('/my-gallery');
+      router.replace('/gallery');
     } catch (error) {
       console.error('API Error:', error);
       alert('카드  생성 중 오류 발생:', error.message);
@@ -235,7 +235,7 @@ export default function PhotoCardCreation() {
               {...register('price')}
               className="h-13.75 w-full text-sm rounded-[2px] border border-gray-200 px-5 py-4.5 text-white placeholder:text-gray-200 focus:outline-none sm:max-w-130"
             />
-            {errors.price && <p className='text-red text-xs mt-1'>{errors.price.message}</p>}
+            {errors.price && <p className="text-red text-xs mt-1">{errors.price.message}</p>}
           </section>
           <section className="mb-7">
             <label className="mb-3 block text-sm font-medium">총 발행량</label>

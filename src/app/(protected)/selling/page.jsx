@@ -3,11 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { CardTitle } from '@/components/common/card-title/CardTitle';
-import MySellingPhotoCard from '@/components/ui/card/MySellingPhotoCard';
-import PhotoCard from '@/components/ui/card/PhotoCard';
 import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
-import { sellService } from '@/libs/services/sellService';
-
 import SellingFilter from './_components/SellingFilter';
 import PhotoCardList from '@/components/ui/card/PhotoCardList';
 
