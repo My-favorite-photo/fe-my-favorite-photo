@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
+import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
 import { useFilter } from '@/providers/FilterProvider';
 
 import { Pagination } from '../pagination/Pagination';
@@ -22,23 +23,58 @@ export default function PhotoCardList({
   isGalleryPage = false,
   modal = false,
 }) {
+  // 검색 필터 상태
   const { filter, searchKeyword } = useFilter();
-  const { cards, loading, sellingPhotoCards } = useFetchPhotoCards({ searchKeyword, filter });
-  const { myLocalSellingCards, saleCardsLoading, sellingCards, isCardSoldOut } = useFetchSaleCards({
+
+  // PhotoCards - market
+  const { cards, loading } = useFetchPhotoCards({ searchKeyword, filter });
+
+  // UserCards - gallery
+  const { myCards, myCardsLoading } = useFetchUserCards({
     searchKeyword,
     filter,
   });
 
-  // 카드 데이터 = isSellingPage 또는 isGalleryPage ? cards : PhotoCards
-  const cardsRenderingType = isSellingPage || isGalleryPage ? myLocalSellingCards : cards;
+  // UserCards - selling
+  const { myLocalSellingCards, saleCardsLoading } = useFetchSaleCards({
+    searchKeyword,
+    filter,
+  });
 
-  // 카드 로딩 상태 = isSellingPage ? cards : PhotoCards
-  const isLoading = isSellingPage || isGalleryPage ? saleCardsLoading : loading;
+  const normalizeCard = (card) => {
+    if (isSellingPage || isGalleryPage) {
+      return {
+        ...card.photoCard,
+        id: card.id,
+        status: card.status,
+        totalQuantity: card.totalQuantity,
+        price: card.price,
+        photoCardId: card.photoCardId,
+        nickname: card.user?.nickname ?? null,
+      };
+    }
+
+    return {
+      ...card,
+      nickname: card.creator?.nickname ?? null,
+    };
+  };
+
+  // 페이지별 카드 데이터 가져오기
+  let cardsRenderingType;
+
+  if (isSellingPage) {
+    cardsRenderingType = myLocalSellingCards;
+  } else if (isGalleryPage) {
+    cardsRenderingType = myCards;
+  } else {
+    cardsRenderingType = cards;
+  }
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 화면 크기 변화 감지
+  // 화면 크기 변화 감지 - 곧 삭제 예정
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -49,10 +85,12 @@ export default function PhotoCardList({
   let itemsPerPage = 16;
   if (windowWidth >= 1920) itemsPerPage = 15;
 
-  // cardsRenderingType = cards 또는 PhotoCards
+  // 페이지네이션
   const totalPages = Math.ceil(cardsRenderingType.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
   const pagedCards = (cardsRenderingType || []).slice(start, start + itemsPerPage);
+
+  const isLoading = loading || myCardsLoading || saleCardsLoading;
 
   if (isLoading)
     return (
@@ -66,8 +104,7 @@ export default function PhotoCardList({
       <div className="flex justify-center">
         <div className="grid sm:grid-cols-2 sm:gap-[5px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-20">
           {pagedCards.map((card) => {
-            // const cardDataStyle = isSellingPage ? card.photoCard : card;
-
+            // soldOutIcon은 sold_out 이미지 처리에 수정 예정(밑에 코드 지울 것)
             let soldOutIcon;
 
             if (windowWidth < 768) {
@@ -78,12 +115,13 @@ export default function PhotoCardList({
               soldOutIcon = { width: 230, height: 230 };
             }
 
-            const isLinkDisabled = isGalleryPage || isSellingPage;
+            const isLinkDisabled = isSellingPage || isGalleryPage;
+            const normalizedCard = normalizeCard(card);
 
 
             const cardContent = (
               <PhotoCard
-                card={card}
+                card={normalizedCard}
                 type={type}
                 soldOutIcon={soldOutIcon}
                 showSaleLabel={showSaleLabel}
@@ -93,6 +131,7 @@ export default function PhotoCardList({
               />
             );
 
+            // isSellingPage 또는 isGalleryPage일 때 상세 페이지 이동 X
             return isLinkDisabled ? (
               <div key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}>{cardContent}</div>
             ) : (
@@ -110,9 +149,3 @@ export default function PhotoCardList({
     </div>
   );
 }
-
-// const cardContent = isSellingPage ? (
-//   <PhotoCard card={card} type={type} soldOutIcon={soldOutIcon} showSaleLabel={showSaleLabel} />
-// ) : (
-//   <PhotoCard card={card} type={type} soldOutIcon={soldOutIcon} showSaleLabel={showSaleLabel} />
-// );

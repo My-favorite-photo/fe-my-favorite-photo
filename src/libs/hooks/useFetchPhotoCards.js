@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react';
 import { cardService } from '@/libs/services/cardService';
 
-export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
+export function useFetchPhotoCards(params = {}) {
+  const { searchKeyword = '', filter = {} } = params;
+  const { grade = '', genre = '', price = '' } = filter;
+
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,21 +16,21 @@ export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
       try {
         const response = await cardService.getCard({
           keyword: searchKeyword,
-          grade: filter.grade,
-          genre: filter.genre,
+          grade: grade,
+          genre: genre,
           sort:
-            filter.price === '낮은 가격순'
+            price === '낮은 가격순'
               ? 'low'
-              : filter.price === '높은 가격순'
+              : price === '높은 가격순'
                 ? 'high'
-                : filter.price === '최신순'
+                : price === '최신순'
                   ? 'latest'
                   : 'low', // 기본 낮은 가격순
         });
         console.log(response);
         setCards(response.cards);
       } catch (error) {
-        console.error('카드 불러오기 실패:', error);
+        console.error('마켓 플레이스 목록을 가져오는데 실패했습니다.', error);
         setCards([]);
       } finally {
         setLoading(false);
@@ -35,7 +38,7 @@ export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
     }
 
     fetchCards();
-  }, [searchKeyword, filter]);
+  }, [searchKeyword, grade, genre, price]);
 
   // 판매 중 카드
   const sellingPhotoCards = cards.filter((card) =>
@@ -43,7 +46,7 @@ export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
   );
 
   // // 카드 sold out 여부
-  // const isCardSoldOut = (card) => card.totalQuantity === 0;
+  // const isPhotoCardSoldOut = (card) => card.totalQuantity === 0;
 
   return { cards, loading, sellingPhotoCards };
 }
