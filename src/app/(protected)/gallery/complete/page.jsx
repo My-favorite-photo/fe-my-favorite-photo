@@ -25,7 +25,7 @@ export default function page() {
         </div>
         <section className="relative flex flex-col mx-auto items-center p-19.5 sm:px-0">
           <h1 className="text-3xl text-nowrap shrink font-br tracking-[-0.9px] sm:text-4xl md:text-[46px]">
-            프토카드 생성
+            포토카드 생성
             <span className="text-main"> 성공</span>
           </h1>
           <p className="font-bold text-center mb-12.5 mt-12.5 sm:mb-15 sm:mt-10">
