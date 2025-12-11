@@ -4,14 +4,14 @@ import SearchBar from '@/components/ui/search/SearchBar';
 
 export default function SellingFilter() {
   const gradeLabels = ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'];
-  const genreLabels = ['여행', '풍경', '인물', '사물'];
+  const genreLabels = ['TRAVEL', 'LANDSCAPE', 'PORTRAIT', 'OBJECT'];
   const statusLabels = ['판매 중', '판매 완료'];
   const saleLabels = ['판매', '교환 제시'];
   const mobileLabels = {
-    grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
-    genre: ['여행', '풍경', '인물', '사물'],
-    status: ['판매 중', '판매 완료'],
-    sale: ['판매', '교환 제시'],
+    grade: gradeLabels,
+    genre: genreLabels,
+    status: statusLabels,
+    sale: saleLabels,
   };
 
   return (

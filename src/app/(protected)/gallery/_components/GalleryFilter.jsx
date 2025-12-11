@@ -4,10 +4,10 @@ import SearchBar from '@/components/ui/search/SearchBar';
 
 export default function GalleryFilter() {
   const gradeLabels = ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'];
-  const genreLabels = ['여행', '풍경', '인물', '사물'];
+  const genreLabels = ['TRAVEL', 'LANDSCAPE', 'PORTRAIT', 'OBJECT'];
   const mobileLabels = {
-    grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
-    genre: ['여행', '풍경', '인물', '사물'],
+    grade: gradeLabels,
+    genre: genreLabels,
   };
 
   return (
