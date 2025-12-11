@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { cardService } from '@/libs/services/cardService';
 
-export function useFetchCards({ searchKeyword = '', filter = {} }) {
+export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,8 +13,8 @@ export function useFetchCards({ searchKeyword = '', filter = {} }) {
       try {
         const response = await cardService.getCard({
           keyword: searchKeyword,
-          grade: filter.grade?.[0]?.value,
-          genre: filter.genre?.[0]?.value,
+          grade: filter.grade,
+          genre: filter.genre,
           sort:
             filter.price === '낮은 가격순'
               ? 'low'
@@ -22,11 +22,10 @@ export function useFetchCards({ searchKeyword = '', filter = {} }) {
                 ? 'high'
                 : filter.price === '최신순'
                   ? 'latest'
-                  : 'latest', // 기본 최신순
+                  : 'low', // 기본 최신순
         });
         console.log(response);
-
-        setCards(response.cards || []);
+        setCards(response.cards);
       } catch (error) {
         console.error('카드 불러오기 실패:', error);
         setCards([]);
@@ -39,12 +38,12 @@ export function useFetchCards({ searchKeyword = '', filter = {} }) {
   }, [searchKeyword, filter]);
 
   // 판매 중 카드
-  const sellingCards = cards.filter((card) =>
-    (card.userCards || []).some((c) => c.status === 'ON_SALE'),
+  const sellingPhotoCards = cards.filter((card) =>
+    (card.userCards || []).some((c) => c.status === 'ON_SALE' || c.status === 'TRADING'),
   );
 
-  // 카드 sold out 여부
-  const isCardSoldOut = (card) => card.totalQuantity === 0;
+  // // 카드 sold out 여부
+  // const isCardSoldOut = (card) => card.totalQuantity === 0;
 
-  return { cards, loading, sellingCards, isCardSoldOut };
+  return { cards, loading, sellingPhotoCards };
 }
