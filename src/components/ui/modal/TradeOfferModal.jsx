@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import PhotoCard from '@/components/ui/card/PhotoCard';
 import photoChange from '@/assets/images/svg/photoChange.png';
+import IcBack from '@/assets/icons/Ic_back.svg';
 
 export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, cardElement }) {
   const [message, setMessage] = useState('');
@@ -22,9 +23,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
   };
 
   const handleBackgroundClick = (e) => {
-    if (e.target === e.currentTarget) {
-      handleClose();
-    }
+    if (e.target === e.currentTarget) handleClose();
   };
 
   const title = cardTitle || 'How Far I Go';
@@ -74,7 +73,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
           w-[1160px] h-[903px] rounded-[12px] px-[64px] py-[40px]
 
           max-[744px]:w-full max-[744px]:max-w-[744px]
-          max-[744px]:h-[60vh]
+          max-[744px]:h-[85vh]    
           max-[744px]:rounded-t-[16px] max-[744px]:rounded-b-none
           max-[744px]:px-[32px] max-[744px]:py-[32px]
 
@@ -92,7 +91,10 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
           "
         >
           <span className="max-[375px]:hidden">✕</span>
-          <span className="hidden max-[375px]:inline">←</span>
+
+          <span className="hidden max-[375px]:inline">
+            <Image src={IcBack} alt="뒤로가기" width={22} height={22} />
+          </span>
         </button>
 
         <div className="hidden max-[744px]:block max-[375px]:hidden">
@@ -117,6 +119,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
           <div className="hidden max-[375px]:block text-[14px] font-semibold mb-2 text-center">
             포토카드 교환하기
           </div>
+
           <h2
             className="
               text-[30px] font-bold leading-tight
@@ -126,6 +129,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
           >
             {title}
           </h2>
+
           <div className="mt-5 h-px w-full bg-white/80 max-[744px]:mt-4" />
         </div>
 
@@ -150,7 +154,14 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, cardTitle, 
             <div className="hidden max-[744px]:block max-[375px]:hidden">
               {renderCard('tablet')}
             </div>
-            <div className="block min-[376px]:hidden [&_img[alt='로고']]:!block [&_img[alt='로고']]:!bottom-[10px]">
+
+            <div
+              className="
+                block min-[376px]:hidden
+                [&_img[alt='로고']]:!block
+                [&_img[alt='로고']]:!bottom-[10px]
+              "
+            >
               {renderCard('mobile')}
             </div>
           </div>
