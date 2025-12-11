@@ -13,12 +13,10 @@ import Section1 from '@/assets/landing/Img_3x_section1.png';
 import Section2 from '@/assets/landing/Img_3x_section2.png';
 import Section3 from '@/assets/landing/Img_3x_section3.png';
 import SectionBackground from '@/assets/landing/Img_section3Background.png';
-import Header from '@/components/common/header/Header';
 
 export default function Home() {
   return (
     <>
-      <Header />
       <main className="w-full min-h-screen bg-black overflow-x-hidden">
         <div className="relative w-full h-0 overflow-visible">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[85vw] max-w-[2000px] z-0 rounded-[40px] overflow-hidden pointer-events-none">
