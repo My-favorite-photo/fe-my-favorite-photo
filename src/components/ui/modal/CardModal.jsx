@@ -6,7 +6,7 @@ import { forwardRef, useState } from 'react';
 
 import BackArrowIcon from '@/assets/icons/Ic_back.svg'
 import X_Icon from '@/assets/icons/Ic_x.svg'
-import ExchangeImg from '@/assets/images/Img_exchange.png'
+import img_card from '@/assets/images/img_card.svg';
 import { CardTitle } from "@/components/common/card-title/CardTitle";
 import { cn } from '@/libs/utils/cn';
 
@@ -48,11 +48,17 @@ SelectField.displayName = 'SelectField';
  * @param {String} type sell이면 나의 포토카드 판매하기 아니면 수정하기용 모달
  * @returns 
  */
-export function CardModal({ type, onClose }) {
+export function CardModal({ type, onClose, card }) {
   const [grade, setGrade] = useState("");
   const [genre, setGenre] = useState("");
 
+  const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const subject = type === "sell" ? "나의 포토카드 판매하기" : "수정하기"
+  const fullImageUrl = card?.photoCard?.imageUrl
+    ? card.photoCard.imageUrl.startsWith('http')
+      ? card.photoCard.imageUrl
+      : `${baseHost}/${card.photoCard.imageUrl}`
+    : img_card; // 기본 이미지는 폴백
 
   const onCloseBackdrop = (e) => {
     if (e.target === e.currentTarget) {
@@ -60,6 +66,7 @@ export function CardModal({ type, onClose }) {
     }
   }
 
+  console.log(card)
   return (
     <section
       className="fixed inset-0 bg-black/70 flex items-start justify-center z-50 sm:items-end md:items-center"
@@ -121,7 +128,7 @@ export function CardModal({ type, onClose }) {
           <div className="w-full overflow-y-auto px-6">
             <CardTitle
               size='L'
-              titleMessage="우리집 앞마당"
+              titleMessage={card.photoCard.name}
               className="text-2xl sm:text-[2rem] md:text-[2.5rem] font-bold mb-5"
             />
 
@@ -129,14 +136,14 @@ export function CardModal({ type, onClose }) {
               <div className="flex flex-col w-full gap-4 mt-4 sm:flex-row sm:gap-5 md:gap-10">
                 <div className="relative aspect-video bg-gray-900 rounded-lg object-cover sm:min-w-20 sm:max-w-85.5 sm:max-h-[16.0313rem] md:max-w-110 md:max-h-82.5 sm:flex-1" >
                   <Image
-                    src={ExchangeImg}
+                    src={fullImageUrl}
                     alt='기본 이미지'
                     fill
                   />
                 </div>
 
                 <div className='sm:flex-1 sm:w-full'>
-                  <CardCounterInput />
+                  <CardCounterInput card={card} />
                 </div>
               </div>
             </section>
