@@ -1,19 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-
 import img_card from '@/assets/images/img_card.svg';
-import BackArrowIcon from '@/assets/icons/Ic_back.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
-import Header from '@/components/common/header/Header';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-
 import CardBuyer from './_components/CardBuyer';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { cardService } from '@/libs/services/cardService';
 import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
