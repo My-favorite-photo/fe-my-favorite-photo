@@ -248,7 +248,7 @@ export function CardModal({ type, onClose, card }) {
                 </section>
                 <div className='border-t border-gray-400 mb-7.5 sm:hidden md:block'></div>
                 <footer className="flex gap-3.75">
-                  <Button intent="secondary" thickness='thin' size='L' onClick={() => onClose()} >취소하기</Button>
+                  <Button intent="secondary" thickness='thin' size='L' type="button" onClick={() => onClose()} >취소하기</Button>
                   <Button thickness='thin' size='L' type='submit' >판매하기</Button>
                 </footer>
               </section>
