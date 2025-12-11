@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import Header from '@/components/common/header/Header';
 import { checkAndRefreshAuth } from '@/libs/actions/auth';
 
 export default async function Layout({ children }) {
@@ -9,5 +10,10 @@ export default async function Layout({ children }) {
     redirect('/login');
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }
