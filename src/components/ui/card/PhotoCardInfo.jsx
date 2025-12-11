@@ -1,17 +1,21 @@
 export default function PhotoCardInfo({ card, type }) {
-  // const totalRemain = card.saleOptions.reduce((sum, item) => sum + item.remain, 0);
+  // card에 userCards가 있으면 [0]의 totalQuantity 값, 없으면 undefined
+  const remain = card.userCards?.[0]?.totalQuantity;
 
   const typeMap = {
+    // market-place
     remain: {
       label: '잔여',
-      left: '카드 잔여?',
+      left: remain,
       right: ` / ${card.totalQuantity}`,
     },
+    // gallery
     count: {
       label: '수량',
-      left: '카드 잔여?',
+      left: `${card.totalQuantity}`,
       right: '',
     },
+    // selling
     hideTotal: {
       label: '잔여',
       left: '',

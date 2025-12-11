@@ -10,9 +10,11 @@ export default function GradeLabel({ grade, size }) {
     ? 'text-[16px] font-bold'
     : 'sm:text-[10px] sm:font-light md:text-[16px] lg:text-[16px]';
 
+  const displayGrade = grade.replace('_', ' ');
+
   return (
     <div className={textClass}>
-      <span className={gradeStyle[grade]}>{grade.replace('_', ' ')}</span>
+      <span className={gradeStyle[grade]}>{displayGrade}</span>
     </div>
   );
 }

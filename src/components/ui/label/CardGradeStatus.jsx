@@ -1,10 +1,10 @@
 'use client';
 
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import GradeBox from '@/components/ui/label/GradeBox';
+import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 
 export default function CardGradeStatus() {
-  const { cards } = usePhotoCards();
+  const { myLocalSellingCards } = useFetchSaleCards();
 
   const gradeCount = {
     COMMON: 0,
@@ -13,13 +13,15 @@ export default function CardGradeStatus() {
     LEGENDARY: 0,
   };
 
-  cards.forEach((card) => {
-    // 카드별 saleOptions의 remain 합계
-    const totalRemain = card.saleOptions.reduce((sum, option) => sum + option.remain, 0);
-    gradeCount[card.grade] += totalRemain;
+  // 등급별 남은 카드 수 합산
+  myLocalSellingCards.forEach((card) => {
+    if (card.totalQuantity && gradeCount[card.photoCard.grade] !== undefined) {
+      gradeCount[card.photoCard.grade] += card.totalQuantity;
+    }
   });
 
-  const totalRemain = Object.values(gradeCount).reduce((a, b) => a + b, 0);
+  // 전체 수량
+  const totalRemain = Object.values(gradeCount).reduce((sum, val) => sum + val, 0);
 
   return (
     <div className="w-full mx-auto flex flex-col sm:max-w-[345px] sm:mt-[20px] md:max-w-[704px] md:mt-[40px] lg:max-w-[1480px] lg:mt-[40px]">
