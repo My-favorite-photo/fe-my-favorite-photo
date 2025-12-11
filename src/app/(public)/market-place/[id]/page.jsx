@@ -11,32 +11,16 @@ import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 
 import CardBuyer from './_components/CardBuyer';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cardService } from '@/libs/services/cardService';
+import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
 export default function SellDetailPage() {
   const { id } = useParams();
-  const [card, setCard] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchCard() {
-      setLoading(true);
-      try {
-        const res = await cardService.getCardDetail(id);
-        console.log('상세 조회 응답:', res);
-        setCard(res.cardDetail);
-      } catch (err) {
-        console.error('카드 상세 조회 실패:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCard();
-  }, [id]);
+  const { card, loading } = useFetchPhotoCardDetail(id);
 
   if (loading)
     return (
@@ -94,7 +78,7 @@ export default function SellDetailPage() {
         <div className="flex gap-2.5 mt-5 mb-10 md:gap-3.75">
           <GradeLabel grade={card.grade} size="sm" />
           <div className="text-gray-400">|</div>
-          <p className="text-gray-300 text-lg md:text-2xl">{card.genre}</p>
+          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
         </div>
 
         <Button thickness="thin" className="w-full mb-10 sm:hidden">
