@@ -74,7 +74,7 @@ export default function Header() {
                 </Popover.Button>
                 <Popover.Panel className="absolute right-0 mt-3 bg-gray-500 w-[300px] py-4 px-4 rounded-md shadow-lg z-[50]">
                   <div className="flex w-[260px] h-[83px] flex-col gap-5 text-left mb-5 ">
-                    <p class="text-white font-noto text-[18px] font-bold leading-normal">
+                    <p className="text-white font-noto text-[18px] font-bold leading-normal">
                       안녕하세요, {user.nickname}님!
                     </p>
                     <div className="flex justify-between">
