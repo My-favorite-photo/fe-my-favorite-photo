@@ -22,7 +22,7 @@ export function useFetchPhotoCards({ searchKeyword = '', filter = {} }) {
                 ? 'high'
                 : filter.price === '최신순'
                   ? 'latest'
-                  : 'low', // 기본 최신순
+                  : 'low', // 기본 낮은 가격순
         });
         console.log(response);
         setCards(response.cards);
