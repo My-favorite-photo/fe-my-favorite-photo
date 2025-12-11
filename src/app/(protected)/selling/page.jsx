@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
 import SellingFilter from './_components/SellingFilter';
