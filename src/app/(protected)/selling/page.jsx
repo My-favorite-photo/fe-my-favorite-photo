@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
 
 import { CardTitle } from '@/components/common/card-title/CardTitle';
