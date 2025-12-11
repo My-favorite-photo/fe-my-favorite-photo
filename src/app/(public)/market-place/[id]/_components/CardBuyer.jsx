@@ -6,6 +6,7 @@ import Minus from '@/assets/icons/Ic_minus.svg';
 import Plus from '@/assets/icons/Ic_plus.svg';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
 export default function CardBuyer({ card }) {
   const [quantity, setQuantity] = useState(1);
@@ -34,7 +35,7 @@ export default function CardBuyer({ card }) {
           {/* 컴포넌트 반응형 수정 */}
           <GradeLabel grade={card.grade} size="sm" />
           <div className="text-gray-400">|</div>
-          <p className="text-gray-300 text-lg md:text-2xl">{card.genre}</p>
+          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
         </div>
         <div className="flex justify-between ">
           <p className="text-white underline text-lg font-bold md:text-2xl">{card.author}</p>
@@ -42,9 +43,7 @@ export default function CardBuyer({ card }) {
       </section>
 
       <section className="mt-7.5">
-        <p className="text-base md:text-lg">
-          우리집 앞마당 포토카드입니다. 우리집 앞마당 포토카드입니다. 우리집 앞마당 포토카드입니다.
-        </p>
+        <p className="text-base md:text-lg">{card.description}</p>
       </section>
 
       <div className="border-b border-gray-400 mt-7.5 mb-7.5"></div>
@@ -57,7 +56,7 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
-            잔여카드?
+            {card.userCards[0]?.totalQuantity}
             <span className="text-gray-300"> / {card.totalQuantity}</span>
           </p>
         </div>

@@ -7,33 +7,32 @@ import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
-import { useFetchCards } from '@/libs/hooks/useFetchCards';
+import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import GradeLabel from '../label/GradeLabel';
+import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+
+const MENU_LABELS = {
+  grade: '등급',
+  genre: '장르',
+  status: '매진 여부',
+  sale: '거래 방식',
+};
 
 export default function MobileFilter({ items, size, isSellingPage = false }) {
-  const { searchKeyword } = usePhotoCards();
-  const { filter, setFilter } = useFilter();
-  const { cards, isCardSoldOut, sellingCards } = useFetchCards({ searchKeyword, filter });
+  const { filter, setFilter, searchKeyword } = useFilter();
+  const { cards } = useFetchPhotoCards({ searchKeyword, filter });
+  const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards({ searchKeyword, filter });
 
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState('grade');
 
-  const cardsRenderingType = isSellingPage ? sellingCards : cards;
+  const cardsRenderingType = isSellingPage ? myLocalSellingCards : cards;
 
-  // 메뉴 구성
+  // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({
     key,
-    label:
-      key === 'grade'
-        ? '등급'
-        : key === 'genre'
-          ? '장르'
-          : key === 'status'
-            ? '매진 여부'
-            : key === 'sale'
-              ? '거래 방식'
-              : key,
+    label: MENU_LABELS[key] || key,
   }));
 
   const dynamicFilters = useMemo(() => {
@@ -60,23 +59,13 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
     return counts;
   }, [items, cardsRenderingType, isCardSoldOut]);
 
-  // const handleSelect = (label) => {
-  //   const current = filter[category];
-  //   const isSelected = current.includes(label);
-  //   setFilter((prev) => ({
-  //     ...prev,
-  //     [category]: isSelected ? current.filter((v) => v !== label) : [...current, label],
-  //   }));
-  // };
   const handleSelect = (label) => {
+    console.log('선택 라벨:', label, '선택 라벨 목록:', filter[category]);
     const current = filter[category];
-    const isSelected = current.some((f) => f.label === label);
-    const valueObj = items[category].find((f) => f.label === label || f.value === label) || {
-      label,
-    };
+    const isSelected = current.includes(label);
     setFilter((prev) => ({
       ...prev,
-      [category]: isSelected ? current.filter((f) => f.label !== label) : [...current, valueObj],
+      [category]: isSelected ? current.filter((v) => v !== label) : [...current, label],
     }));
   };
 
@@ -128,7 +117,13 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
         <div className="flex flex-col mt-[19px]">
           {dynamicFilters[category].map((item) => {
             const isSelected = filter[category].includes(item.label);
-            const displayLabel = category === 'grade' ? item.label.replace('_', ' ') : item.label;
+
+            const displayLabel =
+              category === 'grade'
+                ? item.label.replace('_', ' ')
+                : category === 'genre'
+                  ? GENRE_LABEL[item.label] || item.label
+                  : item.label;
             const rawLabel = item.label;
 
             return (

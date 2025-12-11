@@ -5,6 +5,9 @@ import { createContext, useContext, useState } from 'react';
 const FilterContext = createContext();
 
 export function FilterProvider({ children }) {
+  const [searchKeyword, setSearchKeyword] = useState(''); // 검색
+
+  // 선택된 필터
   const [filter, setFilter] = useState({
     grade: [],
     genre: [],
@@ -13,11 +16,12 @@ export function FilterProvider({ children }) {
     sale: '',
   });
 
+  // 필터 옵션(UI)
   const filters = {
     grade: [
       { label: 'COMMON', value: 'COMMON' },
       { label: 'RARE', value: 'RARE' },
-      { label: 'SUPER_RARE', value: 'SUPER_RARE' },
+      { label: 'SUPER RARE', value: 'SUPER_RARE' },
       { label: 'LEGENDARY', value: 'LEGENDARY' },
     ],
     genre: [
@@ -31,8 +35,25 @@ export function FilterProvider({ children }) {
     sale: ['판매', '교환 제시'],
   };
 
+  // // 판매 중 카드
+  // const sellingCards = cards.filter((card) =>
+  //   (card.userCards || []).some((c) => c.status === 'ON_SALE'),
+  // );
+
+  // // 카드 품절 여부
+  // const isCardSoldOut = (card) => card.totalQuantity === 0;
+
   return (
-    <FilterContext.Provider value={{ filter, setFilter, filters }}>
+    <FilterContext.Provider
+      value={{
+        searchKeyword,
+        setSearchKeyword,
+
+        filter,
+        setFilter,
+        filters,
+      }}
+    >
       {children}
     </FilterContext.Provider>
   );

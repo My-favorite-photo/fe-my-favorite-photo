@@ -5,13 +5,13 @@ import SearchBar from '@/components/ui/search/SearchBar';
 
 export default function MarketFilter() {
   const gradeLabels = ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'];
-  const genreLabels = ['여행', '풍경', '인물', '사물'];
+  const genreLabels = ['TRAVEL', 'LANDSCAPE', 'PORTRAIT', 'OBJECT'];
   const statusLabels = ['판매 중', '판매 완료'];
   const priceLabels = ['낮은 가격순', '높은 가격순', '최신순'];
   const mobileLabels = {
-    grade: ['COMMON', 'RARE', 'SUPER_RARE', 'LEGENDARY'],
-    genre: ['여행', '풍경', '인물', '사물'],
-    status: ['판매 중', '판매 완료'],
+    grade: gradeLabels,
+    genre: genreLabels,
+    status: statusLabels,
   };
 
   return (

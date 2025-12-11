@@ -1,25 +1,31 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import PhotoCard from './PhotoCard';
 import { Pagination } from '../pagination/Pagination';
 import Link from 'next/link';
-import { useFetchCards } from '@/libs/hooks/useFetchCards';
+import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import { useFilter } from '@/providers/FilterProvider';
+import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 
 export default function PhotoCardList({
   type,
-  showSaleLabel,
+  showSaleLabel = false,
   isSellingPage = false,
   isGalleryPage = false,
 }) {
-  const { searchKeyword } = usePhotoCards();
-  const { filter } = useFilter();
-  const { cards, sellingCards, loading } = useFetchCards({ searchKeyword, filter });
+  const { filter, searchKeyword } = useFilter();
+  const { cards, loading, sellingPhotoCards } = useFetchPhotoCards({ searchKeyword, filter });
+  const { myLocalSellingCards, saleCardsLoading, sellingCards, isCardSoldOut } = useFetchSaleCards({
+    searchKeyword,
+    filter,
+  });
 
-  // isSellingPage가 true일 때만 sellingCards를 렌더링(한 카드에 두 종류)
-  const cardsRenderingType = isSellingPage ? sellingCards : cards;
+  // 카드 데이터 = isSellingPage 또는 isGalleryPage ? cards : PhotoCards
+  const cardsRenderingType = isSellingPage || isGalleryPage ? myLocalSellingCards : cards;
+
+  // 카드 로딩 상태 = isSellingPage ? cards : PhotoCards
+  const isLoading = isSellingPage || isGalleryPage ? saleCardsLoading : loading;
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,12 +41,12 @@ export default function PhotoCardList({
   let itemsPerPage = 16;
   if (windowWidth >= 1920) itemsPerPage = 15;
 
-  // cardsRenderingType = filteredCards 또는 sellingCards
+  // cardsRenderingType = cards 또는 PhotoCards
   const totalPages = Math.ceil(cardsRenderingType.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
   const pagedCards = (cardsRenderingType || []).slice(start, start + itemsPerPage);
 
-  if (loading)
+  if (isLoading)
     return (
       <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         로딩 중...
@@ -52,6 +58,8 @@ export default function PhotoCardList({
       <div className="flex justify-center">
         <div className="grid sm:grid-cols-2 sm:gap-[5px] md:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-20">
           {pagedCards.map((card) => {
+            // const cardDataStyle = isSellingPage ? card.photoCard : card;
+
             let soldOutIcon;
 
             if (windowWidth < 768) {
@@ -70,6 +78,8 @@ export default function PhotoCardList({
                 type={type}
                 soldOutIcon={soldOutIcon}
                 showSaleLabel={showSaleLabel}
+                isSellingPage={isSellingPage}
+                isGalleryPage={isGalleryPage}
               />
             );
 
@@ -90,3 +100,9 @@ export default function PhotoCardList({
     </div>
   );
 }
+
+// const cardContent = isSellingPage ? (
+//   <PhotoCard card={card} type={type} soldOutIcon={soldOutIcon} showSaleLabel={showSaleLabel} />
+// ) : (
+//   <PhotoCard card={card} type={type} soldOutIcon={soldOutIcon} showSaleLabel={showSaleLabel} />
+// );

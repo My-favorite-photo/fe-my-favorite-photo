@@ -5,20 +5,25 @@ import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import GradeLabel from '../label/GradeLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 import SaleStatusLabel from '../label/SaleStatusLabel';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
-const genreMap = {
-  TRAVEL: '여행',
-  LANDSCAPE: '풍경',
-  PORTRAIT: '인물',
-  OBJECT: '사물',
-};
-
-export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSaleLabel }) {
+export default function PhotoCard({
+  card,
+  type = 'remain',
+  soldOutIcon,
+  isSellingPage,
+  isGalleryPage,
+  showSaleLabel,
+}) {
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
-  const fullImageUrl = card?.imageUrl
-    ? card.imageUrl.startsWith('http')
-      ? card.imageUrl
-      : `${baseHost}/${card.imageUrl}`
+
+  const data = isSellingPage || isGalleryPage ? card.photoCard : card;
+  const status = isSellingPage || isGalleryPage ? card.status : card.status;
+
+  const fullImageUrl = data?.imageUrl
+    ? data.imageUrl.startsWith('http')
+      ? data.imageUrl
+      : `${baseHost}/${data.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
   return (
@@ -33,7 +38,7 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
         <Image src={fullImageUrl} alt="카드 이미지" fill style={{ objectFit: 'cover' }} />
 
         {/* SOLD_OUT 처리 */}
-        {card.status === 'SOLD_OUT' && (
+        {data.status === 'SOLD_OUT' && (
           <>
             <div className="absolute inset-0 bg-gray-500/70 rounded-[2px]" />
 
@@ -48,25 +53,25 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
         )}
 
         {/* 판매 OR 교환제시 라벨 */}
-        {showSaleLabel && (card.status === 'AVAILABLE' || card.status === 'EXCHANGE_OFFER') && (
-          <div className="absolute top-[10px] left-[10px]">
-            <SaleStatusLabel status={card.status} />
+        {showSaleLabel && (status === 'ON_SALE' || status === 'TRADING') && (
+          <div className="absolute sm:top-[5px] sm:left-[5px] md:top-[10px] md:left-[10px] lg:top-[10px] lg:left-[10px]">
+            <SaleStatusLabel status={status} />
           </div>
         )}
       </div>
 
       <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
         <p className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-[14px] md:text-[22px] lg:text-[22px]">
-          {card.name}
+          {data.name}
         </p>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-[10px] sm:text-[10px] md:text-[16px] lg:text-[16px]">
-            <GradeLabel grade={card.grade} />
+            <GradeLabel grade={data.grade} />
             <span className="border border-l-gray-400 text-4 font-normal sm:h-[14px] md:h-[23px] lg:h-[23px]" />
-            <span className="text-4 font-normal text-gray-300">{genreMap[card.genre]}</span>
+            <span className="text-4 font-normal text-gray-300">{GENRE_LABEL[data.genre]}</span>
           </div>
           <span className="text-white text-4 font-normal text-right underline underline-offset-2 decoration-0 sm:text-[10px] md:text-[16px] lg:text-[16px]">
-            {card.author}
+            {data.author}
           </span>
         </div>
       </div>
@@ -74,7 +79,7 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
       <div className="w-full border border-b-gray-400 sm:my-[10px] md:my-[20px] lg:my-[20px]" />
 
       <div className="w-full flex flex-col justify-between items-center sm:gap-[5px] text-[10px] md:gap-[10px] text-[16px] lg:gap-[10px] text-[16px]">
-        <PhotoCardInfo card={card} type={type} />
+        <PhotoCardInfo card={data} type={type} />
       </div>
 
       <Image

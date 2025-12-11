@@ -6,13 +6,14 @@ import SearchIcon from '@/assets/icons/Ic_search.svg';
 import X_Icon from '@/assets/icons/Ic_x.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { cn } from '@/libs/utils/cn';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 
 import PhotoCardList from '../card/PhotoCardList';
 import DefaultDropDown from '../filter/DefaultDropDown';
+import { useFilter } from '@/providers/FilterProvider';
 
 export function SellPhotoCardModal({ onClose }) {
-  const { searchKeyword, setSearchKeyword } = usePhotoCards();
+  // const { searchKeyword, setSearchKeyword } = usePhotoCards();
+  const { searchKeyword, setSearchKeyword } = useFilter();
   const [keyword, setKeyword] = useState('');
 
   const handleChange = (e) => {
@@ -28,7 +29,6 @@ export function SellPhotoCardModal({ onClose }) {
   };
 
   const onCloseBackdrop = (e) => {
-
     if (e.target === e.currentTarget) {
       onClose();
     }

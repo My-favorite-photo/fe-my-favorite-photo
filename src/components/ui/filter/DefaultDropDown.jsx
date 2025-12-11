@@ -4,20 +4,23 @@ import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
 import Image from 'next/image';
 import ic_arrow from '@/assets/icons/Ic_arrow.svg';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
 export default function DefaultDropDown({ items, placeholder, filterKey }) {
   const [open, setOpen] = useState(false);
-  const { filter, setFilter, filters } = useFilter();
+  const { filter, setFilter } = useFilter();
 
   const handleSelect = (item) => {
     setOpen(false);
-    // items가 label이면 filters에서 value 찾기
-    const value = filters[filterKey]?.find((f) => f.label === item || f.value === item);
-    setFilter((prev) => ({ ...prev, [filterKey]: [value] }));
+    setFilter((prev) => ({ ...prev, [filterKey]: [item] }));
   };
 
   const selected = filter[filterKey]?.[0] || null;
-  const displaySelected = selected ? selected.label.replace(/_/g, ' ') : placeholder;
+  const displaySelected = selected
+    ? filterKey === 'genre'
+      ? GENRE_LABEL[selected] || selected
+      : selected.replace(/_/g, ' ')
+    : placeholder;
 
   return (
     <div className="relative inline-flex flex-col items-start gap-[18px] text-white">
@@ -39,7 +42,7 @@ export default function DefaultDropDown({ items, placeholder, filterKey }) {
         <ul className="absolute top-full mt-[18px] left-0 z-99 flex flex-col items-start gap-[15px] px-[20px] py-[15px] border-[1px] border-gray-200 bg-black rounded-[2px] font-normal cursor-pointer whitespace-nowrap md:text-[14px] lg:text-[16px]">
           {items.map((item) => (
             <li key={item} onClick={() => handleSelect(item)}>
-              {item.replace(/_/g, ' ')}
+              {filterKey === 'genre' ? GENRE_LABEL[item] || item : item.replace(/_/g, ' ')}
             </li>
           ))}
         </ul>

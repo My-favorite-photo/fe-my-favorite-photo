@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import ic_search from '@/assets/icons/Ic_search.svg';
+import { useFilter } from '@/providers/FilterProvider';
 
 export default function SearchBar() {
-  const { searchKeyword, setSearchKeyword } = usePhotoCards();
+  const { searchKeyword, setSearchKeyword } = useFilter();
 
   const handleChange = (e) => {
     setSearchKeyword(e.target.value);
