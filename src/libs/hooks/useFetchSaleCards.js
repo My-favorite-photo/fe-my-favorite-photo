@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { sellService } from '../services/sellService';
 
 export function useFetchSaleCards(params = {}) {
