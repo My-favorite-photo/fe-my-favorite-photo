@@ -1,11 +1,15 @@
+"use client"
 import Image from 'next/image';
+
+import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
-import img_soldOut from '@/assets/icons/Ic_soldout.svg';
-import GradeLabel from '../label/GradeLabel';
-import PhotoCardInfo from './PhotoCardInfo';
-import SaleStatusLabel from '../label/SaleStatusLabel';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
+
+import GradeLabel from '../label/GradeLabel';
+import SaleStatusLabel from '../label/SaleStatusLabel';
+import PhotoCardInfo from './PhotoCardInfo';
 
 export default function PhotoCard({
   card,
@@ -14,7 +18,9 @@ export default function PhotoCard({
   isSellingPage,
   isGalleryPage,
   showSaleLabel,
+  modal
 }) {
+  const { openModal } = useModal()
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
 
   const data = isSellingPage || isGalleryPage ? card.photoCard : card;
@@ -26,13 +32,25 @@ export default function PhotoCard({
       : `${baseHost}/${data.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
+  const handleOpenCardModal = (e) => {
+    e.stopPropagation();
+    openModal(MODAL_TYPES.CARD_MODAL, { type: "sell", card: card });
+  };
+
+  let clickHandler = undefined;
+
+  if (modal) {
+    clickHandler = handleOpenCardModal;
+  }
+
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
         sm:w-[170px] sm:p-[10px]
-        md:w-[342px] md:h-[517px] md:p-[20px]
+        md:w-[342px] md:h-[517px] :p-[20px]
         lg:w-[440px] lg:h-[600px] lg:p-[40px]
         "
+      onClick={clickHandler}
     >
       <div className="relative w-full sm:h-[112px] md:h-[227px] lg:h-[270px]">
         <Image src={fullImageUrl} alt="카드 이미지" fill style={{ objectFit: 'cover' }} />
