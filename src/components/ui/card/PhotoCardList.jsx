@@ -152,7 +152,9 @@ export default function PhotoCardList({
               </div>
             );
           })}
-          <Modal
+        </div>
+      </div>
+                <Modal
             isOpen={isLoginModalOpen}
             onClose={() => setIsLoginModalOpen(false)}
             title="로그인이 필요합니다."
@@ -160,8 +162,6 @@ export default function PhotoCardList({
             confirmText="확인"
             onConfirm={() => router.push('/login')}
           />
-        </div>
-      </div>
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
     </div>
   );
