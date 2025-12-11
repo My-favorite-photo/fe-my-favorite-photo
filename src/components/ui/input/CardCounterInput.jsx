@@ -106,7 +106,7 @@ export function CardCounterInput({ card, errors, register, setValue, getValues }
                   onChange={handlePriceChange}
                   className="w-full rounded-[2px] border border-gray-200 bg-transparent text-lg text-white focus:outline-none placeholder:text-sm placeholder:font-light px-5 py-2.25 sm:pr-6 sm:placeholder:text-base"
                   placeholder="숫자만 입력"
-                  {...register("price", { required: true, min: 0, message: "가격은 0포인트 이상이어야 합니다." })}
+                  {...register("price", { required: "가격을 입력해주세요.", min: { value: 0, message: "가격은 0포인트 이상이어야 합니다." } })}
                 />
                 {errors.price && <span className="text-red text-xs mt-1">{errors.price.message}</span>}
                 <span className="pointer-events-none absolute right-[8%] top-1/2 -translate-y-1/2 text-lg font-bold text-white sm:text-[1.25rem]">
