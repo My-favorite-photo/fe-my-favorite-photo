@@ -50,7 +50,7 @@ export default function Header() {
                       className="w-6 h-6"
                     />
                   </Popover.Button>
-                  <Popover.Panel className="absolute right-0 mt-2 bg-gray-500 w-[300px] py-3 divide-y divide-gray-400 z-50">
+                  <Popover.Panel className="absolute right-0 mt-2 bg-gray-500 w-[300px] py-3 divide-y divide-gray-400 z-[50]">
                     {notifications.length === 0 ? (
                       <p className="text-gray-400 py-4 text-center">알림이 없습니다.</p>
                     ) : (
@@ -68,9 +68,39 @@ export default function Header() {
                   </Popover.Panel>
                 </Popover>
               </span>
-              <span className="text-[#DDDDDD] font-br text-[18px] font-normal leading-normal tracking-[-0.54px]">
-                {user.nickname}
-              </span>
+              <Popover className="relative">
+                <Popover.Button className="text-[#DDDDDD] font-br text-[18px] font-normal leading-normal tracking-[-0.54px]">
+                  {user.nickname}
+                </Popover.Button>
+                <Popover.Panel className="absolute right-0 mt-3 bg-gray-500 w-[300px] py-4 px-4 rounded-md shadow-lg z-[50]">
+                  <div className="flex w-[260px] h-[83px] flex-col gap-5 text-left mb-5 ">
+                    <p class="text-white font-noto text-[18px] font-bold leading-normal">
+                      안녕하세요, {user.nickname}님!
+                    </p>
+                    <div className="flex justify-between">
+                      <p className="text-gray-300 font-noto text-[12px] font-light leading-normal">
+                        보유 포인트
+                      </p>
+                      <p className="text-main text-right font-noto text-[12px] font-normal leading-normal">
+                        {user.points}
+                      </p>
+                    </div>
+                  </div>
+                  <ul className="flex flex-col gap-[15px] text-left text-white font-noto text-[14px] font-bold leading-normal">
+                    <li>
+                      <Link href="/market-place">마켓플레이스</Link>
+                    </li>
+
+                    <li>
+                      <Link href="/gallery">마이갤러리</Link>
+                    </li>
+
+                    <li>
+                      <Link href="/selling">판매 중인 포토카드</Link>
+                    </li>
+                  </ul>
+                </Popover.Panel>
+              </Popover>
               <p className="text-[#5A5A5A] text-center font-noto text-[14px] font-normal leading-normal">
                 |
               </p>

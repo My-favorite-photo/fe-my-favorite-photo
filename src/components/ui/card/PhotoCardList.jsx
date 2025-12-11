@@ -8,19 +8,39 @@ import { useFilter } from '@/providers/FilterProvider';
 import { usePhotoCards } from '@/providers/PhotoCardProvider';
 
 import { Pagination } from '../pagination/Pagination';
+import PhotoCard from './PhotoCard';
 
 export default function PhotoCardList({
   type,
   showSaleLabel,
   isSellingPage = false,
   isGalleryPage = false,
+  cards: propsCards,
 }) {
   const { searchKeyword } = usePhotoCards();
   const { filter } = useFilter();
+
   const { cards, sellingCards, loading } = useFetchCards({ searchKeyword, filter });
 
+  // 검색/필터 적용 여부 확인
+  const isFiltering =
+    filter.grade.length > 0 ||
+    filter.genre.length > 0 ||
+    filter.status.length > 0 ||
+    filter.sale.length > 0 ||
+    searchKeyword.length > 0;
+
   // isSellingPage가 true일 때만 sellingCards를 렌더링(한 카드에 두 종류)
-  const cardsRenderingType = isSellingPage ? sellingCards : cards;
+  // const cardsRenderingType = isSellingPage ? sellingCards : cards;
+  let cardsRenderingType;
+
+  if (isGalleryPage) {
+    // 마이갤러리
+    cardsRenderingType = isFiltering ? cards : propsCards || [];
+  } else {
+    // 마켓플레이스 / 판매 페이지
+    cardsRenderingType = isSellingPage ? sellingCards : cards;
+  }
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,12 +56,15 @@ export default function PhotoCardList({
   let itemsPerPage = 16;
   if (windowWidth >= 1920) itemsPerPage = 15;
 
+  if (!cardsRenderingType) return null;
+
   // cardsRenderingType = filteredCards 또는 sellingCards
   const totalPages = Math.ceil(cardsRenderingType.length / itemsPerPage);
   const start = (currentPage - 1) * itemsPerPage;
   const pagedCards = (cardsRenderingType || []).slice(start, start + itemsPerPage);
 
-  if (loading)
+  // if (loading)
+  if (loading && !isGalleryPage)
     return (
       <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         로딩 중...
@@ -71,16 +94,24 @@ export default function PhotoCardList({
                 type={type}
                 soldOutIcon={soldOutIcon}
                 showSaleLabel={showSaleLabel}
+                isGalleryPage={isGalleryPage}
               />
             );
 
+            // return isLinkDisabled ? (
+            //   <div key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}>{cardContent}</div>
+            // ) : (
+            //   <Link
+            //     href={`/market-place/${card.id}`}
+            //     key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}
+            //   >
+            //     {cardContent}
+            //   </Link>
+
             return isLinkDisabled ? (
-              <div key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}>{cardContent}</div>
+              <div key={card.id}>{cardContent}</div>
             ) : (
-              <Link
-                href={`/market-place/${card.id}`}
-                key={isSellingPage ? `${card.id}-${card.saleType}` : card.id}
-              >
+              <Link href={`/market-place/${card.id}`} key={card.id}>
                 {cardContent}
               </Link>
             );

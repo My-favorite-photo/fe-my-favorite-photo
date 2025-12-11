@@ -1,10 +1,16 @@
 'use client';
 
-import { usePhotoCards } from '@/providers/PhotoCardProvider';
 import GradeBox from '@/components/ui/label/GradeBox';
+import { useAuth } from '@/providers/AuthProvider';
+import { usePhotoCards } from '@/providers/PhotoCardProvider';
 
-export default function CardGradeStatus() {
-  const { cards } = usePhotoCards();
+export default function CardGradeStatus({ cards: propsCards }) {
+  const { cards: contextCards } = usePhotoCards();
+  const { user } = useAuth();
+
+  const cards = propsCards && propsCards.length > 0 ? propsCards : contextCards;
+
+  if (!cards || cards.length === 0) return null;
 
   const gradeCount = {
     COMMON: 0,
@@ -14,9 +20,14 @@ export default function CardGradeStatus() {
   };
 
   cards.forEach((card) => {
-    // 카드별 saleOptions의 remain 합계
-    const totalRemain = card.saleOptions.reduce((sum, option) => sum + option.remain, 0);
-    gradeCount[card.grade] += totalRemain;
+    const grade = card.grade || card.photoCard?.grade;
+    if (!grade) return;
+
+    const remain = card.saleOptions
+      ? card.saleOptions.reduce((sum, option) => sum + option.remain, 0)
+      : 1;
+
+    gradeCount[grade] += remain;
   });
 
   const totalRemain = Object.values(gradeCount).reduce((a, b) => a + b, 0);
@@ -25,7 +36,7 @@ export default function CardGradeStatus() {
     <div className="w-full mx-auto flex flex-col sm:max-w-[345px] sm:mt-[20px] md:max-w-[704px] md:mt-[40px] lg:max-w-[1480px] lg:mt-[40px]">
       <div className="flex items-center gap-[10px] mb-[20px]">
         <span className="text-gray-200 sm:text-[14px] md:text-[20px] lg:text-[24px] font-bold">
-          {/**로그인한 유저명 */}님이 보유한 포토카드
+          {user?.nickname ?? '유저'} 님이 보유한 포토카드
         </span>
         <span className="text-gray-300 text-right sm:text-[12px] lg:text-[18px] lg:text-[20px] font-normal">
           ({totalRemain}장)
