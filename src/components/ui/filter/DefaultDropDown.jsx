@@ -12,7 +12,18 @@ export default function DefaultDropDown({ items, placeholder, filterKey }) {
 
   const handleSelect = (item) => {
     setOpen(false);
-    setFilter((prev) => ({ ...prev, [filterKey]: [item] }));
+
+    setFilter((prev) => {
+      const current = prev[filterKey]?.[0];
+
+      // 이미 선택된 항목을 다시 클릭하면 필터 해제
+      if (current === item) {
+        return { ...prev, [filterKey]: [] };
+      }
+
+      // 새로운 항목 선택
+      return { ...prev, [filterKey]: [item] };
+    });
   };
 
   const selected = filter[filterKey]?.[0] || null;

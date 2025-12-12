@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
@@ -11,6 +11,7 @@ import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import GradeLabel from '../label/GradeLabel';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
 
 const MENU_LABELS = {
   grade: '등급',
@@ -19,15 +20,38 @@ const MENU_LABELS = {
   sale: '거래 방식',
 };
 
-export default function MobileFilter({ items, size, isSellingPage = false }) {
+export default function MobileFilter({ items, size, isGallery = false, isSellingPage = false }) {
   const { filter, setFilter, searchKeyword } = useFilter();
-  const { cards } = useFetchPhotoCards({ searchKeyword, filter });
-  const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards({ searchKeyword, filter });
+  const { cards } = useFetchPhotoCards();
+  const { myCards } = useFetchUserCards();
+  const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards();
 
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState('grade');
 
-  const cardsRenderingType = isSellingPage ? myLocalSellingCards : cards;
+  // 페이지 바뀌면 필터 리셋
+  useEffect(() => {
+    setFilter({
+      grade: [],
+      genre: [],
+      status: [],
+      sale: [],
+    });
+  }, [isGallery, isSellingPage]);
+
+  // 화면 표시용 (c.grade 또는 c.photoCard.grade)
+  let cardsRenderingType;
+
+  if (isGallery) {
+    cardsRenderingType = myCards;
+  } else if (isSellingPage) {
+    cardsRenderingType = myLocalSellingCards;
+  } else {
+    cardsRenderingType = cards;
+  }
+
+  // count 계산용
+  const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : cards;
 
   // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({
@@ -35,30 +59,38 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
     label: MENU_LABELS[key] || key,
   }));
 
-  const dynamicFilters = useMemo(() => {
+  const dynamicFilters = (() => {
     const counts = {};
 
     Object.keys(items).forEach((key) => {
       counts[key] = items[key].map((label) => {
         let count = 0;
 
-        if (key === 'status') {
-          count = cardsRenderingType.filter(
-            (c) => (isCardSoldOut(c) ? '판매 완료' : '판매 중') === label,
-          ).length;
-        } else if (key === 'sale') {
-          count = cardsRenderingType.filter((c) =>
-            c.saleOptions?.some((s) => s.type === label),
-          ).length;
-        } else {
-          count = cardsRenderingType.filter((c) => c[key] === label).length;
-        }
+        count = countSource.filter((c) => {
+          // 판매 여부
+          if (key === 'status') {
+            return (isCardSoldOut(c) ? '판매 완료' : '판매 중') === label;
+          }
+
+          // 거래 방식 -> 변경 예정(saleOptions)
+          if (key === 'sale') {
+            return c.saleOptions?.some((s) => s.type === label);
+          }
+
+          // gallery / selling = userCard 데이터 → photoCard.grade
+          const target = isGallery || isSellingPage ? c.photoCard : c;
+
+          return target[key] === label;
+        }).length;
+
         return { label, count };
       });
     });
-    return counts;
-  }, [items, cardsRenderingType, isCardSoldOut]);
 
+    return counts;
+  })();
+
+  // 필터 선택
   const handleSelect = (label) => {
     console.log('선택 라벨:', label, '선택 라벨 목록:', filter[category]);
     const current = filter[category];
@@ -69,6 +101,7 @@ export default function MobileFilter({ items, size, isSellingPage = false }) {
     }));
   };
 
+  // 필터 초기화
   const resetCategoryFilter = () => {
     setFilter((prev) => ({ ...prev, [category]: [] }));
   };

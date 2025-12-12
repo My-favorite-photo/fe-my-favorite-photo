@@ -15,8 +15,8 @@ export default function GalleryFilter() {
       {/* 모바일 */}
       <div className="md:hidden">
         <div className="flex gap-[10px] mb-5">
-          <MobileFilter items={mobileLabels} size="45" />
-          <SearchBar />
+          <MobileFilter items={mobileLabels} size="45" isGalleryPage={true} />
+          <SearchBar isGallery={true} />
         </div>
       </div>
 
@@ -24,7 +24,7 @@ export default function GalleryFilter() {
       <div className="hidden md:flex md:justify-between md:mb-[40px] lg:flex lg:justify-between lg:mb-[60px]">
         <div className="flex items-center">
           <div className="md:mr-[30px] lg:mr-[60px]">
-            <SearchBar />
+            <SearchBar isGallery={true} />
           </div>
 
           <div className="flex md:gap-[25px] lg:gap-[45px]">

@@ -20,7 +20,7 @@ export default function MySelling() {
           <CardTitle size="M" titleMessage="나의 판매 포토카드" className="w-full mx-auto" />
         </div>
       </div>
-      <CardGradeStatus />
+      <CardGradeStatus isSellingPage={true} />
       <SellingFilter />
 
       <PhotoCardList type="hideTotal" showSaleLabel={true} isSellingPage={true} />
