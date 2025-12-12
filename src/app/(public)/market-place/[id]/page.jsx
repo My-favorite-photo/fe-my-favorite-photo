@@ -7,27 +7,29 @@ import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 import CardBuyer from './_components/CardBuyer';
 import { useParams } from 'next/navigation';
-import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { useFetchMarketCardDetail } from '@/libs/hooks/useFetchMarketCardDetail';
 
 export default function SellDetailPage() {
   const { id } = useParams();
 
-  const { card, loading } = useFetchPhotoCardDetail(id);
+  const { marketDetailCard, marketDetailLoading } = useFetchMarketCardDetail(id);
 
-  if (loading)
+  if (marketDetailLoading)
     return (
       <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         로딩 중...
       </p>
     );
 
-  if (!card)
+  if (!marketDetailCard)
     return (
       <p className="flex justify-center items-center h-[60vh] text-white text-3xl font-bold">
         해당 카드를 찾을 수 없습니다.
       </p>
     );
+
+  const card = marketDetailCard;
 
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const fullImageUrl = card?.imageUrl

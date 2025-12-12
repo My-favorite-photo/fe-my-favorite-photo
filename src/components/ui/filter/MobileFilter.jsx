@@ -7,11 +7,11 @@ import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
-import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import GradeLabel from '../label/GradeLabel';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 
 const MENU_LABELS = {
   grade: '등급',
@@ -22,7 +22,7 @@ const MENU_LABELS = {
 
 export default function MobileFilter({ items, size, isGallery = false, isSellingPage = false }) {
   const { filter, setFilter, searchKeyword } = useFilter();
-  const { cards } = useFetchPhotoCards();
+  const { marketCards } = useFetchMarketCards();
   const { myCards } = useFetchUserCards();
   const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards();
 
@@ -47,11 +47,11 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
   } else if (isSellingPage) {
     cardsRenderingType = myLocalSellingCards;
   } else {
-    cardsRenderingType = cards;
+    cardsRenderingType = marketCards;
   }
 
   // count 계산용
-  const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : cards;
+  const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : marketCards;
 
   // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({

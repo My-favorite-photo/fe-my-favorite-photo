@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Image from 'next/image';
 
 import img_soldOut from '@/assets/icons/Ic_soldout.svg';
@@ -11,16 +11,8 @@ import GradeLabel from '../label/GradeLabel';
 import SaleStatusLabel from '../label/SaleStatusLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 
-export default function PhotoCard({
-  card,
-  type = 'remain',
-  soldOutIcon,
-  isSellingPage,
-  isGalleryPage,
-  showSaleLabel,
-  modal
-}) {
-  const { openModal } = useModal()
+export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSaleLabel, modal }) {
+  const { openModal } = useModal();
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
 
   const fullImageUrl = card?.imageUrl
@@ -31,7 +23,7 @@ export default function PhotoCard({
 
   const handleOpenCardModal = (e) => {
     e.stopPropagation();
-    openModal(MODAL_TYPES.CARD_MODAL, { type: "sell", card: card });
+    openModal(MODAL_TYPES.CARD_MODAL, { type: 'sell', card: card });
   };
 
   let clickHandler = undefined;
@@ -39,7 +31,6 @@ export default function PhotoCard({
   if (modal) {
     clickHandler = handleOpenCardModal;
   }
-  // const dataTypeCheck = isSellingPage || isGalleryPage;
 
   return (
     <div
@@ -78,7 +69,7 @@ export default function PhotoCard({
 
       <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
         <p className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-[14px] md:text-[22px] lg:text-[22px]">
-          {card.name}
+          {card.name || '카드 이름 없음'}
         </p>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-[10px] sm:text-[10px] md:text-[16px] lg:text-[16px]">
@@ -87,7 +78,7 @@ export default function PhotoCard({
             <span className="text-4 font-normal text-gray-300">{GENRE_LABEL[card.genre]}</span>
           </div>
           <span className="text-white text-4 font-normal text-right underline underline-offset-2 decoration-0 sm:text-[10px] md:text-[16px] lg:text-[16px]">
-            {card.nickname}
+            {card.nickname || '유저'}
           </span>
         </div>
       </div>

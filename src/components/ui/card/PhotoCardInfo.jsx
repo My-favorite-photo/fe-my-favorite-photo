@@ -6,7 +6,7 @@ export default function PhotoCardInfo({ card, type }) {
     // market-place
     remain: {
       label: '잔여',
-      left: remain,
+      left: `${card.sale?.quantity ?? '?'}`,
       right: ` / ${card.totalQuantity}`,
     },
     // gallery
