@@ -6,10 +6,10 @@ import SearchIcon from '@/assets/icons/Ic_search.svg';
 import X_Icon from '@/assets/icons/Ic_x.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { cn } from '@/libs/utils/cn';
+import { useFilter } from '@/providers/FilterProvider';
 
 import PhotoCardList from '../card/PhotoCardList';
 import DefaultDropDown from '../filter/DefaultDropDown';
-import { useFilter } from '@/providers/FilterProvider';
 
 export function SellPhotoCardModal({ onClose }) {
   // const { searchKeyword, setSearchKeyword } = usePhotoCards();
@@ -100,7 +100,10 @@ export function SellPhotoCardModal({ onClose }) {
               <DefaultDropDown items={['풍경', '인물', '동물']} filterKey="genre" />
             </div>
           </div>
-          <PhotoCardList />
+          <PhotoCardList
+            isGalleryPage={true}
+            modal={true}
+          />
           <section>
             <div className="flex w-full gap-4 mt-4"></div>
           </section>

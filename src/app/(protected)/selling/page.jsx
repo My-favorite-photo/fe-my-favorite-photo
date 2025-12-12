@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import { CardTitle } from '@/components/common/card-title/CardTitle';
-import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
-import SellingFilter from './_components/SellingFilter';
 import PhotoCardList from '@/components/ui/card/PhotoCardList';
+import CardGradeStatus from '@/components/ui/label/CardGradeStatus';
+
+import SellingFilter from './_components/SellingFilter';
 
 export default function MySelling() {
   return (
@@ -25,18 +24,6 @@ export default function MySelling() {
       <SellingFilter />
 
       <PhotoCardList type="hideTotal" showSaleLabel={true} isSellingPage={true} />
-      {/* <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {myLocalSellingCards.map((card) => (
-          <Link
-            key={card.id} // 고유 key 사용
-            href={`/gallery/${card.id}`}
-          >
-            <MySellingPhotoCard
-              userCard={card} // 개별 card 객체 전달
-            />
-          </Link>
-        ))}
-      </div> */}
     </div>
   );
 }

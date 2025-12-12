@@ -44,7 +44,7 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
       <p className={pTagClasses}>{titleMessage}</p>
       {buttonMessage && (
         <div className='mb-5.25'>
-          {LinkUrl && (
+          {LinkUrl ? (
             <Link
               href={LinkUrl}
             >
@@ -52,7 +52,12 @@ export function CardTitle({ size, titleMessage, buttonSize, buttonMessage, butto
                 {buttonMessage}
               </Button>
             </Link>
-          )}
+          ) : (
+            <Button size={buttonSize} thickness='thin' intent={buttonIntent} {...props} >
+              {buttonMessage}
+            </Button>
+          )
+          }
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { cardService } from '@/libs/services/cardService';
 
 export function useFetchPhotoCardDetail(photoCardId) {

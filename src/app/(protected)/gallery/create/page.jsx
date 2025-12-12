@@ -84,14 +84,24 @@ export default function PhotoCardCreation() {
 
     try {
       const response = await cardService.createCard(formData);
+      const json = await response.json();
+      const photoCard = json.result.photoCard;
 
-      const result = response;
-      console.log('카드 생성 성공:', result);
-      alert('포토카드가 발행되고 갤러리에 추가되었습니다.');
-      router.replace('/gallery');
+      console.log('카드 생성 성공:', photoCard);
+
+      router.push(
+        `/gallery/create/success?name=${encodeURIComponent(
+          photoCard.name,
+        )}&grade=${encodeURIComponent(photoCard.grade)}`,
+      );
     } catch (error) {
       console.error('API Error:', error);
-      alert('카드  생성 중 오류 발생:', error.message);
+
+      router.push(
+        `/gallery/create/fail?name=${encodeURIComponent(data.name)}&grade=${encodeURIComponent(
+          data.grade,
+        )}`,
+      );
     } finally {
       setIsLoading(false);
     }
