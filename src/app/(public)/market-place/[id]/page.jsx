@@ -42,7 +42,7 @@ export default function SellDetailPage() {
         마켓플레이스
       </h1>
       <CardTitle
-        titleMessage={card.title}
+        titleMessage={card.name}
         className="text-2xl font-bold mb-2.5 sm:mb-5 sm:text-[32px] md:text-[40px]"
       />
       <section className="mt-6.5 sm:flex sm:gap-5 sm:mt-12 md:gap-20">
@@ -69,7 +69,7 @@ export default function SellDetailPage() {
           푸릇푸릇한 여름 풍경, 눈 많이 내린 겨울 풍경 사진에 관심이 많습니다.
         </p>
         <div className="flex gap-2.5 mt-5 mb-10 md:gap-3.75">
-          <GradeLabel grade={card.grade} size="sm" />
+          <GradeLabel grade={card.grade} size />
           <div className="text-gray-400">|</div>
           <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
         </div>
