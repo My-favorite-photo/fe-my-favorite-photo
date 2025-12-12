@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+
 import { useAuth } from '@/providers/AuthProvider';
 import { useFilter } from '@/providers/FilterProvider';
 
@@ -14,11 +16,17 @@ import Modal from '../modal/Modal';
 import { Pagination } from '../pagination/Pagination';
 import PhotoCard from './PhotoCard';
 
+/**
+ * 
+ * @param {String} type  -- 포토카드의 수량 
+ * @return
+ */
 export default function PhotoCardList({
   type,
   showSaleLabel = false,
   isSellingPage = false,
   isGalleryPage = false,
+  modal = false,
 }) {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
@@ -128,6 +136,7 @@ export default function PhotoCardList({
             const isLinkDisabled = isSellingPage || isGalleryPage;
             const normalizedCard = normalizeCard(card);
 
+
             const cardContent = (
               <PhotoCard
                 card={normalizedCard}
@@ -136,6 +145,7 @@ export default function PhotoCardList({
                 showSaleLabel={showSaleLabel}
                 isSellingPage={isSellingPage}
                 isGalleryPage={isGalleryPage}
+                modal={modal}
               />
             );
 
