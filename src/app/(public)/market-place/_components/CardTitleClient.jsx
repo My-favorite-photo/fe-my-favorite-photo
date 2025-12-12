@@ -19,6 +19,8 @@ export function CardTitleClient() {
         onClick={() => onClickButton()}
         titleMessage="마켓 플레이스"
         buttonMessage="나의 포토카드 판매하기"
-      /></>
+        className="w-full mx-auto md:text-[3.875rem] sm:text-[3rem]"
+      />
+    </>
   )
 }
