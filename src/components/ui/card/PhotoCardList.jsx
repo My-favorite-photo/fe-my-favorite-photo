@@ -1,14 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
-
 import { useAuth } from '@/providers/AuthProvider';
 import { useFilter } from '@/providers/FilterProvider';
 
@@ -26,7 +23,8 @@ export default function PhotoCardList({
   showSaleLabel = false,
   isSellingPage = false,
   isGalleryPage = false,
-  modal = false,
+  isSellModal = false,
+  isExchangeModal = false,
 }) {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
@@ -145,7 +143,8 @@ export default function PhotoCardList({
                 showSaleLabel={showSaleLabel}
                 isSellingPage={isSellingPage}
                 isGalleryPage={isGalleryPage}
-                modal={modal}
+                sellModal={isSellModal}
+                exchangeModal={isExchangeModal}
               />
             );
 
@@ -164,14 +163,14 @@ export default function PhotoCardList({
           })}
         </div>
       </div>
-                <Modal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-            title="로그인이 필요합니다."
-            description="로그인 하시겠습니까? 다양한 서비스를 편리하게 이용하실 수 있습니다."
-            confirmText="확인"
-            onConfirm={() => router.push('/login')}
-          />
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        title="로그인이 필요합니다."
+        description="로그인 하시겠습니까? 다양한 서비스를 편리하게 이용하실 수 있습니다."
+        confirmText="확인"
+        onConfirm={() => router.push('/login')}
+      />
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
     </div>
   );

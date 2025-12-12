@@ -4,10 +4,19 @@ import { MODAL_TYPES, useModal } from "@/providers/ModalProvider";
 
 export function CardTitleClient() {
   const { openModal } = useModal()
+
+  const onClickButton = () => {
+    openModal(MODAL_TYPES.SELL_PHOTO_CARD, {
+      title: "나의 포토카드 판매하기",
+      subTitle: "마이갤러리",
+      modal: "sell"
+    })
+  }
+
   return (
     <>
       <CardTitle
-        onClick={() => openModal(MODAL_TYPES.SELL_PHOTO_CARD)}
+        onClick={() => onClickButton()}
         titleMessage="마켓 플레이스"
         buttonMessage="나의 포토카드 판매하기"
       /></>

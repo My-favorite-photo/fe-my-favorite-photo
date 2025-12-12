@@ -11,7 +11,7 @@ import { useFilter } from '@/providers/FilterProvider';
 import PhotoCardList from '../card/PhotoCardList';
 import DefaultDropDown from '../filter/DefaultDropDown';
 
-export function SellPhotoCardModal({ onClose }) {
+export function SellPhotoCardModal({ onClose, title, subTitle, modal }) {
   // const { searchKeyword, setSearchKeyword } = usePhotoCards();
   const { searchKeyword, setSearchKeyword } = useFilter();
   const [keyword, setKeyword] = useState('');
@@ -34,6 +34,9 @@ export function SellPhotoCardModal({ onClose }) {
     }
   };
 
+  const isExchange = modal === 'exchange'
+  const isSell = modal === 'sell';
+
   return (
     <section
       className="fixed inset-0 bg-black/70 flex items-end justify-center z-10 md:items-center"
@@ -55,7 +58,7 @@ export function SellPhotoCardModal({ onClose }) {
         <header className="py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-gray-300 font-br tracking-[-0.72px] text-sm sm:text-base md:text-2xl">
-              마이갤러리
+              {subTitle}
             </h1>
             <button
               className="hidden md:block text-gray-400 hover:text-white text-3xl transition"
@@ -69,10 +72,10 @@ export function SellPhotoCardModal({ onClose }) {
         <div className="overflow-y-auto space-y-6">
           <CardTitle
             size="L"
-            titleMessage="나의 포토카드 판매하기"
+            titleMessage={title}
             className="hidden no-underline sm:block font-br font-bold tracking-[-1.38px] text-[1.625rem] sm:text-[2.5rem] md:text-[2.875rem]"
           />
-          <h2 className="sm:hidden font-br text-white text-[1.625rem]">나의 포토카드 판매하기</h2>
+          <h2 className="sm:hidden font-br text-white text-[1.625rem]">{title}</h2>
           <div className="flex gap-2.5 sm:gap-7.5 md:gap-14.5">
             <div className="relative flex">
               <input
@@ -102,7 +105,8 @@ export function SellPhotoCardModal({ onClose }) {
           </div>
           <PhotoCardList
             isGalleryPage={true}
-            modal={true}
+            isSellModal={isSell}
+            isExchangeModal={isExchange}
           />
           <section>
             <div className="flex w-full gap-4 mt-4"></div>

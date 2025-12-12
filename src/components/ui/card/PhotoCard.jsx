@@ -18,7 +18,8 @@ export default function PhotoCard({
   isSellingPage,
   isGalleryPage,
   showSaleLabel,
-  modal
+  sellModal,
+  exchangeModal
 }) {
   const { openModal } = useModal()
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
@@ -29,15 +30,24 @@ export default function PhotoCard({
       : `${baseHost}/${card.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
-  const handleOpenCardModal = (e) => {
+  const handleOpenSellModal = (e) => {
     e.stopPropagation();
     openModal(MODAL_TYPES.CARD_MODAL, { type: "sell", card: card });
   };
 
+  const handleOpenExchangeModal = (e) => {
+    e.stopPropagation();
+    openModal(MODAL_TYPES.TRADE_OFFER_MODAL, { card: card });
+  };
+
   let clickHandler = undefined;
 
-  if (modal) {
-    clickHandler = handleOpenCardModal;
+  if (exchangeModal) {
+    clickHandler = handleOpenExchangeModal;
+  }
+
+  if (sellModal) {
+    clickHandler = handleOpenSellModal;
   }
   // const dataTypeCheck = isSellingPage || isGalleryPage;
 

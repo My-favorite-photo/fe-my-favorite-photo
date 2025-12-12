@@ -1,19 +1,31 @@
 'use client';
 
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+
 import img_card from '@/assets/images/img_card.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import CardBuyer from './_components/CardBuyer';
-import { useParams } from 'next/navigation';
 import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
+
+import CardBuyer from './_components/CardBuyer';
 
 export default function SellDetailPage() {
   const { id } = useParams();
+  const { openModal } = useModal()
 
   const { card, loading } = useFetchPhotoCardDetail(id);
+
+  const handleOpenCardDetail = () => {
+    openModal(MODAL_TYPES.SELL_PHOTO_CARD, {
+      title: "포토카드 교환하기",
+      subTitle: "마이갤러리",
+      modal: "exchange"
+    })
+  }
 
   if (loading)
     return (
@@ -60,7 +72,7 @@ export default function SellDetailPage() {
             titleMessage="교환 희망 정보"
             className="text-2xl font-bold mb-2.5 sm:mb-5 sm:text-[2rem] sm:border-0 md:mb-0 md:text-[2.5rem]"
           />
-          <Button thickness="thin" className="hidden py-4.25 sm:block md:text-lg md:h-15">
+          <Button onClick={() => handleOpenCardDetail()} thickness="thin" className="hidden py-4.25 sm:block md:text-lg md:h-15">
             포토카드 교환하기
           </Button>
         </div>
@@ -74,7 +86,7 @@ export default function SellDetailPage() {
           <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
         </div>
 
-        <Button thickness="thin" className="w-full mb-10 sm:hidden">
+        <Button onClick={() => handleOpenCardDetail()} thickness="thin" className="w-full mb-10 sm:hidden">
           포토카드 교환하기
         </Button>
       </section>
