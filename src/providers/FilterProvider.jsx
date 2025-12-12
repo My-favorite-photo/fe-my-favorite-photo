@@ -5,7 +5,8 @@ import { createContext, useContext, useState } from 'react';
 const FilterContext = createContext();
 
 export function FilterProvider({ children }) {
-  const [searchKeyword, setSearchKeyword] = useState(''); // 검색
+  // 카드명 검색
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   // 선택된 필터
   const [filter, setFilter] = useState({
@@ -34,14 +35,6 @@ export function FilterProvider({ children }) {
     price: ['낮은 가격순', '높은 가격순', '최신순'],
     sale: ['판매', '교환 제시'],
   };
-
-  // // 판매 중 카드
-  // const sellingCards = cards.filter((card) =>
-  //   (card.userCards || []).some((c) => c.status === 'ON_SALE'),
-  // );
-
-  // // 카드 품절 여부
-  // const isCardSoldOut = (card) => card.totalQuantity === 0;
 
   return (
     <FilterContext.Provider
