@@ -82,7 +82,7 @@ export default function Header() {
                         보유 포인트
                       </p>
                       <p className="text-main text-right font-noto text-[12px] font-normal leading-normal">
-                        {user.points}
+                        {user.balance}
                       </p>
                     </div>
                   </div>
