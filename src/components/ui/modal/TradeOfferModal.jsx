@@ -60,7 +60,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
           w-[1160px] h-[903px] rounded-[12px] px-[64px] py-[40px]
 
           max-[744px]:w-full max-[744px]:max-w-[744px]
-          max-[744px]:h-[85vh]    
+          max-[744px]:h-[85vh]
           max-[744px]:rounded-t-[16px] max-[744px]:rounded-b-none
           max-[744px]:px-[32px] max-[744px]:py-[32px]
 
@@ -78,7 +78,6 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
           "
         >
           <span className="max-[375px]:hidden">✕</span>
-
           <span className="hidden max-[375px]:inline">
             <Image src={IcBack} alt="뒤로가기" width={22} height={22} />
           </span>
@@ -103,6 +102,10 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
             alt="포토카드 교환하기"
             className="mb-3 max-[375px]:hidden max-[744px]:mb-2"
           />
+          <div className="hidden max-[375px]:block text-[14px] font-semibold mb-2 text-center">
+            포토카드 교환하기
+          </div>
+
           <div className="hidden max-[375px]:block text-[14px] font-semibold mb-2 text-center">
             포토카드 교환하기
           </div>
@@ -141,16 +144,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
             <div className="hidden max-[744px]:block max-[375px]:hidden">
               {renderCard('tablet')}
             </div>
-
-            <div
-              className="
-                block min-[376px]:hidden
-                [&_img[alt='로고']]:!block
-                [&_img[alt='로고']]:!bottom-[10px]
-              "
-            >
-              {renderCard('mobile')}
-            </div>
+            <div className="block min-[376px]:hidden">{renderCard('mobile')}</div>
           </div>
 
           <div
