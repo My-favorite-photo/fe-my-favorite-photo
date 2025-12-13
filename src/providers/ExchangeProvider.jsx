@@ -16,13 +16,13 @@ export const useExchange = () => {
 
 export function ExchangeProvider({ children }) {
   const [targetSaleId, setTargetSaleId] = useState(null);
-  const [targetCardInfo, setTargetCardInfo] = useState(null);
+  // const [targetCardInfo, setTargetCardInfo] = useState(null);
 
   const value = {
     targetSaleId,
     setTargetSaleId,
-    targetCardInfo,
-    setTargetCardInfo,
+    // targetCardInfo,
+    // setTargetCardInfo,
   };
 
   return (
