@@ -6,21 +6,48 @@ import { useState } from 'react';
 import IcBack from '@/assets/icons/Ic_back.svg';
 import photoChange from '@/assets/images/svg/photoChange.png';
 import PhotoCard from '@/components/ui/card/PhotoCard';
+import { tradeService } from '@/libs/services/tradeService';
+import { useExchange } from '@/providers/ExchangeProvider';
 
 export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { targetSaleId } = useExchange()
 
   if (!isOpen) return null;
 
   const handleClose = () => {
+    if (isLoading) return;
     setMessage('');
     onClose?.();
   };
 
-  const handleSubmit = () => {
-    if (!message.trim()) return;
-    onSubmit?.(message.trim());
-    setMessage('');
+  const handleSubmit = async () => {
+    if (!message.trim() || isLoading) return;
+
+    setIsLoading(true);
+
+    try {
+      // 아직 SaleId로 받지 못하였으므로 백엔드에서 saleId를 목업으로 받았습니다.
+      const tradeData = {
+        saleId: targetSaleId,
+        offeredUserCardId: card.id,
+        description: message.trim()
+      }
+      console.log(tradeData)
+      const response = await tradeService.requestSale(tradeData)
+
+      console.log('교환 요청성공:', response)
+      alert("교환 요청이 성공적으로 접수됨")
+      onSubmit?.(message.trim());
+      setMessage('');
+    } catch (error) {
+      console.error("교환요청실패:", error);
+      alert(`교환 요청 중 오류가 발생했습니다: ${error.message || '알 수 없는 오류'}`);
+    } finally {
+      setIsLoading(false)
+    }
   };
 
   const handleBackgroundClick = (e) => {
@@ -172,30 +199,34 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
               placeholder="내용을 입력해 주세요"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              disabled={isLoading}
             />
 
             <div className="mt-10 flex gap-4 max-[744px]:mt-6 max-[375px]:hidden">
               <button
                 onClick={handleClose}
                 className="flex-1 h-[52px] border border-[#d1d5db] bg-[#111] text-[15px]"
+                disabled={isLoading}
               >
                 취소하기
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={!message.trim()}
+                disabled={!message.trim() || isLoading}
                 className="flex-1 h-[52px] bg-[#EFFF04] text-[15px] font-bold text-black disabled:opacity-60"
               >
-                교환하기
+                {isLoading ? '처리 중...' : '교환하기'}
               </button>
             </div>
           </div>
         </div>
 
+        {/* 모바일시 하단 버튼 */}
         <div className="hidden max-[375px]:flex gap-4 border-t border-[#333] p-4 bg-[#111]">
           <button
             onClick={handleClose}
             className="flex-1 h-[48px] border border-[#d1d5db] bg-[#111] text-white"
+            disabled={isLoading}
           >
             취소하기
           </button>
@@ -204,7 +235,7 @@ export default function TradeOfferModal({ isOpen, onClose, onSubmit, card }) {
             disabled={!message.trim()}
             className="flex-1 h-[48px] bg-[#EFFF04] text-black font-bold disabled:opacity-60"
           >
-            교환하기
+            {isLoading ? '처리 중...' : '교환하기'}
           </button>
         </div>
       </div>
