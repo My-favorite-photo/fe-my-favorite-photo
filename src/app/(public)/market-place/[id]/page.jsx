@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { useExchange } from '@/providers/ExchangeProvider';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
 import CardBuyer from './_components/CardBuyer';
@@ -16,14 +17,17 @@ import CardBuyer from './_components/CardBuyer';
 export default function SellDetailPage() {
   const { id } = useParams();
   const { openModal } = useModal()
-
+  const { setTargetSaleId } = useExchange()
   const { card, loading } = useFetchPhotoCardDetail(id);
 
   const handleOpenCardDetail = () => {
+    // 현재 모달에 card를 saleId로 가정하겠습니다.
+    // 프롭 드릴링을 피하기 위해 프로바이더를 이용하여 TradeOfferModal로 넣어줍니다.
+    setTargetSaleId(id);
     openModal(MODAL_TYPES.SELL_PHOTO_CARD, {
       title: "포토카드 교환하기",
       subTitle: "마이갤러리",
-      modal: "exchange"
+      modal: "exchange",
     })
   }
 
