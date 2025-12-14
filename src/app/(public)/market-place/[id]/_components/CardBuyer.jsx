@@ -6,11 +6,12 @@ import Minus from '@/assets/icons/Ic_minus.svg';
 import Plus from '@/assets/icons/Ic_plus.svg';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 
 export default function CardBuyer({ card }) {
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
+  const cardData = card.userCard.photoCard;
 
   // const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
 
@@ -33,17 +34,19 @@ export default function CardBuyer({ card }) {
       <section className="flex justify-between items-center w-full border-b pb-7.5 border-gray-400">
         <div className="flex items-center gap-1.25 sm:gap-2.5">
           {/* 컴포넌트 반응형 수정 */}
-          <GradeLabel grade={card.grade} size="sm" />
+          <GradeLabel grade={cardData.grade} size="sm" />
           <div className="text-gray-400">|</div>
-          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
+          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[cardData.genre]}</p>
         </div>
         <div className="flex justify-between ">
-          <p className="text-white underline text-lg font-bold md:text-2xl">{card.author}</p>
+          <p className="text-white underline text-lg font-bold md:text-2xl">
+            {card.seller.nickname}
+          </p>
         </div>
       </section>
 
       <section className="mt-7.5">
-        <p className="text-base md:text-lg">{card.description}</p>
+        <p className="text-base md:text-lg">{cardData.description}</p>
       </section>
 
       <div className="border-b border-gray-400 mt-7.5 mb-7.5"></div>
@@ -51,13 +54,16 @@ export default function CardBuyer({ card }) {
       <section className="flex flex-col gap-2.5">
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">가격</h3>
-          <p className="text-[1.25rem] font-bold md:text-2xl">{card.price} P</p>
+          <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price} P</p>
         </div>
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
-            {card.userCards[0]?.totalQuantity}
-            <span className="text-gray-300"> / {card.totalQuantity}</span>
+            {card.quantity}
+            <span className="text-gray-300">
+              {' '}
+              / {cardData.totalQuantity - card.userCard.totalQuantity}
+            </span>
           </p>
         </div>
       </section>
@@ -89,8 +95,8 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between  mb-10 md:mb-20">
           <label className="text-lg md:text-[1.25rem] text-nowrap">총 가격</label>
           <div className="flex items-center gap-2.5">
-            <p className="text-[1.25rem] font-bold md:text-2xl">8 P</p>
-            <p className="text-lg text-gray-300">(2장)</p>
+            <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price * quantity} P</p>
+            <p className="text-lg text-gray-300">({quantity}장)</p>
           </div>
         </div>
       </section>
