@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import img_card from '@/assets/images/img_card.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
+import TradeCard from '@/components/ui/card/TradeCard';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
@@ -58,7 +59,7 @@ export default function SellDetailPage() {
         마켓플레이스
       </h1>
       <CardTitle
-        titleMessage={card.name}
+        titleMessage={card.userCard.photoCard.name}
         className="text-2xl font-bold mb-2.5 sm:mb-5 sm:text-[32px] md:text-[40px]"
       />
       <section className="mt-6.5 sm:flex sm:gap-5 sm:mt-12 md:gap-20">
@@ -96,9 +97,23 @@ export default function SellDetailPage() {
       </section>
 
       {/* // 내가 제시한 교환 목록 */}
-      {/* <section>
-          <CardTitle />
-      </section> */}
+      {card.trade && card.trade.length > 0 && (
+        <section>
+          <CardTitle
+            titleMessage="내가 제시한 교환 목록"
+            className="text-2xl font-bold mb-2.5 sm:mb-5 sm:text-[2rem] md:text-[2.5rem]"
+          />
+          <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4  mb-11.5 sm:mb-12 md:mt-17.5' >
+            {card.trade.map((tradeItem, idx) =>
+              <div key={tradeItem.id || idx} >
+                <TradeCard
+                  tradeItem={tradeItem}
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </main>
   );
 }
