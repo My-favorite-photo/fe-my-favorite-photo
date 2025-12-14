@@ -7,4 +7,10 @@ export const tradeService = {
       body: JSON.stringify(saleData),
     });
   },
+
+  applicantCancel: (tradeId) => {
+    return tokenFetch(`/trades/${tradeId}/cancel`, {
+      method: 'POST',
+    });
+  },
 };
