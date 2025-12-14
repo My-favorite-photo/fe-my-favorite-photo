@@ -13,4 +13,10 @@ export const tradeService = {
       method: 'POST',
     });
   },
+
+  ownerRejectl: (tradeId) => {
+    return tokenFetch(`/trades/${tradeId}/reject`, {
+      method: 'POST',
+    });
+  },
 };
