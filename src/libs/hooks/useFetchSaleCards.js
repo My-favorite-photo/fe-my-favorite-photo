@@ -31,18 +31,12 @@ export function useFetchSaleCards(params = {}) {
     fetchMySellingData();
   }, [searchKeyword, grade, genre]);
 
-  // 판매 중 카드
-  const sellingCards = myLocalSellingCards.filter(
-    (card) => card.status === 'ON_SALE' || card.status === 'TRADING',
-  );
-
   // 카드 sold out 여부
   const isCardSoldOut = (card) => card.totalQuantity === 0;
 
   return {
     myLocalSellingCards,
     saleCardsLoading,
-    sellingCards,
     isCardSoldOut,
   };
 }

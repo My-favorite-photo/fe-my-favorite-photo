@@ -41,13 +41,5 @@ export function useFetchPhotoCards(params = {}) {
     fetchCards();
   }, [searchKeyword, grade, genre, price]);
 
-  // 판매 중 카드
-  const sellingPhotoCards = cards.filter((card) =>
-    (card.userCards || []).some((c) => c.status === 'ON_SALE' || c.status === 'TRADING'),
-  );
-
-  // // 카드 sold out 여부
-  // const isPhotoCardSoldOut = (card) => card.totalQuantity === 0;
-
   return { cards, loading, sellingPhotoCards };
 }
