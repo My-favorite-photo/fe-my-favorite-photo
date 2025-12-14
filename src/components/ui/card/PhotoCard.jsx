@@ -4,7 +4,7 @@ import Image from 'next/image';
 import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
 import GradeLabel from '../label/GradeLabel';

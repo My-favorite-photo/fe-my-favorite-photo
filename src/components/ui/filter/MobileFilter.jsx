@@ -9,7 +9,7 @@ import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
 import GradeLabel from '../label/GradeLabel';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
 import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 

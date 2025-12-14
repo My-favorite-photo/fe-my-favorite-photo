@@ -4,3 +4,8 @@ export const GENRE_LABEL = {
   PORTRAIT: '인물',
   OBJECT: '사물',
 };
+
+export const SALE_STATUS_LABEL = {
+  '판매 중': 'ON_SALE',
+  '판매 완료': 'SOLD_OUT',
+};

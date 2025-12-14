@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { marketCardService } from '../services/marketSaleService';
+import { SALE_STATUS_LABEL } from '../utils/NameLabel';
 
 export function useFetchMarketCards(params = {}) {
   const { searchKeyword = '', filter = {} } = params;
@@ -18,7 +19,7 @@ export function useFetchMarketCards(params = {}) {
           keyword: searchKeyword,
           grade: grade,
           genre: genre,
-          status: status,
+          status: SALE_STATUS_LABEL[status],
           sort:
             price === '낮은 가격순'
               ? 'low'
@@ -46,8 +47,8 @@ export function useFetchMarketCards(params = {}) {
     (card) => card.status === 'ON_SALE' || card.status === 'CANCELLED',
   );
 
-  // // 카드 sold out 여부
-  // const isPhotoCardSoldOut = (card) => card.totalQuantity === 0;
+  // 카드 sold out 여부
+  const isPhotoCardSoldOut = (card) => card.totalQuantity === 0;
 
   return { marketCards, marketLoading, sellingMarketCards };
 }
