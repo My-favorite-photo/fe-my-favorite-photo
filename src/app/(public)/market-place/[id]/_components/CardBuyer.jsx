@@ -11,6 +11,7 @@ import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 export default function CardBuyer({ card }) {
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
+  console.log(card)
 
   // const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
 
@@ -38,7 +39,7 @@ export default function CardBuyer({ card }) {
           <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
         </div>
         <div className="flex justify-between ">
-          <p className="text-white underline text-lg font-bold md:text-2xl">{card.author}</p>
+          <p className="text-white underline text-lg font-bold md:text-2xl">{card.seller.nickname}</p>
         </div>
       </section>
 
@@ -56,7 +57,7 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
-            {card.userCards[0]?.totalQuantity}
+            {card.quantity}
             <span className="text-gray-300"> / {card.totalQuantity}</span>
           </p>
         </div>
