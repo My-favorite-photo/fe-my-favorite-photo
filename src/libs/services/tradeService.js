@@ -32,4 +32,15 @@ export const tradeService = {
       method: 'POST',
     });
   },
+
+  /**
+   *  [판매자] 들어온 교환 요청을 승인하고 거래를 완료합니다.
+   * 이는 교환 상태를 ACCEPTED로 변경 서로 포토카드 소유권을 변경
+   * @param {string} tradeId   *
+   */
+  ownerApprove: (tradeId) => {
+    return tokenFetch(`/trades/${tradeId}/approve`, {
+      method: 'POST',
+    });
+  },
 };
