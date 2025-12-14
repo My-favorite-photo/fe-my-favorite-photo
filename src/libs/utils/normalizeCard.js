@@ -41,7 +41,8 @@ export const normalizeUserCard = (card) => {
     ...card.photoCard,
     id: card.id,
     status: card.status,
-    totalQuantity: card.totalQuantity,
+    originalQuantity: card.photoCard.totalQuantity, // 원본 총량
+    totalQuantity: card.totalQuantity, // 보유 중 수량
     price: card.price,
     photoCardId: card.photoCardId,
     nickname: card.user?.nickname ?? null,
