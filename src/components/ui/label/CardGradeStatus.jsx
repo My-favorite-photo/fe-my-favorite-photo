@@ -18,10 +18,18 @@ export default function CardGradeStatus({ isSellingPage }) {
   };
 
   // 등급별 남은 카드 수 합산
+  // data.forEach((card) => {
+  //   if (card.totalQuantity && gradeCount[card.photoCard.grade] !== undefined) {
+  //     gradeCount[card.photoCard.grade] += card.totalQuantity;
+  //   }
+  // });
+
   data.forEach((card) => {
-    if (card.totalQuantity && gradeCount[card.photoCard.grade] !== undefined) {
-      gradeCount[card.photoCard.grade] += card.totalQuantity;
-    }
+    const remainQuantity = isSellingPage
+      ? (card.photoCard?.totalQuantity ?? 0) - (card.totalQuantity ?? 0)
+      : (card.totalQuantity ?? 0);
+
+    gradeCount[card.photoCard.grade] += remainQuantity;
   });
 
   // 전체 수량
