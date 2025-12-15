@@ -23,7 +23,7 @@ const MENU_LABELS = {
 export default function MobileFilter({ items, size, isGallery = false, isSellingPage = false }) {
   const { filter, setFilter, searchKeyword } = useFilter();
   const { marketCards, isMarketCardSoldOut } = useFetchMarketCards();
-  const { myCards } = useFetchUserCards();
+  const { myCards, isUserCardSoldOut } = useFetchUserCards();
   const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards();
 
   const [open, setOpen] = useState(false);
@@ -53,7 +53,11 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
   // count 계산용
   const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : marketCards;
 
-  const soldOutStatus = isSellingPage ? isCardSoldOut : isMarketCardSoldOut;
+  const dataStatus = isGallery
+    ? isUserCardSoldOut
+    : isSellingPage
+      ? isCardSoldOut
+      : isMarketCardSoldOut;
 
   // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({
@@ -71,7 +75,7 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
         count = countSource.filter((c) => {
           // 판매 여부
           if (key === 'status') {
-            return (soldOutStatus(c) ? '판매 완료' : '판매 중') === label;
+            return (dataStatus(c) ? '판매 완료' : '판매 중') === label;
           }
 
           // 거래 방식 -> 변경 예정(saleOptions)
@@ -80,7 +84,12 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
           }
 
           // gallery / selling = userCard 데이터 → photoCard.grade
-          const target = isGallery || isSellingPage ? c.photoCard : c;
+          // const target = isGallery || isSellingPage ? c.photoCard : c;
+          const target = isGallery
+            ? c.photoCard
+            : isSellingPage
+              ? c.photoCard
+              : c.userCard?.photoCard;
 
           return target[key] === label;
         }).length;

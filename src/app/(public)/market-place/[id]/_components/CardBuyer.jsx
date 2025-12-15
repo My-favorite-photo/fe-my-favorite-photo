@@ -8,7 +8,7 @@ import Plus from '@/assets/icons/Ic_plus.svg';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 import purchaseService from '@/libs/services/purchaseService';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 
 export default function CardBuyer({ card }) {
   const router = useRouter();
@@ -33,7 +33,7 @@ export default function CardBuyer({ card }) {
 
   const handlePurchase = async () => {
     try {
-      await purchaseService.purchase(card.sale.saleId, quantity);
+      await purchaseService.purchase(card.id, quantity);
 
       router.push(
         `/market-place/complete/success?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
@@ -120,7 +120,7 @@ export default function CardBuyer({ card }) {
 
       <section>
         <Button
-          disabled={!card.sale}
+          // disabled={!card.sale}
           thickness="thin"
           className="text-lg font-bold  w-full h-18.5 md:h-20 md:text-[1.25rem]"
           onClick={handlePurchase}

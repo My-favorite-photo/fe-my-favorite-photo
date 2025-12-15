@@ -1,12 +1,12 @@
-// 'use client';
+'use client';
 
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// import { cardService } from '@/libs/services/cardService';
+import { cardService } from '@/libs/services/cardService';
 
-// export function useFetchPhotoCardDetail(photoCardId) {
-//   const [card, setCard] = useState(null);
-//   const [loading, setLoading] = useState(true);
+export function useFetchPhotoCardDetail(photoCardId) {
+  const [card, setCard] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCardDetail() {
@@ -23,8 +23,8 @@
       }
     }
 
-//     fetchCardDetail();
-//   }, [photoCardId]);
+    fetchCardDetail();
+  }, [photoCardId]);
 
-//   return { card, loading };
-// }
+  return { card, loading };
+}

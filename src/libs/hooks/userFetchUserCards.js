@@ -38,7 +38,8 @@ export function useFetchUserCards(params = {}) {
   );
 
   // 카드 sold out 여부
-  const isUserCardSoldOut = (card) => card.totalQuantity === 0;
+  // const isUserCardSoldOut = (card) => card.totalQuantity === 0;
+  const isUserCardSoldOut = (card) => card.status === 'SOLD_OUT';
 
   return {
     myCards,
