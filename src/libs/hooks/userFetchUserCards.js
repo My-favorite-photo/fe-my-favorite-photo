@@ -23,6 +23,7 @@ export function useFetchUserCards(params = {}) {
         setMyCards(response.cards);
       } catch (error) {
         console.error('나의 갤러리 카드 목록을 가져오는데 실패했습니다.', error);
+        // setMyCards([]);
       } finally {
         setMyCardsLoading(false);
       }

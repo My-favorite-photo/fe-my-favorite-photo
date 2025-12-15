@@ -23,6 +23,7 @@ export function useFetchSaleCards(params = {}) {
         setMyLocalSellingCards(response.cards);
       } catch (error) {
         console.error('나의 판매된 상품을 가져오는데 실패했습니다.', error);
+        // setMyLocalSellingCards([]);
       } finally {
         setSaleCardsLoading(false);
       }

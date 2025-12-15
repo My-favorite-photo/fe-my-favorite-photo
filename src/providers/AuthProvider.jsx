@@ -17,6 +17,7 @@ const AuthContext = createContext({
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
@@ -39,6 +40,16 @@ export default function AuthProvider({ children }) {
     }
   };
 
+  const updateBalance = (newBalance) => {
+    setUser((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        balance: newBalance,
+      };
+    });
+  };
+
   const register = async (nickname, email, password, passwordConfirmation) => {
     const { success } = await registerAction(nickname, email, password, passwordConfirmation);
     if (!success) throw new Error('회원가입 실패');
@@ -49,6 +60,7 @@ export default function AuthProvider({ children }) {
     const { userData, success } = await loginAction(email, password);
     if (!success) throw new Error('로그인 실패');
     setUser(userData);
+    console.log('login userData:', userData);
     router.push('/market-place');
   };
 
@@ -74,7 +86,9 @@ export default function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, getUser, isLoggedIn }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, register, getUser, isLoggedIn, updateBalance }}
+    >
       {children}
     </AuthContext.Provider>
   );

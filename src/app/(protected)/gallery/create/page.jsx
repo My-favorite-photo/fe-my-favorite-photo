@@ -83,8 +83,8 @@ export default function PhotoCardCreation() {
     console.log('-------------------------');
 
     try {
-      const response = await cardService.createCard(formData);
-      const json = await response.json();
+      const json = await cardService.createCard(formData);
+      console.log('formData', formData);
       const photoCard = json.result.photoCard;
 
       console.log('카드 생성 성공:', photoCard);
