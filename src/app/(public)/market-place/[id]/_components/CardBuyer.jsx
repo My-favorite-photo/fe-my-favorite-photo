@@ -1,14 +1,17 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Minus from '@/assets/icons/Ic_minus.svg';
 import Plus from '@/assets/icons/Ic_plus.svg';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import { GENRE_LABEL } from '@/libs/utils/NameLabel';
+import purchaseService from '@/libs/services/purchaseService';
+import { GENRE_LABEL } from '@/libs/utils/genreLabel';
 
 export default function CardBuyer({ card }) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
   const cardData = card.userCard.photoCard;
@@ -17,8 +20,7 @@ export default function CardBuyer({ card }) {
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) {
-      const newQuantity = quantity + 1;
-      setQuantity(newQuantity);
+      setQuantity((q) => q + 1);
     }
   };
 
@@ -26,6 +28,21 @@ export default function CardBuyer({ card }) {
     if (quantity > 1) {
       const newQuantity = quantity - 1;
       setQuantity(newQuantity);
+    }
+  };
+
+  const handlePurchase = async () => {
+    try {
+      await purchaseService.purchase(card.sale.saleId, quantity);
+
+      router.push(
+        `/market-place/complete/success?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+      );
+    } catch (error) {
+      console.error('구매실패', error);
+      router.push(
+        `/market-place/complete/fail?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+      );
     }
   };
 
@@ -73,7 +90,7 @@ export default function CardBuyer({ card }) {
       <section className="flex flex-col gap-5.75">
         <div className="flex justify-between items-center">
           <label className="flex-1  text-lg md:text-[1.25rem] text-nowrap">구매수량</label>
-          <div className="flex items-center justify-center rounded-[2px] border border-gray-200 px-3 py-2.5 flex-1">
+          <div className="flex items-center justify-center rounded-xs border border-gray-200 px-3 py-2.5 flex-1">
             <button
               type="button"
               onClick={decrementQuantity}
@@ -103,8 +120,10 @@ export default function CardBuyer({ card }) {
 
       <section>
         <Button
+          disabled={!card.sale}
           thickness="thin"
           className="text-lg font-bold  w-full h-18.5 md:h-20 md:text-[1.25rem]"
+          onClick={handlePurchase}
         >
           포토카드 구매하기
         </Button>

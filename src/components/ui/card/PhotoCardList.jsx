@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
-
 import { useAuth } from '@/providers/AuthProvider';
 import { useFilter } from '@/providers/FilterProvider';
 
@@ -32,6 +31,7 @@ export default function PhotoCardList({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleCardClick = (cardId) => {
+    console.log('click cardId:', cardId);
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
       return;

@@ -37,7 +37,7 @@ export default function Header() {
           <>
             <div className="flex items-center justify-center gap-[30px] ">
               <span className="text-[#DDDDDD] font-noto text-[14px] font-bold leading-normal">
-                1,540 P{user.points}
+                {user.balance}P
               </span>
               <span>
                 <Popover className="relative">
