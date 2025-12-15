@@ -3,7 +3,7 @@
  * 다른 서비스에 사용할 패치 클라이언트
  */
 
-import { getServerSideToken } from '../actions/auth';
+import { getServerSideToken, setServerSideTokens } from '../actions/auth';
 
 // export const defaultFetch = async
 
@@ -22,8 +22,121 @@ export const defaultFetch = async (url, options = {}) => {
       'Content-Type': 'application/json',
     },
     // Next.js 기본 캐싱 활성화
+    // cache: 'force-cache',
     cache: 'force-cache',
-    credentials: 'include',
+  };
+
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers,
+    },
+  };
+
+  const response = await fetch(`${baseURL}${url}`, mergedOptions);
+  if (!response.ok) {
+    let message = 'Internal Server Error';
+
+    try {
+      const errorData = await response.json();
+      message = errorData.message ?? message;
+    } catch {}
+
+    throw new Error(message);
+  }
+
+  return response.json();
+};
+
+/**
+ * 토큰 인증 fetch 클라이언트
+ */
+export const tokenFetch = async (url, options = {}) => {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
+  let accessToken = await getServerSideToken('accessToken');
+  let refreshToken = await getServerSideToken('refreshToken');
+
+  const defaultOptions = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: accessToken ? `Bearer ${accessToken}` : '',
+    },
+    cache: 'no-store',
+  };
+
+  const mergedOptions = {
+    ...defaultOptions,
+    ...options,
+    headers: {
+      ...defaultOptions.headers,
+      ...options.headers,
+    },
+  };
+
+  let response = await fetch(`${baseURL}${url}`, mergedOptions);
+
+  //accessToken 만료 → refresh
+  if (response.status === 401 && url !== '/auth/refresh') {
+    if (!refreshToken) {
+      throw new Error('로그인이 필요합니다.');
+    }
+
+    const refreshResponse = await fetch(`${baseURL}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+      cache: 'no-store',
+    });
+
+    if (!refreshResponse.ok) {
+      throw new Error('토큰 갱신 실패');
+    }
+
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+      await refreshResponse.json();
+
+    //server action에 새 토큰 저장
+    await setServerSideTokens(newAccessToken, newRefreshToken);
+
+    //accessToken으로 헤더 교체
+    mergedOptions.headers.Authorization = `Bearer ${newAccessToken}`;
+
+    response = await fetch(`${baseURL}${url}`, mergedOptions);
+  }
+
+  //실패 처리
+  if (!response.ok) {
+    let message = 'Internal Server Error';
+
+    try {
+      const errorData = await response.json();
+      message = errorData.message ?? message;
+    } catch {}
+
+    throw new Error(message);
+  }
+
+  //응답 반환
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('application/json')) {
+    return response.json();
+  }
+
+  return { status: response.status, ok: response.ok };
+};
+
+export const formDataFetch = async (url, options = {}) => {
+  const baseURL = process.env.NEXT_PUBLIC_API_URL;
+  const accessToken = await getServerSideToken('accessToken');
+
+  const defaultOptions = {
+    headers: {
+      Authorization: accessToken ? `Bearer ${accessToken}` : '',
+    },
+    cache: 'no-store',
   };
 
   const mergedOptions = {
@@ -43,105 +156,4 @@ export const defaultFetch = async (url, options = {}) => {
   }
 
   return response.json();
-};
-
-/**
- * 토큰 인증 fetch 클라이언트
- */
-export const tokenFetch = async (url, options = {}) => {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const token = await getServerSideToken('accessToken');
-  const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    // 서버 컴포넌트에서도 매번 재검증
-    cache: 'no-store',
-  };
-
-  const mergedOptions = {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  };
-
-  // 원래 요청 실행
-  let response = await fetch(`${baseURL}${url}`, mergedOptions);
-
-  // 401 에러 발생 시 토큰 갱신 시도
-  if (response.status === 401 && url !== '/auth/refresh') {
-    try {
-      // 토큰 갱신 요청
-      const refreshResponse = await fetch(`${baseURL}/auth/refresh`, {
-        method: 'POST',
-        credentials: 'include',
-        cache: 'no-store',
-      });
-
-      if (refreshResponse.ok) {
-        // 토큰 갱신 성공 시 원래 요청 재시도
-        response = await fetch(`${baseURL}${url}`, mergedOptions);
-      }
-    } catch (error) {
-      const errorData = await refreshResponse.json();
-      throw new Error(JSON.stringify(errorData));
-    }
-  }
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
-  }
-
-  // 응답 본문이 있는지 확인
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
-    return response.json();
-  }
-
-  // 본문이 없거나 JSON이 아닌 경우 응답 객체 자체 반환
-  return { status: response.status, ok: response.ok };
-};
-
-export const formDataFetch = async (url, options = {}) => {
-  const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const token = await getServerSideToken('accessToken');
-
-  // const defaultHeaders = {
-  //   'Content-Type': 'application/json',
-  //   Authorization: `Bearer ${token}`,
-  // };
-
-  // if (options.body instanceof FormData) {
-  //   delete defaultHeaders['Content-Type'];
-  // }
-
-  const defaultOptions = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  };
-
-  const mergedOptions = {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  };
-
-  const result = await fetch(`${baseURL}${url}`, mergedOptions);
-
-  if (!result.ok) {
-    const errorData = await result.json();
-    throw new Error(errorData.message);
-  }
-
-  return result;
 };
