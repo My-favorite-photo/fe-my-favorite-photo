@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 
 import { sellService } from '../services/sellService';
+import { CARD_STATUS_LABEL } from '../utils/NameLabel';
 
 export function useFetchSaleCards(params = {}) {
   const { searchKeyword = '', filter = {} } = params;
-  const { grade = '', genre = '' } = filter;
+  const { grade = '', genre = '', sale = '', status = '' } = filter;
 
   const [myLocalSellingCards, setMyLocalSellingCards] = useState([]);
   const [saleCardsLoading, setSaleCardsLoading] = useState(true);
@@ -18,6 +19,8 @@ export function useFetchSaleCards(params = {}) {
           keyword: searchKeyword,
           grade: grade,
           genre: genre,
+          sale: CARD_STATUS_LABEL[sale],
+          status: CARD_STATUS_LABEL[status],
         });
         console.log(response);
         setMyLocalSellingCards(response.cards);
@@ -30,20 +33,20 @@ export function useFetchSaleCards(params = {}) {
     }
 
     fetchMySellingData();
-  }, [searchKeyword, grade, genre]);
+  }, [searchKeyword, grade, genre, status]);
 
   // 판매 중 카드
-  const sellingCards = myLocalSellingCards.filter(
-    (card) => card.status === 'ON_SALE' || card.status === 'TRADING',
-  );
+  // const sellingMyCards = myLocalSellingCards.filter(
+  //   (card) => card.status === 'ON_SALE' || card.status === 'CANCELLED',
+  // );
 
   // 카드 sold out 여부
-  const isCardSoldOut = (card) => card.totalQuantity === 0;
+  // const isCardSoldOut = (card) => card.totalQuantity === 0;
+  const isCardSoldOut = (card) => card.status === 'SOLD_OUT';
 
   return {
     myLocalSellingCards,
     saleCardsLoading,
-    sellingCards,
     isCardSoldOut,
   };
 }
