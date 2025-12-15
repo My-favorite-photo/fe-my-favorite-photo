@@ -42,13 +42,7 @@ export function useFetchMarketCards(params = {}) {
     fetchCards();
   }, [searchKeyword, grade, genre, status, price]);
 
-  // 판매 중 카드
-  const sellingMarketCards = marketCards.filter(
-    (card) => card.status === 'ON_SALE' || card.status === 'CANCELLED',
-  );
+  const isMarketCardSoldOut = (card) => card.status === 'SOLD_OUT';
 
-  // 카드 sold out 여부
-  const isPhotoCardSoldOut = (card) => card.totalQuantity === 0;
-
-  return { marketCards, marketLoading, sellingMarketCards };
+  return { marketCards, marketLoading, isMarketCardSoldOut };
 }

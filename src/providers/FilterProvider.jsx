@@ -13,8 +13,8 @@ export function FilterProvider({ children }) {
     grade: [],
     genre: [],
     status: [],
-    price: '',
-    sale: '',
+    price: [],
+    sale: [],
   });
 
   // 필터 옵션(UI)

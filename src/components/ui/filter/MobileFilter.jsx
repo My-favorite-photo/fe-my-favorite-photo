@@ -22,7 +22,7 @@ const MENU_LABELS = {
 
 export default function MobileFilter({ items, size, isGallery = false, isSellingPage = false }) {
   const { filter, setFilter, searchKeyword } = useFilter();
-  const { marketCards } = useFetchMarketCards();
+  const { marketCards, isMarketCardSoldOut } = useFetchMarketCards();
   const { myCards } = useFetchUserCards();
   const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards();
 
@@ -53,6 +53,8 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
   // count 계산용
   const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : marketCards;
 
+  const soldOutStatus = isSellingPage ? isCardSoldOut : isMarketCardSoldOut;
+
   // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({
     key,
@@ -69,7 +71,7 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
         count = countSource.filter((c) => {
           // 판매 여부
           if (key === 'status') {
-            return (isCardSoldOut(c) ? '판매 완료' : '판매 중') === label;
+            return (soldOutStatus(c) ? '판매 완료' : '판매 중') === label;
           }
 
           // 거래 방식 -> 변경 예정(saleOptions)

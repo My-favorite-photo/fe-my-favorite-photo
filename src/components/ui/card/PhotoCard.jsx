@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import img_soldOut from '@/assets/icons/Ic_soldout.svg';
+import img_soldOut from '@/assets/icons/Ic_soldOut.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
 import { GENRE_LABEL } from '@/libs/utils/NameLabel';
@@ -32,6 +32,9 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
     clickHandler = handleOpenCardModal;
   }
 
+  const isSoldOut =
+    card.sale?.status === 'SOLD_OUT' || card.status === 'SOLD_OUT' || card.totalQuantity === 0;
+
   return (
     <div
       className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
@@ -45,7 +48,7 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
         <Image src={fullImageUrl} alt="카드 이미지" fill style={{ objectFit: 'cover' }} />
 
         {/* SOLD_OUT 처리 */}
-        {card.status === 'SOLD_OUT' && (
+        {isSoldOut && (
           <>
             <div className="absolute inset-0 bg-gray-500/70 rounded-[2px]" />
 
@@ -60,11 +63,13 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
         )}
 
         {/* 판매 OR 교환제시 라벨 */}
-        {showSaleLabel && (card.status === 'ON_SALE' || card.status === 'TRADING') && (
-          <div className="absolute sm:top-[5px] sm:left-[5px] md:top-[10px] md:left-[10px] lg:top-[10px] lg:left-[10px]">
-            <SaleStatusLabel status={card.status} />
-          </div>
-        )}
+        {showSaleLabel &&
+          !isSoldOut &&
+          (card.status === 'ON_SALE' || card.status === 'TRADING') && (
+            <div className="absolute sm:top-[5px] sm:left-[5px] md:top-[10px] md:left-[10px] lg:top-[10px] lg:left-[10px]">
+              <SaleStatusLabel status={card.status} />
+            </div>
+          )}
       </div>
 
       <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
