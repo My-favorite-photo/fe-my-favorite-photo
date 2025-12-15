@@ -13,7 +13,8 @@ export function useFetchPhotoCardDetail(photoCardId) {
       setLoading(true);
       try {
         const res = await cardService.getCardDetail(photoCardId);
-        setCard(res.cardDetail);
+        setCard(res.card);
+        console.log('setCard :', setCard);
       } catch (err) {
         console.error('카드 상세 조회 실패:', err);
         setCard(null);

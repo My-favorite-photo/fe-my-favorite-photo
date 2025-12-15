@@ -1,14 +1,16 @@
 'use client';
 
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+
 import img_card from '@/assets/images/img_card.svg';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import CardBuyer from './_components/CardBuyer';
-import { useParams } from 'next/navigation';
 import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
 import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+
+import CardBuyer from './_components/CardBuyer';
 
 export default function SellDetailPage() {
   const { id } = useParams();

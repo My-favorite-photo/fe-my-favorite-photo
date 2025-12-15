@@ -72,13 +72,14 @@ export async function clearServerSideTokens() {
 }
 
 export async function loginAction(email, password) {
-  const { user, accessToken } = await authService.login(email, password);
+  const { user, accessToken, refreshToken } = await authService.login(email, password);
 
-  if (!accessToken) {
-    return { success: false, error: '액세스 토큰 없음' };
+  if (!accessToken || !refreshToken) {
+    return { success: false, error: '토큰 없음' };
   }
 
-  await setServerSideTokens(accessToken, null);
+  await setServerSideTokens(accessToken, refreshToken);
+
   return { success: true, userData: user };
 }
 
@@ -99,35 +100,26 @@ export async function checkAndRefreshAuth() {
   const accessToken = cookieStore.get('accessToken')?.value;
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
-  // 1. accessToken이 있으면 인증됨
-  if (accessToken) {
-    return true;
-  }
+  if (accessToken) return true;
+  if (!refreshToken) return false;
 
-  // 2. accessToken 없고 refreshToken도 없으면 인증 실패
-  if (!refreshToken) {
-    return false;
-  }
-
-  // 3. refreshToken으로 갱신 시도
   try {
     const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
     const response = await fetch(`${baseURL}/auth/refresh`, {
       method: 'POST',
-      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
       cache: 'no-store',
     });
 
-    if (response.ok) {
-      const { accessToken: newAccessToken } = await response.json();
+    if (!response.ok) return false;
 
-      // 새 토큰 저장
-      await updateAccessToken(newAccessToken);
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await response.json();
 
-      return true; // 갱신 성공
-    }
+    await setServerSideTokens(newAccessToken, newRefreshToken);
 
-    return false; // 갱신 실패
+    return true;
   } catch (error) {
     console.error('토큰 갱신 중 오류:', error);
     return false;
