@@ -25,7 +25,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="flex w-full justify-between items-center py-7 px-[220px]">
+    <header className="hidden md:flex w-full justify-between items-center py-7 px-[220px]">
       <div>
         <Link href="/">
           <Image src={LogoPng} alt="headerLogoImg" width={120} height={40} />

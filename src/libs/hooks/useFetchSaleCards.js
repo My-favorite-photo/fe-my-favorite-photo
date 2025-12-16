@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { sellService } from '../services/sellService';
-import { CARD_STATUS_LABEL } from '../utils/NameLabel';
+import { CARD_STATUS_LABEL, SALE_STATUS_LABEL } from '../utils/NameLabel';
 
 export function useFetchSaleCards(params = {}) {
   const { searchKeyword = '', filter = {} } = params;
@@ -19,10 +19,12 @@ export function useFetchSaleCards(params = {}) {
           keyword: searchKeyword,
           grade: grade,
           genre: genre,
-          sale: CARD_STATUS_LABEL[sale],
+          sale: SALE_STATUS_LABEL[sale],
           status: CARD_STATUS_LABEL[status],
         });
         console.log(response);
+        console.log('status', status);
+        console.log('sale', sale);
         setMyLocalSellingCards(response.cards);
       } catch (error) {
         console.error('나의 판매된 상품을 가져오는데 실패했습니다.', error);
@@ -33,16 +35,10 @@ export function useFetchSaleCards(params = {}) {
     }
 
     fetchMySellingData();
-  }, [searchKeyword, grade, genre, status]);
-
-  // 판매 중 카드
-  // const sellingMyCards = myLocalSellingCards.filter(
-  //   (card) => card.status === 'ON_SALE' || card.status === 'CANCELLED',
-  // );
+  }, [searchKeyword, grade, genre, sale, status]);
 
   // 카드 sold out 여부
-  // const isCardSoldOut = (card) => card.totalQuantity === 0;
-  const isCardSoldOut = (card) => card.status === 'SOLD_OUT';
+  const isCardSoldOut = (card) => card.totalQuantity === 0;
 
   return {
     myLocalSellingCards,
