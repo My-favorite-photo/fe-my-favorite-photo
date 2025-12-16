@@ -9,6 +9,7 @@ export const normalizeMarketCard = (card) => {
       status: saleFields.status,
       price: saleFields.price,
       quantity: saleFields.quantity,
+      remainingQuantity: saleFields.remainingQuantity,
       description: saleFields.description,
       createdAt: saleFields.createdAt,
       updatedAt: saleFields.updatedAt,
