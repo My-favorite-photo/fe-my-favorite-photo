@@ -7,10 +7,10 @@ import { publicMetadata } from '#/config/metadata';
 
 export default function Layout({ children }) {
   const pathname = usePathname();
-  const isCompletePage = pathname.endsWith('/sell-detail');
+  const isSellDetailPage = pathname.endsWith('/sell-detail');
   return (
     <>
-      {!isCompletePage && (
+      {!isSellDetailPage && (
         <>
           <Header />
           <MobileHeader />
