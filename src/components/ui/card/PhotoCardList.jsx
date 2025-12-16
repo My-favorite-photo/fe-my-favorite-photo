@@ -43,7 +43,7 @@ export default function PhotoCardList({
   const { filter, searchKeyword } = useFilter();
   const { marketCards, marketLoading } = useFetchMarketCards({ searchKeyword, filter });
   const { myCards, myCardsLoading } = useFetchUserCards({
-    searchKeywordF,
+    searchKeyword,
     filter,
   });
   const { myLocalSellingCards, saleCardsLoading } = useFetchSaleCards({
