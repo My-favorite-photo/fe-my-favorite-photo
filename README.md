@@ -5,13 +5,11 @@
 ## 목차
   1. [프로젝트 개요](#overview) 
   2. [팀원 소개](#team-members)
-  3. [FE 시스템 아키텍처](#fe-system-architecture)
+  3. [아키텍처](#architecture)
   4. [기술 스택](#tech-stack)
   5. [주요 기능](#key-features)
   6. [팀 문서](#team-documents)
-  7. [폴더 구조](#directory-structure)
-  8. [백엔드 구경해보기](#check-out-the-backend)
-  9. [팀원 개발 리포트](#team-member-development-reports)
+  7. [백엔드 구경해보기](#check-out-the-backend)
 ---
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
@@ -43,9 +41,9 @@
 | **FE Developer** | **오마린** | [@oh1marin](https://github.com/oh1marin) |
 
 ---
-## FE System Architecture
+## Architecture
 
-(아키텍처 사진)
+<img width="1596" height="979" alt="Web App Reference Architecture" src="https://github.com/user-attachments/assets/c63f4e18-0e7b-4e28-9835-e3f0ce409d0c" />
 
 ---
 
@@ -102,22 +100,9 @@
 ## Team Documents
 
 
-노션 주소
-미로 주소
+노션 주소 https://www.notion.so/2b662f1437fd806eb6a6dc792d704f26
+미로 주소 https://miro.com/app/board/uXjVGfn7wg8=/
 
-## Directory Structure
-
-```bash
-📦 src
-├── 📂 app              # Next.js App Router 페이지
-├── 📂 components       # 재사용 가능한 공통 컴포넌트 (Atomic Design 지향)
-│   ├── 📂 ui           # 버튼, 인풋 등 기본 UI 요소
-│   └── 📂 common       # 헤더, 푸터 등 레이아웃 요소
-├── 📂 hooks            # 커스텀 React Hooks
-├── 📂 libs              # 유틸리티 함수 및 설정 (axios, utils 등)
-```
 ## Check out the Backend
 [나의 최애의 포토 백엔드](https://github.com/My-favorite-photo/be-my-favorite-photo)
-
-## Team Member Development Reports
 

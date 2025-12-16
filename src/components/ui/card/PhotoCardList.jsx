@@ -3,9 +3,10 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
+import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { normalizeMarketCard, normalizeUserCard } from '@/libs/utils/normalizeCard';
 import { useAuth } from '@/providers/AuthProvider';
 import { useFilter } from '@/providers/FilterProvider';
 
@@ -14,8 +15,8 @@ import { Pagination } from '../pagination/Pagination';
 import PhotoCard from './PhotoCard';
 
 /**
- * 
- * @param {String} type  -- 포토카드의 수량 
+ *
+ * @param {String} type  -- 포토카드의 수량
  * @return
  */
 export default function PhotoCardList({
@@ -31,6 +32,7 @@ export default function PhotoCardList({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleCardClick = (cardId) => {
+    console.log('click cardId:', cardId);
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
       return;
@@ -39,44 +41,18 @@ export default function PhotoCardList({
     router.push(`/market-place/${cardId}`);
   };
   console.log('로그인 여부:', isLoggedIn);
-  // 검색 필터 상태
+
   const { filter, searchKeyword } = useFilter();
-
-  // PhotoCards - market
-  const { cards, loading } = useFetchPhotoCards({ searchKeyword, filter });
-
-  // UserCards - gallery
+  const { marketCards, marketLoading } = useFetchMarketCards({ searchKeyword, filter });
   const { myCards, myCardsLoading } = useFetchUserCards({
     searchKeyword,
     filter,
   });
-
-  // UserCards - selling
   const { myLocalSellingCards, saleCardsLoading } = useFetchSaleCards({
     searchKeyword,
     filter,
   });
 
-  const normalizeCard = (card) => {
-    if (isSellingPage || isGalleryPage) {
-      return {
-        ...card.photoCard,
-        id: card.id,
-        status: card.status,
-        totalQuantity: card.totalQuantity,
-        price: card.price,
-        photoCardId: card.photoCardId,
-        nickname: card.user?.nickname ?? null,
-      };
-    }
-
-    return {
-      ...card,
-      nickname: card.creator?.nickname ?? null,
-    };
-  };
-
-  // 페이지별 카드 데이터 가져오기
   let cardsRenderingType;
 
   if (isSellingPage) {
@@ -84,13 +60,13 @@ export default function PhotoCardList({
   } else if (isGalleryPage) {
     cardsRenderingType = myCards;
   } else {
-    cardsRenderingType = cards;
+    cardsRenderingType = marketCards;
   }
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // 화면 크기 변화 감지 - 곧 삭제 예정
+  // 화면 크기 변화 감지(화면 사이즈별 카드 배열)
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -106,7 +82,7 @@ export default function PhotoCardList({
   const start = (currentPage - 1) * itemsPerPage;
   const pagedCards = (cardsRenderingType || []).slice(start, start + itemsPerPage);
 
-  const isLoading = loading || myCardsLoading || saleCardsLoading;
+  const isLoading = marketLoading || myCardsLoading || saleCardsLoading;
 
   if (isLoading)
     return (
@@ -132,8 +108,10 @@ export default function PhotoCardList({
             }
 
             const isLinkDisabled = isSellingPage || isGalleryPage;
-            const normalizedCard = normalizeCard(card);
 
+            const normalizedCard = isLinkDisabled
+              ? normalizeUserCard(card)
+              : normalizeMarketCard(card);
 
             const cardContent = (
               <PhotoCard
@@ -163,6 +141,7 @@ export default function PhotoCardList({
           })}
         </div>
       </div>
+
       <Modal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}

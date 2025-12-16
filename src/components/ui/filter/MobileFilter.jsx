@@ -7,11 +7,11 @@ import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
 import { useFilter } from '@/providers/FilterProvider';
-import { useFetchPhotoCards } from '@/libs/hooks/useFetchPhotoCards';
 import GradeLabel from '../label/GradeLabel';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 
 const MENU_LABELS = {
   grade: '등급',
@@ -22,8 +22,8 @@ const MENU_LABELS = {
 
 export default function MobileFilter({ items, size, isGallery = false, isSellingPage = false }) {
   const { filter, setFilter, searchKeyword } = useFilter();
-  const { cards } = useFetchPhotoCards();
-  const { myCards } = useFetchUserCards();
+  const { marketCards, isMarketCardSoldOut } = useFetchMarketCards();
+  const { myCards, isUserCardSoldOut } = useFetchUserCards();
   const { myLocalSellingCards, isCardSoldOut } = useFetchSaleCards();
 
   const [open, setOpen] = useState(false);
@@ -47,11 +47,17 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
   } else if (isSellingPage) {
     cardsRenderingType = myLocalSellingCards;
   } else {
-    cardsRenderingType = cards;
+    cardsRenderingType = marketCards;
   }
 
   // count 계산용
-  const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : cards;
+  const countSource = isGallery ? myCards : isSellingPage ? myLocalSellingCards : marketCards;
+
+  const dataStatus = isGallery
+    ? isUserCardSoldOut
+    : isSellingPage
+      ? isCardSoldOut
+      : isMarketCardSoldOut;
 
   // 카테고리 메뉴
   const menus = Object.keys(items).map((key) => ({
@@ -69,7 +75,7 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
         count = countSource.filter((c) => {
           // 판매 여부
           if (key === 'status') {
-            return (isCardSoldOut(c) ? '판매 완료' : '판매 중') === label;
+            return (dataStatus(c) ? '판매 완료' : '판매 중') === label;
           }
 
           // 거래 방식 -> 변경 예정(saleOptions)
@@ -78,7 +84,12 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
           }
 
           // gallery / selling = userCard 데이터 → photoCard.grade
-          const target = isGallery || isSellingPage ? c.photoCard : c;
+          // const target = isGallery || isSellingPage ? c.photoCard : c;
+          const target = isGallery
+            ? c.photoCard
+            : isSellingPage
+              ? c.photoCard
+              : c.userCard?.photoCard;
 
           return target[key] === label;
         }).length;

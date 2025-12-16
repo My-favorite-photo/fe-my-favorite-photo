@@ -1,10 +1,10 @@
-"use client"
+'use client';
 import Image from 'next/image';
 
 import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
 import GradeLabel from '../label/GradeLabel';
@@ -15,8 +15,6 @@ export default function PhotoCard({
   card,
   type = 'remain',
   soldOutIcon,
-  isSellingPage,
-  isGalleryPage,
   showSaleLabel,
   sellModal,
   exchangeModal
@@ -32,7 +30,7 @@ export default function PhotoCard({
 
   const handleOpenSellModal = (e) => {
     e.stopPropagation();
-    openModal(MODAL_TYPES.CARD_MODAL, { type: "sell", card: card });
+    openModal(MODAL_TYPES.CARD_MODAL, { type: 'sell', card: card });
   };
 
   const handleOpenExchangeModal = (e) => {
@@ -49,7 +47,9 @@ export default function PhotoCard({
   if (sellModal) {
     clickHandler = handleOpenSellModal;
   }
-  // const dataTypeCheck = isSellingPage || isGalleryPage;
+
+  const isSoldOut =
+    card.sale?.status === 'SOLD_OUT' || card.status === 'SOLD_OUT' || card.totalQuantity === 0;
 
   return (
     <div
@@ -64,7 +64,7 @@ export default function PhotoCard({
         <Image src={fullImageUrl} alt="카드 이미지" fill style={{ objectFit: 'cover' }} />
 
         {/* SOLD_OUT 처리 */}
-        {card.status === 'SOLD_OUT' && (
+        {isSoldOut && (
           <>
             <div className="absolute inset-0 bg-gray-500/70 rounded-[2px]" />
 
@@ -79,16 +79,18 @@ export default function PhotoCard({
         )}
 
         {/* 판매 OR 교환제시 라벨 */}
-        {showSaleLabel && (card.status === 'ON_SALE' || card.status === 'TRADING') && (
-          <div className="absolute sm:top-[5px] sm:left-[5px] md:top-[10px] md:left-[10px] lg:top-[10px] lg:left-[10px]">
-            <SaleStatusLabel status={card.status} />
-          </div>
-        )}
+        {showSaleLabel &&
+          !isSoldOut &&
+          (card.status === 'ON_SALE' || card.status === 'TRADING') && (
+            <div className="absolute sm:top-[5px] sm:left-[5px] md:top-[10px] md:left-[10px] lg:top-[10px] lg:left-[10px]">
+              <SaleStatusLabel status={card.status} />
+            </div>
+          )}
       </div>
 
       <div className="w-full flex flex-col sm:gap-[5px] md:gap-[10px] lg:gap-[10px] sm:mt-[10px] md:mt-[25px] lg:mt-[25px]">
         <p className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis sm:text-[14px] md:text-[22px] lg:text-[22px]">
-          {card.name}
+          {card.name || '카드 이름 없음'}
         </p>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-[10px] sm:text-[10px] md:text-[16px] lg:text-[16px]">
@@ -97,7 +99,7 @@ export default function PhotoCard({
             <span className="text-4 font-normal text-gray-300">{GENRE_LABEL[card.genre]}</span>
           </div>
           <span className="text-white text-4 font-normal text-right underline underline-offset-2 decoration-0 sm:text-[10px] md:text-[16px] lg:text-[16px]">
-            {card.nickname}
+            {card.nickname || '유저'}
           </span>
         </div>
       </div>

@@ -1,24 +1,27 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Minus from '@/assets/icons/Ic_minus.svg';
 import Plus from '@/assets/icons/Ic_plus.svg';
 import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import purchaseService from '@/libs/services/purchaseService';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 
 export default function CardBuyer({ card }) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const maxQuantity = 3;
   console.log(card)
+  const cardData = card.userCard.photoCard;
 
   // const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
 
   const incrementQuantity = () => {
     if (quantity < maxQuantity) {
-      const newQuantity = quantity + 1;
-      setQuantity(newQuantity);
+      setQuantity((q) => q + 1);
     }
   };
 
@@ -29,14 +32,29 @@ export default function CardBuyer({ card }) {
     }
   };
 
+  const handlePurchase = async () => {
+    try {
+      await purchaseService.purchase(card.id, quantity);
+
+      router.push(
+        `/market-place/complete/success?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+      );
+    } catch (error) {
+      console.error('구매실패', error);
+      router.push(
+        `/market-place/complete/fail?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+      );
+    }
+  };
+
   return (
     <main className="text-white">
       <section className="flex justify-between items-center w-full border-b pb-7.5 border-gray-400">
         <div className="flex items-center gap-1.25 sm:gap-2.5">
           {/* 컴포넌트 반응형 수정 */}
-          <GradeLabel grade={card.grade} size="sm" />
+          <GradeLabel grade={cardData.grade} size="sm" />
           <div className="text-gray-400">|</div>
-          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[card.genre]}</p>
+          <p className="text-gray-300 text-lg md:text-2xl">{GENRE_LABEL[cardData.genre]}</p>
         </div>
         <div className="flex justify-between ">
           <p className="text-white underline text-lg font-bold md:text-2xl">{card.seller.nickname}</p>
@@ -44,7 +62,7 @@ export default function CardBuyer({ card }) {
       </section>
 
       <section className="mt-7.5">
-        <p className="text-base md:text-lg">{card.description}</p>
+        <p className="text-base md:text-lg">{cardData.description}</p>
       </section>
 
       <div className="border-b border-gray-400 mt-7.5 mb-7.5"></div>
@@ -52,13 +70,16 @@ export default function CardBuyer({ card }) {
       <section className="flex flex-col gap-2.5">
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">가격</h3>
-          <p className="text-[1.25rem] font-bold md:text-2xl">{card.price} P</p>
+          <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price} P</p>
         </div>
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
             {card.quantity}
-            <span className="text-gray-300"> / {card.totalQuantity}</span>
+            <span className="text-gray-300">
+              {' '}
+              / {cardData.totalQuantity - card.userCard.totalQuantity}
+            </span>
           </p>
         </div>
       </section>
@@ -68,7 +89,7 @@ export default function CardBuyer({ card }) {
       <section className="flex flex-col gap-5.75">
         <div className="flex justify-between items-center">
           <label className="flex-1  text-lg md:text-[1.25rem] text-nowrap">구매수량</label>
-          <div className="flex items-center justify-center rounded-[2px] border border-gray-200 px-3 py-2.5 flex-1">
+          <div className="flex items-center justify-center rounded-xs border border-gray-200 px-3 py-2.5 flex-1">
             <button
               type="button"
               onClick={decrementQuantity}
@@ -90,16 +111,18 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between  mb-10 md:mb-20">
           <label className="text-lg md:text-[1.25rem] text-nowrap">총 가격</label>
           <div className="flex items-center gap-2.5">
-            <p className="text-[1.25rem] font-bold md:text-2xl">8 P</p>
-            <p className="text-lg text-gray-300">(2장)</p>
+            <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price * quantity} P</p>
+            <p className="text-lg text-gray-300">({quantity}장)</p>
           </div>
         </div>
       </section>
 
       <section>
         <Button
+          // disabled={!card.sale}
           thickness="thin"
           className="text-lg font-bold  w-full h-18.5 md:h-20 md:text-[1.25rem]"
+          onClick={handlePurchase}
         >
           포토카드 구매하기
         </Button>

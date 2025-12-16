@@ -23,6 +23,7 @@ export function useFetchUserCards(params = {}) {
         setMyCards(response.cards);
       } catch (error) {
         console.error('나의 갤러리 카드 목록을 가져오는데 실패했습니다.', error);
+        // setMyCards([]);
       } finally {
         setMyCardsLoading(false);
       }
@@ -37,7 +38,8 @@ export function useFetchUserCards(params = {}) {
   );
 
   // 카드 sold out 여부
-  const isUserCardSoldOut = (card) => card.totalQuantity === 0;
+  // const isUserCardSoldOut = (card) => card.totalQuantity === 0;
+  const isUserCardSoldOut = (card) => card.status === 'SOLD_OUT';
 
   return {
     myCards,

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useFilter } from '@/providers/FilterProvider';
 import Image from 'next/image';
 import ic_arrow from '@/assets/icons/Ic_arrow.svg';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 
 export default function DefaultDropDown({ items, placeholder, filterKey }) {
   const [open, setOpen] = useState(false);
