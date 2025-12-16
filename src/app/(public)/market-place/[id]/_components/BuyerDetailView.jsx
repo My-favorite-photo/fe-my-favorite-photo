@@ -7,7 +7,7 @@ import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { Button } from '@/components/ui/button/Button';
 import TradeCard from '@/components/ui/card/TradeCard';
 import GradeLabel from '@/components/ui/label/GradeLabel';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { useExchange } from '@/providers/ExchangeProvider';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
@@ -29,11 +29,12 @@ export function BuyerDetailView({ card }) {
     })
   }
 
+  const cardData = card.userCard.photoCard
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
-  const fullImageUrl = card?.imageUrl
-    ? card.imageUrl.startsWith('http')
-      ? card.imageUrl
-      : `${baseHost}/${card.imageUrl}`
+  const fullImageUrl = cardData.imageUrl
+    ? cardData.imageUrl.startsWith('http')
+      ? cardData.imageUrl
+      : `${baseHost}/${cardData.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
   return (
@@ -42,7 +43,7 @@ export function BuyerDetailView({ card }) {
         마켓플레이스
       </h1>
       <CardTitle
-        titleMessage={card.userCard.photoCard.name}
+        titleMessage={cardData.name}
         className="text-2xl font-bold mb-2.5 sm:mb-5 sm:text-[32px] md:text-[40px]"
       />
       <section className="mt-6.5 sm:flex sm:gap-5 sm:mt-12 md:gap-20">
@@ -66,7 +67,7 @@ export function BuyerDetailView({ card }) {
         </div>
 
         <p className="mt-11.5 text-lg font-bold md:text-2xl">
-          푸릇푸릇한 여름 풍경, 눈 많이 내린 겨울 풍경 사진에 관심이 많습니다.
+          {card.description}
         </p>
         <div className="flex gap-2.5 mt-5 mb-10 md:gap-3.75">
           <GradeLabel grade={card.grade} size />
