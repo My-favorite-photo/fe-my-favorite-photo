@@ -1,25 +1,13 @@
-'use client';
+import { Suspense } from "react";
 
-import { useSearchParams } from 'next/navigation';
-
-import ResultPage from '@/components/ui/resultPage/ResultPage';
+import { PurchaseSuccessContent } from './_components/PurchaseSuccessContent'
 
 export default function PurchaseSuccessPage() {
-  const params = useSearchParams();
-  const name = params.get('name');
-  const grade = params.get('grade');
-  const quantity = params.get('quantity');
-
   return (
-    <ResultPage
-      title="포토카드 "
-      highlight="구매 완료"
-      name={name}
-      grade={grade}
-      description={`${quantity}장 구매에 성공했습니다!`}
-      highlightColor="text-main"
-      buttonText="마이갤러리에서 확인하기"
-      buttonHref="/gallery"
-    />
-  );
+    <>
+      <Suspense fallback={<div>결과 로딩 중...</div>}>
+        <PurchaseSuccessContent />
+      </Suspense>
+    </>
+  )
 }
