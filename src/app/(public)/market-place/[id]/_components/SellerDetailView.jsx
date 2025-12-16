@@ -18,7 +18,6 @@ export function SellerDetailView({ card }) {
       : `${baseHost}/${cardData.imageUrl}`
     : Img_Card; // 기본 이미지는 폴백
 
-
   return (
     <>
       <div className="w-full min-h-screen bg-[#0a0a0a] text-white">
