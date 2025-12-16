@@ -12,5 +12,5 @@ export const CARD_STATUS_LABEL = {
 
 export const SALE_STATUS_LABEL = {
   판매: 'ON_SALE',
-  교환: 'TRADING',
+  '교환 제시': 'TRADING',
 };
