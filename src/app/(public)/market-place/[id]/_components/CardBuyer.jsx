@@ -9,18 +9,26 @@ import { Button } from '@/components/ui/button/Button';
 import GradeLabel from '@/components/ui/label/GradeLabel';
 import purchaseService from '@/libs/services/purchaseService';
 import { GENRE_LABEL } from '@/libs/utils/NameLabel';
+import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
 export default function CardBuyer({ card }) {
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-  const maxQuantity = 3;
-  console.log(card)
+  const { openModal, closeModal } = useModal()
   const cardData = card.userCard.photoCard;
+  console.log('card', card)
 
-  // const totalRemain = card.saleOptions.reduce((acc, opt) => acc + opt.remain, 0);
+  const handleOnModal = () => {
+    openModal(MODAL_TYPES.MODAL, {
+      title: "포토카드 구매",
+      description: `[${card.grade} | ${cardData.name}] ${quantity}장을 구매하시겠습니까?`,
+      confirmText: "구매하기",
+      onConfirm: handlePurchase
+    })
+  }
 
   const incrementQuantity = () => {
-    if (quantity < maxQuantity) {
+    if (quantity < card.remainingQuantity) {
       setQuantity((q) => q + 1);
     }
   };
@@ -35,14 +43,15 @@ export default function CardBuyer({ card }) {
   const handlePurchase = async () => {
     try {
       await purchaseService.purchase(card.id, quantity);
-
+      closeModal();
       router.push(
-        `/market-place/complete/success?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+        `/market-place/complete/success?name=${encodeURIComponent(cardData.name)}&grade=${card.grade}&quantity=${quantity}`,
       );
     } catch (error) {
       console.error('구매실패', error);
+      closeModal();
       router.push(
-        `/market-place/complete/fail?name=${encodeURIComponent(card.name)}&grade=${card.grade}&quantity=${quantity}`,
+        `/market-place/complete/fail?name=${encodeURIComponent(cardData.name)}&grade=${card.grade}&quantity=${quantity}`,
       );
     }
   };
@@ -70,15 +79,15 @@ export default function CardBuyer({ card }) {
       <section className="flex flex-col gap-2.5">
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">가격</h3>
-          <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price} P</p>
+          <p className="text-[1.25rem] font-bold md:text-2xl">{card.price} P</p>
         </div>
         <div className="flex justify-between">
           <h3 className="text-lg text-gray-300 md:text-[1.25rem]">잔여</h3>
           <p className="text-[1.25rem] font-bold md:text-2xl">
-            {card.quantity}
+            {card.remainingQuantity}
             <span className="text-gray-300">
               {' '}
-              / {cardData.totalQuantity - card.userCard.totalQuantity}
+              / {card.quantity}
             </span>
           </p>
         </div>
@@ -111,7 +120,7 @@ export default function CardBuyer({ card }) {
         <div className="flex justify-between  mb-10 md:mb-20">
           <label className="text-lg md:text-[1.25rem] text-nowrap">총 가격</label>
           <div className="flex items-center gap-2.5">
-            <p className="text-[1.25rem] font-bold md:text-2xl">{cardData.price * quantity} P</p>
+            <p className="text-[1.25rem] font-bold md:text-2xl">{card.price * quantity} P</p>
             <p className="text-lg text-gray-300">({quantity}장)</p>
           </div>
         </div>
@@ -122,7 +131,7 @@ export default function CardBuyer({ card }) {
           // disabled={!card.sale}
           thickness="thin"
           className="text-lg font-bold  w-full h-18.5 md:h-20 md:text-[1.25rem]"
-          onClick={handlePurchase}
+          onClick={handleOnModal}
         >
           포토카드 구매하기
         </Button>
