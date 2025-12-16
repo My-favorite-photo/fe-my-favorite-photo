@@ -2,14 +2,15 @@
 
 import Image from 'next/image';
 
+import BackArrowIcon from "@/assets/icons/Ic_back.svg"
 import Img_Card from '@/assets/images/svg/marketplacelogo.png';
 import { CardTitle } from '@/components/common/card-title/CardTitle';
+import Header from '@/components/common/header/Header';
 import { CardExchange } from '@/components/ui/card/PhotoCardExchange';
 
 import CardSeller from './CardSeller';
 
 export function SellerDetailView({ card }) {
-  console.log(card)
   const cardData = card.userCard.photoCard;
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const fullImageUrl = cardData.imageUrl
@@ -20,8 +21,29 @@ export function SellerDetailView({ card }) {
 
   return (
     <>
+      <Header />
       <div className="w-full min-h-screen bg-[#0a0a0a] text-white">
         <main className="max-w-[1080px] mx-auto px-6 py-8">
+          <header className="px-6 py-4">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center sm:hidden">
+                <button
+                  className="relative w-[10.15px] h-[17.699px] text-white text-xl pr-4"
+                  onClick={() => onClose()}
+                >
+                  <Image src={BackArrowIcon} alt="뒤로가기 버튼" fill />
+                </button>
+
+                <Header />
+              </div>
+              <h1
+                className="text-[1.25rem] font-br text-white tracking-[-0.6px] text-center ml-10 sm:hidden"
+              >
+                마켓플레이스
+              </h1>
+              <div className="w-10 sm:hidden"></div>
+            </div>
+          </header>
           <div className="mb-10">
             <div className="mb-6 hidden text-gray-300 font-br sm:block sm:text-base sm:leading-[-0.48px] md:text-2xl md:leading-[-0.72px]">마켓플레이스</div>
             <CardTitle

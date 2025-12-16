@@ -7,7 +7,7 @@ import { publicMetadata } from '#/config/metadata';
 
 export default function Layout({ children }) {
   const pathname = usePathname();
-  const isSellDetailPage = pathname.endsWith('/sell-detail');
+  const isSellDetailPage = pathname.endsWith('/complete') || pathname.includes('/market-place/');
   return (
     <>
       {!isSellDetailPage && (
