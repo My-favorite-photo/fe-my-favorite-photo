@@ -2,7 +2,6 @@
 import { usePathname } from "next/navigation";
 
 import Header from "@/components/common/header/Header";
-import { publicMetadata } from "#/config/metadata";
 
 export default function Layout({ children }) {
   const pathname = usePathname()
