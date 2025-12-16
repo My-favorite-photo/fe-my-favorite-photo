@@ -37,13 +37,7 @@ export function useFetchSaleCards(params = {}) {
     fetchMySellingData();
   }, [searchKeyword, grade, genre, sale, status]);
 
-  // 판매 중 카드
-  // const sellingMyCards = myLocalSellingCards.filter(
-  //   (card) => card.status === 'ON_SALE' || card.status === 'CANCELLED',
-  // );
-
   // 카드 sold out 여부
-  // const isCardSoldOut = (card) => card.totalQuantity === 0;
   const isCardSoldOut = (card) => card.totalQuantity === 0;
 
   return {
