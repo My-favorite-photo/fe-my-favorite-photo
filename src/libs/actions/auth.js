@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { authService } from '@/libs/services/authService';
 
 // 서버 사이드 전용 함수
+// Cookies can only be modified in a Server Action or Route Handler
 export async function getServerSideToken(type = 'accessToken') {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(type);

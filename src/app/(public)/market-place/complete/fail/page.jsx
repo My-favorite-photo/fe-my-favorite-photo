@@ -1,25 +1,13 @@
-'use client';
+import { Suspense } from "react";
 
-import { useSearchParams } from 'next/navigation';
-
-import ResultPage from '@/components/ui/resultPage/ResultPage';
+import { PurchaseFailContent } from './_components/PurchaseFailContent'
 
 export default function PurchaseFailPage() {
-  const params = useSearchParams();
-  const name = params.get('name');
-  const grade = params.get('grade');
-  const quantity = params.get('quantity');
-
   return (
-    <ResultPage
-      title="포토카드 "
-      highlight="구매 실패"
-      name={name}
-      grade={grade}
-      description={`${quantity}장 구매 중 문제가 발생했습니다.`}
-      highlightColor="text-gray-300"
-      buttonText="마켓 플레이스로 돌아가기"
-      buttonHref="/market-place"
-    />
-  );
+    <>
+      <Suspense fallback={<div>결과 로딩 중...</div>}>
+        <PurchaseFailContent />
+      </Suspense>
+    </>
+  )
 }
