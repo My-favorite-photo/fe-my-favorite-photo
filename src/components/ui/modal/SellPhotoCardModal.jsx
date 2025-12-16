@@ -12,7 +12,6 @@ import PhotoCardList from '../card/PhotoCardList';
 import DefaultDropDown from '../filter/DefaultDropDown';
 
 export function SellPhotoCardModal({ onClose, title, subTitle, modal }) {
-  // const { searchKeyword, setSearchKeyword } = usePhotoCards();
   const { searchKeyword, setSearchKeyword } = useFilter();
   const [keyword, setKeyword] = useState('');
 
