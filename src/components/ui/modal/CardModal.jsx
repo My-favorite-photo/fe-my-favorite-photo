@@ -79,8 +79,6 @@ export function CardModal({ type, onClose, card }) {
     }
   };
 
-  console.log(card);
-
   const onSubmit = async (data) => {
     try {
       const saleData = {
@@ -92,12 +90,10 @@ export function CardModal({ type, onClose, card }) {
         genre: data.genre,
       };
 
-      console.log('전송 데이터', saleData);
-
       await saleService.createSale(saleData);
 
       router.push(
-        `/selling/complete/success?name=${encodeURIComponent(card.name)}&quantity=${data.quantity}`,
+        `/selling/complete/success?name=${encodeURIComponent(card.name)}&quantity=${data.quantity}&grade=${data.genre}`,
       );
 
       onClose();
