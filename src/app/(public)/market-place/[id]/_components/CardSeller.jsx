@@ -26,9 +26,6 @@ export default function CardSeller({
   const myGrade = GRADE_CONFIG[grade] ?? GRADE_CONFIG.COMMON;
   const wishGradeConfig = GRADE_CONFIG[wishGrade] ?? GRADE_CONFIG.RARE;
 
-  const handleEdit = () => onEdit?.(cardData);
-  const handleUnlist = () => onUnlist?.(cardData);
-
   return (
     <div className="w-full text-white flex flex-col bg-[#0a0a0a]">
       <div className="flex-1 px-4 pt-6 pb-8">
@@ -91,14 +88,12 @@ export default function CardSeller({
       <div className="w-full flex flex-col gap-3">
         <button
           type="button"
-          onClick={handleEdit}
           className="w-full py-[18px] text-[15px] font-bold bg-[#faff00] text-black"
         >
           수정하기
         </button>
         <button
           type="button"
-          onClick={handleUnlist}
           className="w-full py-[18px] text-[14px] font-bold bg-[#0a0a0a] text-white border border-white"
         >
           판매 내리기
