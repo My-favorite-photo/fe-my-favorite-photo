@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import img_soldOut from '@/assets/icons/Ic_soldOut.svg';
+import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
 import { GENRE_LABEL } from '@/libs/utils/NameLabel';
@@ -11,8 +11,15 @@ import GradeLabel from '../label/GradeLabel';
 import SaleStatusLabel from '../label/SaleStatusLabel';
 import PhotoCardInfo from './PhotoCardInfo';
 
-export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSaleLabel, modal }) {
-  const { openModal } = useModal();
+export default function PhotoCard({
+  card,
+  type = 'remain',
+  soldOutIcon,
+  showSaleLabel,
+  sellModal,
+  exchangeModal
+}) {
+  const { openModal } = useModal()
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
 
   const fullImageUrl = card?.imageUrl
@@ -21,15 +28,24 @@ export default function PhotoCard({ card, type = 'remain', soldOutIcon, showSale
       : `${baseHost}/${card.imageUrl}`
     : img_card; // 기본 이미지는 폴백
 
-  const handleOpenCardModal = (e) => {
+  const handleOpenSellModal = (e) => {
     e.stopPropagation();
     openModal(MODAL_TYPES.CARD_MODAL, { type: 'sell', card: card });
   };
 
+  const handleOpenExchangeModal = (e) => {
+    e.stopPropagation();
+    openModal(MODAL_TYPES.TRADE_OFFER_MODAL, { card: card });
+  };
+
   let clickHandler = undefined;
 
-  if (modal) {
-    clickHandler = handleOpenCardModal;
+  if (exchangeModal) {
+    clickHandler = handleOpenExchangeModal;
+  }
+
+  if (sellModal) {
+    clickHandler = handleOpenSellModal;
   }
 
   const isSoldOut =

@@ -1,4 +1,4 @@
-import { defaultFetch } from '../utils/fetchClient';
+import { defaultFetch, tokenFetch } from '../utils/fetchClient';
 
 export const marketCardService = {
   // 카드 목록 조회(인증 X)
@@ -15,5 +15,5 @@ export const marketCardService = {
   },
 
   // 카드 상세 조회(인증 X)
-  getCardDetail: (saleCardId) => defaultFetch(`/market/${saleCardId}`),
+  getCardDetail: (saleCardId) => tokenFetch(`/market/${saleCardId}`),
 };

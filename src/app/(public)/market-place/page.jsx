@@ -1,9 +1,6 @@
-import Link from 'next/link';
-
-import { CardTitle } from '@/components/common/card-title/CardTitle';
-import { Button } from '@/components/ui/button/Button';
 import PhotoCardList from '@/components/ui/card/PhotoCardList';
 
+import { ButtonClient } from './_components/ButtonClient';
 import { CardTitleClient } from './_components/CardTitleClient';
 import MarketFilter from './_components/MarketFilter';
 
@@ -24,12 +21,9 @@ export default function MarketPlacePage() {
 
       <MarketFilter />
       <PhotoCardList />
-
-      <Link href="/gallery" className="flex justify-center fixed bottom-[15px] left-0 w-full">
-        <Button size="S" className="w-[345px] h-[55px] md:hidden lg:hidden">
-          나의 포토카드 판매하기
-        </Button>
-      </Link>
+      <div className="flex justify-center fixed bottom-[15px] left-0 w-full">
+        <ButtonClient />
+      </div>
     </div>
   );
 }

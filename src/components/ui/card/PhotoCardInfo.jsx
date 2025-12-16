@@ -1,10 +1,11 @@
 export default function PhotoCardInfo({ card, type }) {
+  console.log('PhotoCardInfo', card)
   const typeMap = {
     // market-place
     remain: {
       label: '잔여',
-      left: `${card.sale?.quantity ?? '?'}`,
-      right: ` / ${card.photoCardTotalQuantity - card.userCardTotalQuantity}`,
+      left: `${card.sale?.remainingQuantity ?? '?'}`,
+      right: ` / ${card.sale?.quantity}`,
     },
     // gallery
     count: {

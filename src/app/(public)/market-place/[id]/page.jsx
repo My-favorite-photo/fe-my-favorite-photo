@@ -1,25 +1,14 @@
-'use client';
-
+"use client"
 import { useParams } from 'next/navigation';
-import { useAuth } from '@/providers/AuthProvider';
+
 import { useFetchMarketCardDetail } from '@/libs/hooks/useFetchMarketCardDetail';
-import SellerDetailPage from './_components/SellerDetailPage';
-import BuyerDetailPage from './_components/BuyerDetailPage';
+import { useAuth } from '@/providers/AuthProvider';
+
+import { BuyerDetailView } from './_components/BuyerDetailView';
+import { SellerDetailView } from './_components/SellerDetailView';
 
 export default function MarketPlaceDetailPage() {
-import Image from 'next/image';
-import { useParams } from 'next/navigation';
 
-import img_card from '@/assets/images/img_card.svg';
-import { CardTitle } from '@/components/common/card-title/CardTitle';
-import { Button } from '@/components/ui/button/Button';
-import GradeLabel from '@/components/ui/label/GradeLabel';
-import { useFetchPhotoCardDetail } from '@/libs/hooks/useFetchPhotoCardDetail';
-import { GENRE_LABEL } from '@/libs/utils/genreLabel';
-
-import CardBuyer from './_components/CardBuyer';
-
-export default function SellDetailPage() {
   const { id } = useParams();
   const { user } = useAuth();
 
@@ -39,12 +28,11 @@ export default function SellDetailPage() {
       </p>
     );
 
-  const creatorId = marketDetailCard.userCard.photoCard.creatorId;
-  const isSeller = user?.id === creatorId;
+  const isOwner = marketDetailCard.sellerId === user.id;
 
-  return isSeller ? (
-    <SellerDetailPage card={marketDetailCard} />
-  ) : (
-    <BuyerDetailPage card={marketDetailCard} />
-  );
+  if (!isOwner) {
+    return <BuyerDetailView card={marketDetailCard} />
+  }
+
+  return <SellerDetailView card={marketDetailCard} />
 }

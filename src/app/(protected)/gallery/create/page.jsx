@@ -14,11 +14,12 @@ import { ArrowIcon, BackIcon } from './_components/Icons';
 const GRADES = [
   { value: 'common', label: 'COMMON', color: 'text-main' },
   { value: 'rare', label: 'RARE', color: 'text-blue' },
-  { value: 'super', label: 'SUPER RARE', color: 'text-purple' },
+  { value: 'super', label: 'SUPER RARE', color: 'text-purple' },  // 잘못된 POST 를 보냈을때 실패 예시로 super로 만들었습니다.
   { value: 'legendary', label: 'LEGENDARY', color: 'text-red' },
 ];
 
 const GENRES = [
+  { value: 'travel', label: '여행' },
   { value: 'landscape', label: '풍경' },
   { value: 'portrait', label: '인물' },
   { value: 'object', label: '사물' },
@@ -76,18 +77,11 @@ export default function PhotoCardCreation() {
     formData.append('description', data.description);
 
     formData.append('uploads', file);
-    console.log('--- FormData Contents ---');
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-    console.log('-------------------------');
 
     try {
       const json = await cardService.createCard(formData);
-      console.log('formData', formData);
       const photoCard = json.result.photoCard;
 
-      console.log('카드 생성 성공:', photoCard);
 
       router.push(
         `/gallery/create/success?name=${encodeURIComponent(

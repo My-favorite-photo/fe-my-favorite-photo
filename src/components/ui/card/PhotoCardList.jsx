@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react';
 import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
 import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
 import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { normalizeMarketCard, normalizeUserCard } from '@/libs/utils/normalizeCard';
 import { useAuth } from '@/providers/AuthProvider';
 import { useFilter } from '@/providers/FilterProvider';
 
 import Modal from '../modal/Modal';
 import { Pagination } from '../pagination/Pagination';
 import PhotoCard from './PhotoCard';
-import { normalizeMarketCard, normalizeUserCard } from '@/libs/utils/normalizeCard';
 
 /**
  *
@@ -24,14 +24,14 @@ export default function PhotoCardList({
   showSaleLabel = false,
   isSellingPage = false,
   isGalleryPage = false,
-  modal = false,
+  isSellModal = false,
+  isExchangeModal = false,
 }) {
   const { isLoggedIn } = useAuth();
   const router = useRouter();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleCardClick = (cardId) => {
-    console.log('click cardId:', cardId);
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
       return;
@@ -39,7 +39,6 @@ export default function PhotoCardList({
 
     router.push(`/market-place/${cardId}`);
   };
-  console.log('로그인 여부:', isLoggedIn);
 
   const { filter, searchKeyword } = useFilter();
   const { marketCards, marketLoading } = useFetchMarketCards({ searchKeyword, filter });
@@ -120,7 +119,8 @@ export default function PhotoCardList({
                 showSaleLabel={showSaleLabel}
                 isSellingPage={isSellingPage}
                 isGalleryPage={isGalleryPage}
-                modal={modal}
+                sellModal={isSellModal}
+                exchangeModal={isExchangeModal}
               />
             );
 

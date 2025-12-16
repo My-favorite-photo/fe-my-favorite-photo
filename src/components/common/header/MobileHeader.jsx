@@ -1,14 +1,16 @@
 'use client';
 
-import Image from 'next/image';
-import ic_hamburger from '@/assets/icons/Ic_hamberger.svg';
-import ic_bell from '@/assets/icons/Ic_bell.svg';
-import ic_back from '@/assets/icons/Ic_back.svg';
-import img_logo from '@/assets/images/svg/logo.svg';
-import Link from 'next/link';
-import { useState } from 'react';
-import { useAuth } from '@/providers/AuthProvider';
 import { Popover } from '@headlessui/react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import ic_back from '@/assets/icons/Ic_back.svg';
+import ic_bell from '@/assets/icons/Ic_bell.svg';
+import ic_hamburger from '@/assets/icons/Ic_hamberger.svg';
+import img_logo from '@/assets/images/svg/logo.svg';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function MobileHeader({ hasId = false, title = '마이갤러리' }) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -79,9 +81,12 @@ function LoginHeader({ openMenu }) {
 }
 
 function SecondaryHeader({ title }) {
+  const router = useRouter()
   return (
     <div className="w-full flex justify-around items-center ">
-      <Image src={ic_back} alt="뒤로가기" width={22} height={22} />
+      <button onClick={() => router.back} className='cursor-pointer'>
+        <Image src={ic_back} alt="뒤로가기" width={22} height={22} />
+      </button>
 
       <h1 className=" text-white text-center font-br text-[20px] font-normal tracking-[-0.6px]">
         {title}
@@ -109,8 +114,7 @@ function LogoutHeader({ openMenu }) {
 }
 
 function OpenHamburger({ onClose, user, logout }) {
-  const nickname = '유디';
-  const point = '1,540';
+  console.log(user)
   return (
     <>
       <div className="fixed inset-0 bg-black/80 z-40" onClick={onClose} />
@@ -119,10 +123,10 @@ function OpenHamburger({ onClose, user, logout }) {
           <div className="flex flex-col">
             {user ? (
               <>
-                <h1 className="text-[18px] font-bold mb-[20px]">안녕하세요, {nickname}님!</h1>
+                <h1 className="text-[18px] font-bold mb-[20px]">안녕하세요, {user.nickname}님!</h1>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-300 text-[12px] font-light">보유 포인트</span>
-                  <span className="text-main text-right text-[12px] font-normal">{point} P</span>
+                  <span className="text-main text-right text-[12px] font-normal">{user.balance} P</span>
                 </div>
               </>
             ) : (
