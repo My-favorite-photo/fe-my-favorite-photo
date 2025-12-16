@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { marketCardService } from '../services/marketSaleService';
-import { SALE_STATUS_LABEL } from '../utils/NameLabel';
+import { CARD_STATUS_LABEL } from '../utils/NameLabel';
 
 export function useFetchMarketCards(params = {}) {
   const { searchKeyword = '', filter = {} } = params;
@@ -19,7 +19,7 @@ export function useFetchMarketCards(params = {}) {
           keyword: searchKeyword,
           grade: grade,
           genre: genre,
-          status: SALE_STATUS_LABEL[status],
+          status: CARD_STATUS_LABEL[status],
           sort:
             price === '낮은 가격순'
               ? 'low'

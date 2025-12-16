@@ -80,7 +80,12 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
 
           // 거래 방식 -> 변경 예정(saleOptions)
           if (key === 'sale') {
-            return c.saleOptions?.some((s) => s.type === label);
+            const SALE_STATUS_MAP = {
+              판매: 'ON_SALE',
+              교환: 'TRADING',
+            };
+
+            return c.status === SALE_STATUS_MAP[label];
           }
 
           // gallery / selling = userCard 데이터 → photoCard.grade

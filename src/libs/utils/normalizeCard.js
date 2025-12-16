@@ -18,6 +18,7 @@ export const normalizeMarketCard = (card) => {
 
     // PhotoCard 테이블
     ...userCard.photoCard,
+    photoCardTotalQuantity: userCard.photoCard.totalQuantity,
 
     // sale.id(렌더링)
     id: saleFields.id,
