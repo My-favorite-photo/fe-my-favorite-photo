@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import ic_close from '@/assets/icons/Ic_close.svg';
 import ic_mobileFilter from '@/assets/icons/Ic_mobileFilter.svg';
 import ic_exchange from '@/assets/icons/Ic_recycle.svg';
-import { useFilter } from '@/providers/FilterProvider';
-import GradeLabel from '../label/GradeLabel';
-import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
-import { GENRE_LABEL } from '@/libs/utils/NameLabel';
-import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
 import { useFetchMarketCards } from '@/libs/hooks/useFetchMarketCard';
+import { useFetchSaleCards } from '@/libs/hooks/useFetchSaleCards';
+import { useFetchUserCards } from '@/libs/hooks/userFetchUserCards';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
+import { useFilter } from '@/providers/FilterProvider';
+
+import GradeLabel from '../label/GradeLabel';
 
 const MENU_LABELS = {
   grade: '등급',
@@ -179,9 +180,8 @@ export default function MobileFilter({ items, size, isGallery = false, isSelling
               <div
                 key={item.label}
                 onClick={() => handleSelect(item.label)}
-                className={`flex justify-between px-8 py-4 cursor-pointer ${
-                  isSelected ? 'bg-gray-500' : ''
-                }`}
+                className={`flex justify-between px-8 py-4 cursor-pointer ${isSelected ? 'bg-gray-500' : ''
+                  }`}
               >
                 <span>
                   {category === 'grade' ? <GradeLabel grade={rawLabel} size /> : displayLabel}
