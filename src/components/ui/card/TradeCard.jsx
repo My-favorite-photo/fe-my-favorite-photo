@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import img_card from '@/assets/images/img_card.svg';
 import { tradeService } from '@/libs/services/tradeService';
+import { GENRE_LABEL } from '@/libs/utils/NameLabel';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
 import { Button } from '../button/Button';
