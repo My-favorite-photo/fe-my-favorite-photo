@@ -32,7 +32,6 @@ export default function PhotoCardList({
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleCardClick = (cardId) => {
-    console.log('click cardId:', cardId);
     if (!isLoggedIn) {
       setIsLoginModalOpen(true);
       return;
@@ -40,12 +39,11 @@ export default function PhotoCardList({
 
     router.push(`/market-place/${cardId}`);
   };
-  console.log('로그인 여부:', isLoggedIn);
 
   const { filter, searchKeyword } = useFilter();
   const { marketCards, marketLoading } = useFetchMarketCards({ searchKeyword, filter });
   const { myCards, myCardsLoading } = useFetchUserCards({
-    searchKeyword,
+    searchKeywordF,
     filter,
   });
   const { myLocalSellingCards, saleCardsLoading } = useFetchSaleCards({
