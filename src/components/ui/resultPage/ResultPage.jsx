@@ -21,14 +21,14 @@ export default function ResultPage({
     <main className="relative container mx-auto min-h-screen text-white">
       <div className="hidden sm:block"></div>
       <header className="p-5 sm:hidden">
-        <Link href="/gallery" className="relative">
+        <Link href={buttonHref} className="relative">
           <Image src={MobileBackIcon} alt="뒤로가기 버튼" width={22} height={22} unoptimized />
         </Link>
       </header>
 
       <div className="mt-55 mb-55 flex flex-col items-center">
         <div className="relative hidden sm:block w-[19.961px] h-[19.961px] ml-[500px] md:ml-[720px]">
-          <Link href="/gallery">
+          <Link href={buttonHref}>
             <Image src={X} alt="뒤로가기 버튼" fill />
           </Link>
         </div>
