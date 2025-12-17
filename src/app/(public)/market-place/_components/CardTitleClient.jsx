@@ -2,7 +2,7 @@
 import { CardTitle } from '@/components/common/card-title/CardTitle';
 import { MODAL_TYPES, useModal } from '@/providers/ModalProvider';
 
-export function CardTitleClient({ size }) {
+export function CardTitleClient({ size, buttonSize }) {
   const { openModal } = useModal();
 
   const onClickButton = () => {

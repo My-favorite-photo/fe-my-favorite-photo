@@ -118,7 +118,8 @@ function LogoutHeader({ openMenu }) {
 }
 
 // 햄버거 버튼 오픈
-function OpenHamburger({ onClose, user, logout })
+
+function OpenHamburger({ onClose, user, logout }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/80 z-40" onClick={onClose} />
