@@ -3,43 +3,30 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer } from 'react-toastify';
 
-import AuthProvider, { useAuth } from '@/providers/AuthProvider';
+import RandomPointGate from '@/components/ui/modal/random/RandomPointGate';
+import AuthProvider from '@/providers/AuthProvider';
 import { ExchangeProvider } from '@/providers/ExchangeProvider';
 import { FilterProvider } from '@/providers/FilterProvider';
 import { ModalProvider } from '@/providers/ModalProvider';
 import { NotificationProvider } from '@/providers/NotificationProvider';
 
-function InnerProviders({ children }) {
-  const { user } = useAuth(); // AuthProvider 안에서 user 가져오기
-  return (
-    <NotificationProvider userId={user?.id ?? null} limit={20}>
-      {children}
-    </NotificationProvider>
-  );
-}
-
 export function Providers({ children }) {
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={2500}
-        theme="light"
-        toastClassName="custom-toast"
-        bodyClassName="custom-toast-body"
-      />
+      <ToastContainer position="bottom-right" autoClose={2500} theme="light" />
 
-      <FilterProvider>
-        <ExchangeProvider>
-          <ModalProvider >
-            <AuthProvider>
-              <InnerProviders>
+      <AuthProvider>
+        <FilterProvider>
+          <ExchangeProvider>
+            <NotificationProvider>
+              <ModalProvider>
+                <RandomPointGate />
                 {children}
-              </InnerProviders>
-            </AuthProvider>
-          </ModalProvider>
-        </ExchangeProvider>
-      </FilterProvider>
+              </ModalProvider>
+            </NotificationProvider>
+          </ExchangeProvider>
+        </FilterProvider>
+      </AuthProvider>
     </>
   );
 }
