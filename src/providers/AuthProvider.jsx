@@ -8,12 +8,12 @@ import { authService } from '@/libs/services/authService';
 import { userService } from '@/libs/services/userService';
 
 const AuthContext = createContext({
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
   user: null,
-  register: () => {},
-  getUser: () => {},
-  updateBalance: () => {},
+  register: () => { },
+  getUser: () => { },
+  updateBalance: () => { },
 });
 
 export const useAuth = () => {

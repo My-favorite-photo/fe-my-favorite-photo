@@ -163,7 +163,7 @@ export function CardModal({ type, onClose, card, cardData }) {
           <div className="w-full overflow-y-auto px-6">
             <CardTitle
               size="L"
-              titleMessage={card.name}
+              titleMessage={cardData.name}
               className="text-2xl sm:text-[2rem] md:text-[2.5rem] font-bold mb-5"
             />
 
@@ -176,6 +176,7 @@ export function CardModal({ type, onClose, card, cardData }) {
                   <div className="sm:flex-1 sm:w-full">
                     <CardCounterInput
                       card={card}
+                      cardData={cardData}
                       register={register}
                       errors={errors}
                       setValue={setValue}
