@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import HopeChangeImg from '@/assets/images/svg/hopeChange.png';
 import { Button } from '@/components/ui/button/Button';
@@ -25,6 +26,7 @@ export default function CardSeller({
   const wishGradeConfig = GRADE_CONFIG[wishGrade] ?? GRADE_CONFIG.RARE;
 
   const { openModal, closeModal } = useModal()
+  const router = useRouter()
 
   const handleSaleClose = async (cardId) => {
     if (!confirm) return
@@ -34,7 +36,7 @@ export default function CardSeller({
       if (response.success) {
         closeModal()
         alert("판매가 성공적으로 종료되었습니다.")
-        window.location.reload();
+        router.push('/market-place')
       } else {
         alert(response.message || "판매 내리기에 실패했습니다.")
       }
