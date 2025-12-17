@@ -8,19 +8,23 @@ import { useState } from 'react';
 
 import ic_back from '@/assets/icons/Ic_back.svg';
 import ic_bell from '@/assets/icons/Ic_bell.svg';
+import ic_redBell from '@/assets/icons/Ic_redBell.svg';
 import ic_hamburger from '@/assets/icons/Ic_hamberger.svg';
 import img_logo from '@/assets/images/svg/logo.svg';
 import { useAuth } from '@/providers/AuthProvider';
-import { useFetchNotification } from '@/libs/hooks/useFetchNotification';
 import { hoursAgo } from '@/libs/utils/time';
+import { useNotification } from '@/providers/NotificationProvider';
 
 /** hasId: 처음에 상세 페이지에만 해당 헤더가 쓰이는 줄 알고 /page/id가 있다면 title을 받는 헤더를 표시하려고 함 */
 
 export default function MobileHeader({ hasId = false, title = '마이갤러리' }) {
   const { user, logout } = useAuth();
+  const { notifications, loading, markAsRead } = useNotification();
 
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+
+  const hasUnread = notifications.some((n) => !n.isRead);
 
   let content = null;
 
@@ -30,6 +34,7 @@ export default function MobileHeader({ hasId = false, title = '마이갤러리' 
     content = (
       <LoginHeader
         user={user}
+        hasUnread={hasUnread}
         openMenu={() => setIsHamburgerOpen(true)}
         openNotification={() => setIsNotificationOpen(true)}
       />
@@ -44,49 +49,22 @@ export default function MobileHeader({ hasId = false, title = '마이갤러리' 
       )}
 
       {isNotificationOpen && user && (
-        <MobileNotificationModal userId={user.id} onClose={() => setIsNotificationOpen(false)} />
+        <MobileNotificationModal
+          userId={user.id}
+          hasUnread={hasUnread}
+          notifications={notifications}
+          loading={loading}
+          markAsRead={markAsRead}
+          onClose={() => setIsNotificationOpen(false)}
+        />
       )}
     </div>
   );
 }
 
 // 로그인 헤더
-function LoginHeader({ openMenu, user, openNotification }) {
-  // const { notifications, loading } = useFetchNotification(user?.id ?? null);
-
+function LoginHeader({ openMenu, openNotification, hasUnread }) {
   return (
-    // <div className="w-full flex justify-around items-center ">
-    //   <button onClick={openMenu} className="cursor-pointer">
-    //     <Image src={ic_hamburger} alt="메뉴" width={22} height={22} />
-    //   </button>
-
-    //   <Image src={img_logo} alt="로고" width={83} height={15} />
-
-    //   <Popover className="relative">
-    //     <Popover.Button>
-    //       <Image src={ic_bell} width={22} height={22} alt="알림" />
-    //     </Popover.Button>
-    //     <Popover.Panel className="absolute right-0 mt-2 bg-gray-500 w-[300px] py-3 divide-y divide-gray-400 z-[50]">
-    //       {loading ? (
-    //         <p className="text-gray-400 py-4 text-center">로딩 중...</p>
-    //       ) : (notifications.length ?? 0) === 0 ? (
-    //         <p className="text-gray-400 py-4 text-center">알림이 없습니다.</p>
-    //       ) : (
-    //         notifications.map((n) => (
-    //           <div key={n.id} className="p-4 w-full transition">
-    //             <p className=" text-white font-noto text-[14px] font-normal leading-normal text-left ">
-    //               {n.content}
-    //             </p>
-    //             <p className="text-[#A4A4A4] font-noto text-[12px] font-light leading-normal mt-2.5 text-left">
-    //               {hoursAgo(n.createdAt)}
-    //             </p>
-    //           </div>
-    //         ))
-    //       )}
-    //     </Popover.Panel>
-    //   </Popover>
-    // </div>
-
     <div className="w-full flex justify-around items-center">
       <button onClick={openMenu} className="cursor-pointer">
         <Image src={ic_hamburger} alt="메뉴" width={22} height={22} />
@@ -95,7 +73,7 @@ function LoginHeader({ openMenu, user, openNotification }) {
       <Image src={img_logo} alt="로고" width={83} height={15} />
 
       <button onClick={openNotification} className="cursor-pointer">
-        <Image src={ic_bell} width={22} height={22} alt="알림" />
+        <Image src={hasUnread ? ic_redBell : ic_bell} alt="알림 상태" width={22} height={22} />
       </button>
     </div>
   );
@@ -192,9 +170,14 @@ function OpenHamburger({ onClose, user, logout }) {
 }
 
 // 모바일 전용 알림
-function MobileNotificationModal({ userId, onClose }) {
-  const { notifications, loading } = useFetchNotification(userId, 20);
-
+function MobileNotificationModal({
+  userId,
+  notifications,
+  loading,
+  markAsRead,
+  onClose,
+  hasUnread,
+}) {
   return (
     <>
       <div className="fixed inset-0 bg-gray-500 z-50 flex flex-col">
@@ -207,6 +190,7 @@ function MobileNotificationModal({ userId, onClose }) {
 
           <Image src={ic_bell} alt="공백" width={22} height={22} className="invisible" />
         </div>
+
         <div className="flex-1 overflow-y-auto">
           {loading ? (
             <p className="text-center text-gray-400 mt-10">로딩 중...</p>
@@ -214,11 +198,15 @@ function MobileNotificationModal({ userId, onClose }) {
             <p className="text-center text-gray-400 mt-10">알림이 없습니다.</p>
           ) : (
             notifications.map((n) => (
-              <div key={n.id} className="p-5 border-b border-gray-400 h-[87px]">
-                <p className="text-white text-[14px] font-normal">{n.content}</p>
-                <p className="text-gray-400 text-[12px] font-light mt-[10px]">
-                  {hoursAgo(n.createdAt)}
-                </p>
+              <div
+                key={n.id}
+                onClick={() => markAsRead(n.id)}
+                className={`p-4 w-full transition ${
+                  n.isRead ? 'bg-gray-500 text-gray-300' : 'bg-[#222222] text-white'
+                } cursor-pointer`}
+              >
+                <p className="text-[14px] font-normal">{n.content}</p>
+                <p className="text-[12px] font-light mt-2.5">{hoursAgo(n.createdAt)}</p>
               </div>
             ))
           )}
