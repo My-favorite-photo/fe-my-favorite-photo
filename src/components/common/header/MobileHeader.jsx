@@ -118,6 +118,7 @@ function LogoutHeader({ openMenu }) {
 }
 
 // 햄버거 버튼 오픈
+
 function OpenHamburger({ onClose, user, logout }) {
   return (
     <>
