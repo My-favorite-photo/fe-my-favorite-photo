@@ -84,7 +84,7 @@ function SecondaryHeader({ title }) {
   const router = useRouter();
   return (
     <div className="w-full flex justify-around items-center ">
-      <button onClick={() => router.back} className="cursor-pointer">
+      <button onClick={() => router.back()} className="cursor-pointer">
         <Image src={ic_back} alt="뒤로가기" width={22} height={22} />
       </button>
 
