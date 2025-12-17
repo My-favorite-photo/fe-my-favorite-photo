@@ -53,7 +53,7 @@ export default function PhotoCard({
 
   return (
     <div
-      className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px]
+      className="relative flex flex-col items-center bg-gray-500 border border-gray-400 rounded-[2px] cursor-pointer
         sm:w-[170px] sm:p-[10px]
         md:w-[342px] md:h-[517px] md:p-[20px]
         lg:w-[440px] lg:h-[600px] lg:p-[40px]
