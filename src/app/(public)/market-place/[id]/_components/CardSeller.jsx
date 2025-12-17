@@ -29,7 +29,6 @@ export default function CardSeller({
   const router = useRouter()
 
   const handleSaleClose = async (cardId) => {
-    if (!confirm) return
     try {
       const response = await saleService.closeSale(cardId)
 
