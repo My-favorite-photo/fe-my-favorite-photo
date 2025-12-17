@@ -95,7 +95,12 @@ export default function AuthProvider({ children }) {
 
         if (canTry) {
           randomModalTimeoutRef.current = setTimeout(() => {
-            openModal(MODAL_TYPES.RANDOM_POINT);
+                  setUser((currentUser) => {
+                    if (currentUser) {
+                      openModal(MODAL_TYPES.RANDOM_POINT);
+                      }        
+                        return currentUser;
+                    });
           }, 10_000);
         }
 
