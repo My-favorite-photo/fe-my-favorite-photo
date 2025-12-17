@@ -1,5 +1,5 @@
 import { ToastContainer } from 'react-toastify';
-
+import 'react-toastify/dist/ReactToastify.css';
 import AuthProvider from '@/providers/AuthProvider';
 import { ExchangeProvider } from '@/providers/ExchangeProvider';
 import { FilterProvider } from '@/providers/FilterProvider';
