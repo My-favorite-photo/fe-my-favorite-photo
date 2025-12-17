@@ -17,6 +17,10 @@ const nextConfig = {
         port: '3005',
         pathname: '/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'https://be-my-favorite-photo.onrender.com',
+      },
     ],
   },
 };
