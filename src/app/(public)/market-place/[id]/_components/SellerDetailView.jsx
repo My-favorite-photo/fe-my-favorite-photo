@@ -11,7 +11,6 @@ import { CardExchange } from '@/components/ui/card/PhotoCardExchange';
 import CardSeller from './CardSeller';
 
 export function SellerDetailView({ card }) {
-  console.log(card)
   const cardData = card.userCard.photoCard;
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const fullImageUrl = cardData.imageUrl
@@ -55,20 +54,27 @@ export function SellerDetailView({ card }) {
           </div>
 
           <section className="grid grid-cols-[1fr_320px] gap-10 mb-16">
-            <div className="relative w-full h-full object-cover aspect-4/3 bg-black rounded-lg overflow-hidden">
+            <div className="hidden sm:block relative aspect-video bg-gray-900 rounded-lg object-cover sm:min-w-20 sm:max-w-85.5 sm:max-h-[16.0313rem] md:max-w-full md:max-h-full sm:flex-1">
               <Image
                 src={fullImageUrl}
                 alt="카드 이미지"
                 fill
               />
             </div>
-
             <div>
-              <div className="bg-[#161616] rounded-md h-fit mb-6">
+              <div className="mx-auto bg-[#161616] rounded-md h-fit mb-6">
+                <div className="block relative aspect-video bg-gray-900 rounded-lg object-cover sm:hidden">
+                  <Image
+                    src={fullImageUrl}
+                    alt="카드 이미지"
+                    fill
+                  />
+                </div>
                 {/* // 오른쪽 */}
                 <CardSeller
                   card={card}
                   cardData={cardData}
+                  total={card.quantity}
                   // 교환 희망정보
                   wishGrade={card.grade}
                   wishCategory={card.genre}
