@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import img_soldOut from '@/assets/icons/Ic_soldOut.svg';
+import img_soldOut from '@/assets/icons/Ic_soldout.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
 import { GENRE_LABEL } from '@/libs/utils/NameLabel';
@@ -106,7 +106,7 @@ export default function PhotoCard({
 
       <div className="w-full border border-b-gray-400 sm:my-[10px] md:my-[20px] lg:my-[20px]" />
 
-      <div className="w-full flex flex-col justify-between items-center sm:gap-[5px] text-[10px] md:gap-[10px] text-[16px] lg:gap-[10px] text-[16px]">
+      <div className="w-full flex flex-col justify-between items-center sm:gap-[5px] text-[10px] md:gap-[10px] text-[16px] lg:gap-[10px]">
         <PhotoCardInfo card={card} type={type} />
       </div>
 
