@@ -54,7 +54,7 @@ export default function CardSeller({
               {myGrade.label}
             </span>
             <span className="h-[18px] w-px bg-[#4b5563]" />
-            <span className="text-[18px] font-semibold text-[#d1d5db]">{cardData.category}</span>
+            <span className="text-[18px] font-semibold text-[#d1d5db]">{cardData.genre}</span>
           </div>
           <span className='text-[1.125rem] font-bold underline md:text-[1.5rem]'>{card.seller.nickname}</span>
         </header>

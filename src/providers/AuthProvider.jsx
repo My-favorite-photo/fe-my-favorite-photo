@@ -11,11 +11,11 @@ import { userService } from '@/libs/services/userService';
 import { useModal } from './ModalProvider';
 
 const AuthContext = createContext({
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
   user: null,
-  register: () => {},
-  getUser: () => {},
+  register: () => { },
+  getUser: () => { },
 });
 
 export const useAuth = () => {
@@ -63,7 +63,7 @@ export default function AuthProvider({ children }) {
     const { userData, success } = await loginAction(email, password);
     if (!success) throw new Error('로그인 실패');
     setUser(userData);
-    
+
     // router.push('/market-place');
   };
 
@@ -95,12 +95,12 @@ export default function AuthProvider({ children }) {
 
         if (canTry) {
           randomModalTimeoutRef.current = setTimeout(() => {
-                  setUser((currentUser) => {
-                    if (currentUser) {
-                      openModal(MODAL_TYPES.RANDOM_POINT);
-                      }        
-                        return currentUser;
-                    });
+            setUser((currentUser) => {
+              if (currentUser) {
+                openModal(MODAL_TYPES.RANDOM_POINT);
+              }
+              return currentUser;
+            });
           }, 10_000);
         }
 
@@ -111,12 +111,11 @@ export default function AuthProvider({ children }) {
     }
 
     checkRandomPoint();
-    +   
-     return () => {
-     if (randomModalTimeoutRef.current) {
-      clearTimeout(randomModalTimeoutRef.current);
-      randomModalTimeoutRef.current = null;
-     }
+    return () => {
+      if (randomModalTimeoutRef.current) {
+        clearTimeout(randomModalTimeoutRef.current);
+        randomModalTimeoutRef.current = null;
+      }
     };
   }, [user, randomChecked, openModal, MODAL_TYPES.RANDOM_POINT]);
 

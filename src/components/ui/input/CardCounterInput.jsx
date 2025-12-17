@@ -8,7 +8,7 @@ import Plus from "@/assets/icons/Ic_plus.svg"
 
 import GradeLabel from "../label/GradeLabel";
 
-export function CardCounterInput({ card, errors, register, setValue, getValues, type }) {
+export function CardCounterInput({ card, cardData, errors, register, setValue, getValues, type }) {
   const isEdit = type === "edit";
   const maxLimit = isEdit
     ? card.quantity
@@ -47,10 +47,10 @@ export function CardCounterInput({ card, errors, register, setValue, getValues, 
       <div className="max-w-85.5 max-h-49 lg:max-w-110 lg:max-h-23.75">
         <div className="border-b border-gray-400">
           <div className="flex items-center mb-7.5 px-0">
-            <GradeLabel grade={card.grade} size />
+            <GradeLabel grade={cardData.grade} size />
             <span className="mx-4 text-lg text-gray-400 font-bold sm:text-2xl">|</span>
             <h2 className="text-lg font-bold text-gray-300 sm:text-2xl">
-              {card.genre}
+              {cardData.genre}
             </h2>
             <div className="ml-auto">
               <h2 className="text-lg font-bold underline sm:text-2xl">
