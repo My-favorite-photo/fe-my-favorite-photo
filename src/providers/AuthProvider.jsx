@@ -1,11 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 import { getServerSideToken, loginAction, registerAction } from '@/libs/actions/auth';
 import { authService } from '@/libs/services/authService';
+import { getRandomPointEligibility } from '@/libs/services/randomPointService';
 import { userService } from '@/libs/services/userService';
+
+import { useModal } from './ModalProvider';
 
 const AuthContext = createContext({
   login: () => {},
@@ -40,12 +43,12 @@ export default function AuthProvider({ children }) {
     }
   };
 
-  const updateBalance = (newBalance) => {
+  const updateBalance = (delta) => {
     setUser((prev) => {
       if (!prev) return prev;
       return {
         ...prev,
-        balance: newBalance,
+        balance: prev.balance + delta,
       };
     });
   };
@@ -68,10 +71,54 @@ export default function AuthProvider({ children }) {
     try {
       await authService.logout();
       setUser(null);
+      setRandomChecked(false);
+
+      if (randomModalTimeoutRef.current) {
+        clearTimeout(randomModalTimeoutRef.current);
+        randomModalTimeoutRef.current = null;
+      }
     } catch (error) {
       console.error('로그아웃 실패:', error);
     }
   };
+
+  const { openModal, MODAL_TYPES } = useModal();
+  const randomModalTimeoutRef = useRef(null);
+  const [randomChecked, setRandomChecked] = useState(false);
+
+  useEffect(() => {
+    if (!user || randomChecked) return;
+
+    async function checkRandomPoint() {
+      try {
+        const { canTry } = await getRandomPointEligibility();
+
+        if (canTry) {
+          randomModalTimeoutRef.current = setTimeout(() => {
+                  setUser((currentUser) => {
+                    if (currentUser) {
+                      openModal(MODAL_TYPES.RANDOM_POINT);
+                      }        
+                        return currentUser;
+                    });
+          }, 10_000);
+        }
+
+        setRandomChecked(true);
+      } catch (error) {
+        console.error('랜덤 포인트 eligibility 실패', error);
+      }
+    }
+
+    checkRandomPoint();
+    +   
+     return () => {
+     if (randomModalTimeoutRef.current) {
+      clearTimeout(randomModalTimeoutRef.current);
+      randomModalTimeoutRef.current = null;
+     }
+    };
+  }, [user, randomChecked, openModal, MODAL_TYPES.RANDOM_POINT]);
 
   useEffect(() => {
     async function fetchUser() {
