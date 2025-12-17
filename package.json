@@ -45,8 +45,9 @@
     "react-hook-form": "^7.67.0",
     "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.4.0",
+    "zod": "^4.1.13",
     "tailwindcss": "^4",
-    "zod": "^4.1.13"
+    "@tailwindcss/postcss": "^4"
   },
   "devDependencies": {
     "babel-plugin-react-compiler": "1.0.0",
