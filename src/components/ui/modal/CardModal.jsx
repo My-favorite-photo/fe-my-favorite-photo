@@ -65,7 +65,6 @@ export function CardModal({ type, onClose, card, cardData }) {
     },
   });
 
-  console.log("sale", card)
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
   const fullImageUrl = cardData?.imageUrl
     ? cardData.imageUrl.startsWith('http')
@@ -94,14 +93,14 @@ export function CardModal({ type, onClose, card, cardData }) {
         await saleService.updateSale(card.id, saleData);
         alert("수정이 완료되었습니다.")
         onClose();
-        router.refresh()
+        router.push(`/selling`)
       } else {
         await saleService.createSale(saleData);
+        router.push(
+          `/selling/complete/success?name=${encodeURIComponent(card.name)}&quantity=${data.quantity}&grade=${data.genre}`,
+        );
       }
 
-      router.push(
-        `/selling/complete/success?name=${encodeURIComponent(card.name)}&quantity=${data.quantity}&grade=${data.genre}`,
-      );
 
       onClose();
     } catch (error) {
