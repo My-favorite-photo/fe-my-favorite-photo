@@ -107,9 +107,7 @@ export default function RandomModal({ onClose }) {
 
                         setReward(reward);
                         setNextAvailableAt(nextAvailableAt);
-                        if (user?.balance !== undefined) {
-                          await getUser();
-                        }
+                        updateBalance(reward);
                         setStep('RESULT');
                       } catch (error) {
                         console.error('랜덤 포인트 실행 실패', error);
