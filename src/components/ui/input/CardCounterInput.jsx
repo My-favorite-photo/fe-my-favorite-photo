@@ -10,13 +10,11 @@ import GradeLabel from "../label/GradeLabel";
 
 export function CardCounterInput({ card, errors, register, setValue, getValues, type }) {
   const isEdit = type === "edit";
-  console.log("CardCounter", card)
   const maxLimit = isEdit
     ? card.quantity
     : (card.totalQuantity || 0)
-  console.log('maxLimit', maxLimit)
-  const [price, setPrice] = useState(getValues('price') || (isEdit ? card.price : ''))
-  const [quantity, setQuantity] = useState(getValues('quantity') || (isEdit ? card.quantity : 1))
+  const [price, setPrice] = useState(getValues('price') ?? (isEdit ? card.price : ''))
+  const [quantity, setQuantity] = useState(getValues('quantity') ?? (isEdit ? card.quantity : 1))
 
   useEffect(() => {
     setValue('quantity', Number(quantity), { shouldValidate: true, shouldDirty: true });
