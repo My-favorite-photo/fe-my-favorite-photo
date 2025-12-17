@@ -30,7 +30,7 @@ export default function PhotoCard({
 
   const handleOpenSellModal = (e) => {
     e.stopPropagation();
-    openModal(MODAL_TYPES.CARD_MODAL, { type: 'sell', card: card });
+    openModal(MODAL_TYPES.CARD_MODAL, { type: 'sell', card: card, cardData: card });
   };
 
   const handleOpenExchangeModal = (e) => {
