@@ -40,6 +40,8 @@ export default function Login() {
         confirmText: '확인',
         onConfirm: () => {
           closeModal();
+          sessionStorage.setItem('loginSuccess', 'true');
+          closeModal();
           router.push('/market-place');
         },
       });
