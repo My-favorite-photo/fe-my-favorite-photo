@@ -15,7 +15,7 @@ export default function MarketPlacePage() {
 
         {/* md일 때 */}
         <div className="md:w-full lg:w-full font-normal font-br hidden md:block md:text-[48px] lg:hidden">
-          <CardTitleClient size="md" />
+          <CardTitleClient size="M" buttonSize="S" />
         </div>
       </div>
 
