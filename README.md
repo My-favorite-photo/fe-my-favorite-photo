@@ -1,5 +1,5 @@
 
-// (나의 최애의 포토 디자인 사진 (팀 , 최애의 포토 이미지))
+<img width="1917" height="1101" alt="main" src="https://github.com/user-attachments/assets/5280afff-d21c-41cd-8203-328eec02be12" />
 
 ---
 ## 목차
@@ -10,6 +10,7 @@
   5. [주요 기능](#key-features)
   6. [팀 문서](#team-documents)
   7. [백엔드 구경해보기](#check-out-the-backend)
+  8. [폴더 구조](#directory)
 ---
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000)
@@ -101,8 +102,40 @@
 
 
 노션 주소 https://www.notion.so/2b662f1437fd806eb6a6dc792d704f26
+
 미로 주소 https://miro.com/app/board/uXjVGfn7wg8=/
 
 ## Check out the Backend
 [나의 최애의 포토 백엔드](https://github.com/My-favorite-photo/be-my-favorite-photo)
+
+## directory
+.
+├── .github/                   # GitHub 설정 (Issue, PR 템플릿 등)
+├── .husky/                    # Git Hooks 설정 (Lint-staged 등)
+├── config/                    # 프로젝트 메타데이터 및 환경 설정
+├── public/                    # 정적 파일 (대표 이미지, 로봇)
+└── src/
+    ├── app/                   # Next.js App Router
+    │   ├── (auth)/            # 인증 관련 그룹 (로그인, 회원가입)
+    │   ├── (dev-only)/        # 개발용 테스트 컴포넌트 페이지
+    │   ├── (protected)/       # 권한이 필요한 페이지 (마이갤러리, 판매관리 등)
+    │   ├── (public)/          # 비로그인 접근 가능 페이지 (마켓플레이스)
+    │   ├── providers.jsx      # Context 및 Provider 설정
+    │   └── layout.jsx         # 루트 레이아웃 (Font, Global CSS 설정)
+    ├── assets/                # 내부 사용 리소스
+    │   ├── fonts/             # 로컬 폰트 파일
+    │   ├── icons/             # SVG 아이콘들
+    │   ├── images/            # 랜딩 및 모달용 이미지
+    │   └── landing/           # 랜딩 페이지 전용 이미지
+    ├── components/            # 재사용 컴포넌트
+    │   ├── common/            # 전역 공통 컴포넌트 (Header 등)
+    │   └── ui/                # 아토믹 단위 UI 컴포넌트 (Button, Modal, Card 등)
+    ├── data/                  # Mock 데이터 등 정적 데이터
+    ├── libs/                  # 유틸리티 및 비즈니스 로직
+    │   ├── actions/           # 서버 액션 로직
+    │   ├── hooks/             # 커스텀 훅 (Data Fetching 등)
+    │   ├── schemas/           # 유효성 검사 스키마 (Zod)
+    │   ├── services/          # API 통신 서비스 로직
+    │   └── utils/             # 공통 유틸리티 함수 (Tailwind Merge(cn함수),정규화,패치클라이언트 툴 등)
+    └── providers/             # React Context 프로바이더 모음 (Auth, Modal, Filter 등)
 
