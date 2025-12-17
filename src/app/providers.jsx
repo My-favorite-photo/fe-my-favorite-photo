@@ -13,9 +13,7 @@ function InnerProviders({ children }) {
   const { user } = useAuth(); // AuthProvider 안에서 user 가져오기
   return (
     <NotificationProvider userId={user?.id ?? null} limit={20}>
-      <ExchangeProvider>
-        {children}
-      </ExchangeProvider>
+      {children}
     </NotificationProvider>
   );
 }
@@ -32,13 +30,15 @@ export function Providers({ children }) {
       />
 
       <FilterProvider>
-        <ModalProvider >
-          <AuthProvider>
-            <InnerProviders>
-              {children}
-            </InnerProviders>
-          </AuthProvider>
-        </ModalProvider>
+        <ExchangeProvider>
+          <ModalProvider >
+            <AuthProvider>
+              <InnerProviders>
+                {children}
+              </InnerProviders>
+            </AuthProvider>
+          </ModalProvider>
+        </ExchangeProvider>
       </FilterProvider>
     </>
   );
