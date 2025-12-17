@@ -4,25 +4,15 @@ import { Popover } from '@headlessui/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Ic_alarmActive from '@/assets/icons/Ic_alarmActive.svg';
+import ic_bell from '@/assets/icons/Ic_bell.svg';
 import LogoPng from '@/assets/images/logo.png';
 import { useAuth } from '@/providers/AuthProvider';
+import { useFetchNotification } from '@/libs/hooks/useFetchNotification';
+import { hoursAgo } from '@/libs/utils/time';
 
 export default function Header() {
   const { user, logout } = useAuth();
-
-  const notifications = [
-    {
-      id: 1,
-      message: '기며누님이 [RAR | 집 앞마당]을 구매했습니다.',
-      time: '1시간 전',
-    },
-    {
-      id: 2,
-      message: '예진쓰님이 [COMMON | 스페인 여행]의 포토카드 교환을 제안했습니다.',
-      time: '1시간 전',
-    },
-  ];
+  const { notifications, loading } = useFetchNotification(user?.id ?? null, 5);
 
   return (
     <header className="hidden md:flex w-full justify-between items-center py-7 px-[220px]">
@@ -42,25 +32,21 @@ export default function Header() {
               <span>
                 <Popover className="relative">
                   <Popover.Button>
-                    <Image
-                      src={Ic_alarmActive}
-                      width={24}
-                      height={24}
-                      alt="alarmActive"
-                      className="w-6 h-6"
-                    />
+                    <Image src={ic_bell} width={22} height={22} alt="알림" />
                   </Popover.Button>
                   <Popover.Panel className="absolute right-0 mt-2 bg-gray-500 w-[300px] py-3 divide-y divide-gray-400 z-[50]">
-                    {notifications.length === 0 ? (
+                    {loading ? (
+                      <p className="text-gray-400 py-4 text-center">로딩 중...</p>
+                    ) : (notifications.length ?? 0) === 0 ? (
                       <p className="text-gray-400 py-4 text-center">알림이 없습니다.</p>
                     ) : (
                       notifications.map((n) => (
                         <div key={n.id} className="p-4 w-full transition">
                           <p className=" text-white font-noto text-[14px] font-normal leading-normal text-left ">
-                            {n.message}
+                            {n.content}
                           </p>
                           <p className="text-[#A4A4A4] font-noto text-[12px] font-light leading-normal mt-2.5 text-left">
-                            {n.time}
+                            {hoursAgo(n.createdAt)}
                           </p>
                         </div>
                       ))

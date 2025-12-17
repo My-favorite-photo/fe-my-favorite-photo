@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-import img_soldOut from '@/assets/icons/Ic_soldout.svg';
+import img_soldOut from '@/assets/icons/Ic_soldOut.svg';
 import img_card from '@/assets/images/img_card.svg';
 import img_logo from '@/assets/images/logo.png';
 import { GENRE_LABEL } from '@/libs/utils/NameLabel';
@@ -17,9 +17,9 @@ export default function PhotoCard({
   soldOutIcon,
   showSaleLabel,
   sellModal,
-  exchangeModal
+  exchangeModal,
 }) {
-  const { openModal } = useModal()
+  const { openModal } = useModal();
   const baseHost = process.env.NEXT_PUBLIC_IMAGE_HOST || 'http://127.0.0.1:3005';
 
   const fullImageUrl = card?.imageUrl
