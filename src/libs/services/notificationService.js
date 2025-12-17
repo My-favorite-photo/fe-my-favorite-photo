@@ -8,4 +8,10 @@ export const notificationService = {
 
     return tokenFetch(`/notifications?${params.toString()}`);
   },
+
+  markAsRead: (id) => {
+    return tokenFetch(`/notifications/read/${id}`, {
+      method: 'POST',
+    });
+  },
 };

@@ -29,17 +29,23 @@ export function NotificationProvider({ userId, limit = 20, children }) {
   }, [userId, limit]);
 
   // 개별 알림 읽음 처리
-  const markAsRead = (id) => {
-    setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
-  };
+  // const markAsRead = (id) => {
+  //   setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
+  // };
+  const markAsRead = async (id) => {
+    try {
+      // 로컬 업뎃
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
 
-  // 모든 알림 읽음 처리
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      // 서버 반영
+      await notificationService.markAsRead(id);
+    } catch (error) {
+      console.error('알림 읽음 처리 실패', error);
+    }
   };
 
   return (
-    <NotificationContext.Provider value={{ notifications, loading, markAsRead, markAllAsRead }}>
+    <NotificationContext.Provider value={{ notifications, loading, markAsRead }}>
       {children}
     </NotificationContext.Provider>
   );
