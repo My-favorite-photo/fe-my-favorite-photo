@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+
 import { notificationService } from '@/libs/services/notificationService';
 
 const NotificationContext = createContext(null);
