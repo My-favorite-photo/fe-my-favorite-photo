@@ -63,8 +63,8 @@ export default function AuthProvider({ children }) {
     const { userData, success } = await loginAction(email, password);
     if (!success) throw new Error('로그인 실패');
     setUser(userData);
-    console.log('login userData:', userData);
-    router.push('/market-place');
+    
+    // router.push('/market-place');
   };
 
   const logout = async () => {

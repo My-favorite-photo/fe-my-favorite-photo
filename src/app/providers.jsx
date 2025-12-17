@@ -1,4 +1,6 @@
 'use client';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import AuthProvider, { useAuth } from '@/providers/AuthProvider';
 import { ExchangeProvider } from '@/providers/ExchangeProvider';
@@ -10,19 +12,29 @@ function InnerProviders({ children }) {
   const { user } = useAuth(); // AuthProvider 안에서 user 가져오기
   return (
     <NotificationProvider userId={user?.id ?? null} limit={20}>
-      <ExchangeProvider>
-        <ModalProvider>{children}</ModalProvider>
-      </ExchangeProvider>
+      <ExchangeProvider>{children}</ExchangeProvider>
     </NotificationProvider>
   );
 }
 
 export function Providers({ children }) {
   return (
-    <AuthProvider>
-      <FilterProvider>
-        <InnerProviders>{children}</InnerProviders>
-      </FilterProvider>
-    </AuthProvider>
+    <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2500}
+        theme="light"
+        toastClassName="custom-toast"
+        bodyClassName="custom-toast-body"
+      />
+
+      <ModalProvider>
+        <AuthProvider>
+          <FilterProvider>
+            <InnerProviders>{children}</InnerProviders>
+          </FilterProvider>
+        </AuthProvider>
+      </ModalProvider>
+    </>
   );
 }
