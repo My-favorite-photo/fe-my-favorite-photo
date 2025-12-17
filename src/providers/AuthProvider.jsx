@@ -106,6 +106,13 @@ export default function AuthProvider({ children }) {
     }
 
     checkRandomPoint();
+    +   
+     return () => {
+     if (randomModalTimeoutRef.current) {
+      clearTimeout(randomModalTimeoutRef.current);
+      randomModalTimeoutRef.current = null;
+     }
+    };
   }, [user, randomChecked, openModal, MODAL_TYPES.RANDOM_POINT]);
 
   useEffect(() => {
