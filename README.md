@@ -109,6 +109,7 @@
 [나의 최애의 포토 백엔드](https://github.com/My-favorite-photo/be-my-favorite-photo)
 
 ## directory
+```
 .
 ├── .github/                   # GitHub 설정 (Issue, PR 템플릿 등)
 ├── .husky/                    # Git Hooks 설정 (Lint-staged 등)
@@ -138,4 +139,5 @@
     │   ├── services/          # API 통신 서비스 로직
     │   └── utils/             # 공통 유틸리티 함수 (Tailwind Merge(cn함수),정규화,패치클라이언트 툴 등)
     └── providers/             # React Context 프로바이더 모음 (Auth, Modal, Filter 등)
+```
 
