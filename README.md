@@ -30,7 +30,8 @@
 - **Trade**: 유저 간 1:1 교환 및 마켓플레이스를 통한 경제 활동
 - **Connect**: 같은 취향을 가진 팬덤과의 연결
 
----
+## play
+https://github.com/user-attachments/assets/5f427088-dd40-4e11-8e1f-d3e010cb5a0e
 
 ## Team Members
 
